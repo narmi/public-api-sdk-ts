@@ -2,8 +2,13 @@ import express from 'express';
 import * as publicApiSDK from './public-api-sdk/index';
 import { Configuration, ResponseError } from './public-api-sdk/runtime';
 import { HeaderSignatureMiddleware } from './middleware';
-import { TARGET_APP, SCOPES, rootUrl, tokenUrl, authorizeUrl} from './constants';
+import dotenv from 'dotenv';
 
+dotenv.config();
+
+export const tokenUrl = process.env.ROOT_URL + "/v2/oauth/token/"
+export const authorizeUrl = process.env.ROOT_URL + "/v2/oauth/authorize"
+export const SCOPES = "read write openid fdx:accountdetailed:read fdx:transactions:read"
 
 const app = express();
 const port = 3000;
@@ -24,7 +29,7 @@ function parseCookies(cookieHeader: string | undefined) {
 
 function getConfiguration(accessToken: string, headerSecret: string): Configuration {
   return new Configuration({
-    basePath: rootUrl,
+    basePath: process.env.ROOT_URL,
     accessToken: accessToken,
     middleware: [new HeaderSignatureMiddleware(accessToken, headerSecret)]
   })
@@ -40,8 +45,8 @@ app.get('/login/', async (req: express.Request, res: express.Response) => {
   res.redirect(
     302,
     authorizeUrl +
-      `?client_id=${TARGET_APP.clientId}&` +
-      `redirect_uri=${TARGET_APP.redirectUri}&` +
+      `?client_id=${process.env.CLIENT_ID}&` +
+      `redirect_uri=${process.env.REDIRECT_URI}&` +
       `response_type=code&` +
       `scope=${SCOPES}`
     );
@@ -54,11 +59,11 @@ app.get('/receive-authorization-code', async (req: express.Request, res: express
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-        client_id: TARGET_APP.clientId,
-        client_secret: TARGET_APP.unencodedClientSecret,
+        client_id: process.env.CLIENT_ID,
+        client_secret: process.env.CLIENT_SECRET,
         code: req.query.code,
         grant_type: "authorization_code",
-        redirect_uri: TARGET_APP.redirectUri,
+        redirect_uri: process.env.REDIRECT_URI,
     })
   });
 
@@ -70,25 +75,25 @@ app.get('/receive-authorization-code', async (req: express.Request, res: express
   const responseData = await response.json();
 
   res.cookie('access_token', responseData.access_token, {
-    maxAge: 60 * 60 * 1000, // 1 hour, short-lived
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
     httpOnly: true,
     sameSite: 'lax'
   });
 
   res.cookie('refresh_token', responseData.refresh_token, {
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week, long-lived
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
       httpOnly: true,
       sameSite: 'lax'
   });
 
   res.cookie('header_secret', responseData.secret, {
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week, long-lived
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
       httpOnly: true,
       sameSite: 'lax'
   });
 
   res.cookie('id_token', responseData.id_token, {
-      maxAge: 60 * 60 * 1000, // 1 hour, short-lived
+      maxAge: 60 * 60 * 1000, // 1 hour
       httpOnly: true,
       sameSite: 'lax'
   });
@@ -115,6 +120,6 @@ app.get('/account_balances', async (req: express.Request, res: express.Response)
   }
 });
 
-app.listen(port, () => {
+app.listen(process.env.PORT, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
