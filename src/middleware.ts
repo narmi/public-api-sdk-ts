@@ -13,21 +13,17 @@ export class HeaderSignatureMiddleware implements Middleware {
             init.headers = {
                 ...init.headers,
                 'Date': currentTimeISO,
-                'Signature': this.getHeaderSignature(currentTimeISO, init.method, context.url),
+                'Signature': this.getHeaderSignature(currentTimeISO),
             };
         }
     }
 
-    private getHeaderSignature(nowTimestamp: string, method: string | undefined, url: string): string {
-        const headers = `date: ${nowTimestamp}`;
-        const signatureBaseString = `${method} ${url}\n${headers}`;
+    private getHeaderSignature(nowTimestamp: string): string {
+        const hmac = createHmac("sha256", this.headerSecret)
+        hmac.update(`date: ${nowTimestamp}`)
+        const digest = hmac.digest('base64');
+        const signature = `keyId="${this.accessToken}",algorithm="hmac-sha256",signature="${digest}",headers="date"`;
 
-        const hmac = createHmac('sha256', this.headerSecret);
-        hmac.update(signatureBaseString);
-        const signature = hmac.digest('base64');
-
-        const authorization = `keyId="${this.accessToken}",algorithm="hmac-sha256",signature="${signature}"`;
-
-        return authorization;
+        return signature;
     }
 }

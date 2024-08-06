@@ -5,5 +5,5 @@
 3. Run `npm run watch`
 4. Run `npm start`
 5. Navigate to http://localhost:3000/login
-6. Login to Narmi Demo1 as `testuser`
+6. Login to Narmi Demo1 as `eddie`
 7. Use index page to view available APIs

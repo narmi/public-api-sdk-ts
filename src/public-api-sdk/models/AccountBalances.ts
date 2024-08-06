@@ -23,30 +23,30 @@ import {
 /**
  * 
  * @export
- * @interface AccountBalancesDocResponse
+ * @interface AccountBalances
  */
-export interface AccountBalancesDocResponse {
+export interface AccountBalances {
     /**
      * A list of account balances for each account.
      * @type {Array<AccountBalance>}
-     * @memberof AccountBalancesDocResponse
+     * @memberof AccountBalances
      */
     accountBalances: Array<AccountBalance>;
 }
 
 /**
- * Check if a given object implements the AccountBalancesDocResponse interface.
+ * Check if a given object implements the AccountBalances interface.
  */
-export function instanceOfAccountBalancesDocResponse(value: object): value is AccountBalancesDocResponse {
+export function instanceOfAccountBalances(value: object): value is AccountBalances {
     if (!('accountBalances' in value) || value['accountBalances'] === undefined) return false;
     return true;
 }
 
-export function AccountBalancesDocResponseFromJSON(json: any): AccountBalancesDocResponse {
-    return AccountBalancesDocResponseFromJSONTyped(json, false);
+export function AccountBalancesFromJSON(json: any): AccountBalances {
+    return AccountBalancesFromJSONTyped(json, false);
 }
 
-export function AccountBalancesDocResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): AccountBalancesDocResponse {
+export function AccountBalancesFromJSONTyped(json: any, ignoreDiscriminator: boolean): AccountBalances {
     if (json == null) {
         return json;
     }
@@ -56,7 +56,7 @@ export function AccountBalancesDocResponseFromJSONTyped(json: any, ignoreDiscrim
     };
 }
 
-export function AccountBalancesDocResponseToJSON(value?: AccountBalancesDocResponse | null): any {
+export function AccountBalancesToJSON(value?: AccountBalances | null): any {
     if (value == null) {
         return value;
     }

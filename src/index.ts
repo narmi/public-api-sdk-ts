@@ -1,5 +1,5 @@
 import express from 'express';
-import { AccountBalancesApi } from './public-api-sdk/index';
+import * as publicApiSDK from './public-api-sdk/index';
 import { Configuration, ResponseError } from './public-api-sdk/runtime';
 import { HeaderSignatureMiddleware } from './middleware';
 import { TARGET_APP, SCOPES, rootUrl, tokenUrl, authorizeUrl} from './constants';
@@ -32,18 +32,18 @@ function getConfiguration(accessToken: string, headerSecret: string): Configurat
 
 app.get('/', async (req: express.Request, res: express.Response) => {
   const cookies = parseCookies(req.headers.cookie);
-  res.send({"token": cookies.access_token, "secret": cookies.header_secret})
+  const APIS = Object.keys(publicApiSDK).filter((k) => k.endsWith("Api"))
+  res.send({"token": cookies.access_token, "secret": cookies.header_secret, "availableApis": APIS})
 })
-
 
 app.get('/login/', async (req: express.Request, res: express.Response) => {
   res.redirect(
     302,
     authorizeUrl +
       `?client_id=${TARGET_APP.clientId}&` +
-      `redirect_uri=${TARGET_APP.redirectUris}&` +
+      `redirect_uri=${TARGET_APP.redirectUri}&` +
       `response_type=code&` +
-      `scope=${SCOPES}&`
+      `scope=${SCOPES}`
     );
 });
 
@@ -58,50 +58,47 @@ app.get('/receive-authorization-code', async (req: express.Request, res: express
         client_secret: TARGET_APP.unencodedClientSecret,
         code: req.query.code,
         grant_type: "authorization_code",
-        redirect_uri: TARGET_APP.redirectUris,
+        redirect_uri: TARGET_APP.redirectUri,
     })
   });
 
   if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
+    res.send(response)
+    throw new Error(`Error: ${response.statusText}`);
   }
   
   const responseData = await response.json();
+
   res.cookie('access_token', responseData.access_token, {
     maxAge: 60 * 60 * 1000, // 1 hour, short-lived
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production', // secure in production
     sameSite: 'lax'
   });
 
   res.cookie('refresh_token', responseData.refresh_token, {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week, long-lived
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax'
   });
 
   res.cookie('header_secret', responseData.secret, {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week, long-lived
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax'
   });
 
   res.cookie('id_token', responseData.id_token, {
       maxAge: 60 * 60 * 1000, // 1 hour, short-lived
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax'
   });
 
   res.redirect('/');
 })
 
-
 app.get('/account_balances', async (req: express.Request, res: express.Response) => {
   const cookies = parseCookies(req.headers.cookie);
-  let api = new AccountBalancesApi(getConfiguration(cookies.access_token, cookies.header_secret))
+  let api = new publicApiSDK["AccountBalancesApi"](getConfiguration(cookies.access_token, cookies.header_secret))
   try {
     let response = await api.accountBalancesList()
     res.send(response);

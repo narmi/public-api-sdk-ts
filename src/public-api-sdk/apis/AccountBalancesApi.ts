@@ -15,21 +15,26 @@
 
 import * as runtime from '../runtime';
 import type {
-  AccountBalanceDocResponse,
-  AccountBalancesDocResponse,
+  AccountBalance,
+  AccountBalances,
   NotFoundError,
 } from '../models/index';
 import {
-    AccountBalanceDocResponseFromJSON,
-    AccountBalanceDocResponseToJSON,
-    AccountBalancesDocResponseFromJSON,
-    AccountBalancesDocResponseToJSON,
+    AccountBalanceFromJSON,
+    AccountBalanceToJSON,
+    AccountBalancesFromJSON,
+    AccountBalancesToJSON,
     NotFoundErrorFromJSON,
     NotFoundErrorToJSON,
 } from '../models/index';
 
+export interface AccountBalancesListRequest {
+    format?: AccountBalancesListFormatEnum;
+}
+
 export interface AccountBalancesRetrieveRequest {
     uuid: string;
+    format?: AccountBalancesRetrieveFormatEnum;
 }
 
 /**
@@ -41,8 +46,12 @@ export class AccountBalancesApi extends runtime.BaseAPI {
      * List the authenticated user\'s account balances for each account. A caller may use this endpoint in order to update the balance totals for an account who\'s data has already been fetched.   A full set of account data can be queried via <a href=\"#tag/accounts\">accounts section</a>.
      * List account balances
      */
-    async accountBalancesListRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AccountBalancesDocResponse>> {
+    async accountBalancesListRaw(requestParameters: AccountBalancesListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AccountBalances>> {
         const queryParameters: any = {};
+
+        if (requestParameters['format'] != null) {
+            queryParameters['format'] = requestParameters['format'];
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -61,15 +70,15 @@ export class AccountBalancesApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AccountBalancesDocResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AccountBalancesFromJSON(jsonValue));
     }
 
     /**
      * List the authenticated user\'s account balances for each account. A caller may use this endpoint in order to update the balance totals for an account who\'s data has already been fetched.   A full set of account data can be queried via <a href=\"#tag/accounts\">accounts section</a>.
      * List account balances
      */
-    async accountBalancesList(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AccountBalancesDocResponse> {
-        const response = await this.accountBalancesListRaw(initOverrides);
+    async accountBalancesList(requestParameters: AccountBalancesListRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AccountBalances> {
+        const response = await this.accountBalancesListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -77,7 +86,7 @@ export class AccountBalancesApi extends runtime.BaseAPI {
      * Fetch the balances for an account as specified by its uuid. A caller may use this endpoint in order to update the balance totals for an account who\'s data has already been fetched.   A full set of account data can be queried via <a href=\"#tag/accounts\">accounts section</a>.
      * Retrieve account balances for an account
      */
-    async accountBalancesRetrieveRaw(requestParameters: AccountBalancesRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AccountBalanceDocResponse>> {
+    async accountBalancesRetrieveRaw(requestParameters: AccountBalancesRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AccountBalance>> {
         if (requestParameters['uuid'] == null) {
             throw new runtime.RequiredError(
                 'uuid',
@@ -86,6 +95,10 @@ export class AccountBalancesApi extends runtime.BaseAPI {
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters['format'] != null) {
+            queryParameters['format'] = requestParameters['format'];
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -104,16 +117,33 @@ export class AccountBalancesApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AccountBalanceDocResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AccountBalanceFromJSON(jsonValue));
     }
 
     /**
      * Fetch the balances for an account as specified by its uuid. A caller may use this endpoint in order to update the balance totals for an account who\'s data has already been fetched.   A full set of account data can be queried via <a href=\"#tag/accounts\">accounts section</a>.
      * Retrieve account balances for an account
      */
-    async accountBalancesRetrieve(requestParameters: AccountBalancesRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AccountBalanceDocResponse> {
+    async accountBalancesRetrieve(requestParameters: AccountBalancesRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AccountBalance> {
         const response = await this.accountBalancesRetrieveRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
 }
+
+/**
+ * @export
+ */
+export const AccountBalancesListFormatEnum = {
+    Html: 'html',
+    Json: 'json'
+} as const;
+export type AccountBalancesListFormatEnum = typeof AccountBalancesListFormatEnum[keyof typeof AccountBalancesListFormatEnum];
+/**
+ * @export
+ */
+export const AccountBalancesRetrieveFormatEnum = {
+    Html: 'html',
+    Json: 'json'
+} as const;
+export type AccountBalancesRetrieveFormatEnum = typeof AccountBalancesRetrieveFormatEnum[keyof typeof AccountBalancesRetrieveFormatEnum];

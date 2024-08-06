@@ -6,7 +6,9 @@
     "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
     "watch": "tsc --watch",
-    "start": "nodemon dist/index.js"
+    "start": "nodemon dist/index.js",
+    "download-schema": "curl -o ./narmi-public-api-schema.yaml https://online.demo1.narmi.dev/v1/schema",
+    "generate-sdk": "openapi-generator-cli generate -i ./narmi-public-api-schema.yaml -g typescript-fetch -o ./src/public-api-sdk --skip-validate-spec"
   },
   "keywords": [],
   "author": "",

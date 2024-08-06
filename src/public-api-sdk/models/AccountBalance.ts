@@ -24,43 +24,49 @@ export interface AccountBalance {
      * @type {string}
      * @memberof AccountBalance
      */
-    readonly id?: string;
+    readonly id: string;
     /**
      * UUID to the associated account.
      * @type {string}
      * @memberof AccountBalance
      */
-    readonly accountId?: string;
+    readonly accountId: string;
     /**
      * The balance to be presented to the customer. Set to the available balance for non CD deposit accounts, and ledger balance otherwise.
      * @type {number}
      * @memberof AccountBalance
      */
-    readonly primary?: number;
+    readonly primary: number;
     /**
      * The funds immediately available to use, including any pending transactions or temporary holds on the account.
      * @type {number}
      * @memberof AccountBalance
      */
-    readonly available?: number;
+    readonly available: number;
     /**
      * The total amount of funds in the account not including temporary holds or pending transactions.
      * @type {number}
      * @memberof AccountBalance
      */
-    readonly ledger?: number;
+    readonly ledger: number;
     /**
      * Date when the account was last updated.
      * @type {Date}
      * @memberof AccountBalance
      */
-    readonly updatedAt?: Date;
+    readonly updatedAt: Date;
 }
 
 /**
  * Check if a given object implements the AccountBalance interface.
  */
 export function instanceOfAccountBalance(value: object): value is AccountBalance {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('accountId' in value) || value['accountId'] === undefined) return false;
+    if (!('primary' in value) || value['primary'] === undefined) return false;
+    if (!('available' in value) || value['available'] === undefined) return false;
+    if (!('ledger' in value) || value['ledger'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     return true;
 }
 
@@ -74,12 +80,12 @@ export function AccountBalanceFromJSONTyped(json: any, ignoreDiscriminator: bool
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'accountId': json['account_id'] == null ? undefined : json['account_id'],
-        'primary': json['primary'] == null ? undefined : json['primary'],
-        'available': json['available'] == null ? undefined : json['available'],
-        'ledger': json['ledger'] == null ? undefined : json['ledger'],
-        'updatedAt': json['updated_at'] == null ? undefined : (new Date(json['updated_at'])),
+        'id': json['id'],
+        'accountId': json['account_id'],
+        'primary': json['primary'],
+        'available': json['available'],
+        'ledger': json['ledger'],
+        'updatedAt': (new Date(json['updated_at'])),
     };
 }
 
