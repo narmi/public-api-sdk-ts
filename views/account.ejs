@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        h1, h2 {
+            margin: 0 0 20px 0;
+        }
+        .link {
+            display: block;
+            margin: 20px 0;
+            font-size: 16px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<a href="/accounts/" class="button">Back to Summary</a>
+<body>
+    <h1>Account Details</h1>
+
+    <h2><%= account.name %></h2>
+    <table>
+        <tr>
+            <th>Attribute</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>Nickname</td>
+            <td><%= account.nickname %></td>
+        </tr>
+        <tr>
+            <td>ID</td>
+            <td><%= account.id %></td>
+        </tr>
+        <tr>
+            <td>Number</td>
+            <td><%= account.number %></td>
+        </tr>
+        <tr>
+            <td>Type</td>
+            <td><%= account.type %></td>
+        </tr>
+        <tr>
+            <td>Product Type</td>
+            <td><%= account.product.type %></td>
+        </tr>
+        <tr>
+            <td>Product Description</td>
+            <td><%= account.product.description %></td>
+        </tr>
+        <tr>
+            <td>FI Name</td>
+            <td><%= account.fiName %></td>
+        </tr>
+        <tr>
+            <td>Verified</td>
+            <td><%= account.verified %></td>
+        </tr>
+        <tr>
+            <td>Routing</td>
+            <td><%= account.routing %></td>
+        </tr>
+        <tr>
+            <td>State</td>
+            <td><%= account.state %></td>
+        </tr>
+        <tr>
+            <td>Favorited</td>
+            <td><%= account.favorited %></td>
+        </tr>
+    </table>
+
+    <h2>Balances</h2>
+    <table>
+        <tr>
+            <th>Attribute</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>ID</td>
+            <td><%= account.balances.id %></td>
+        </tr>
+        <tr>
+            <td>Account ID</td>
+            <td><%= account.balances.accountId %></td>
+        </tr>
+        <tr>
+            <td>Primary</td>
+            <td><%= account.balances.primary %></td>
+        </tr>
+        <tr>
+            <td>Available</td>
+            <td><%= account.balances.available %></td>
+        </tr>
+        <tr>
+            <td>Ledger</td>
+            <td><%= account.balances.ledger %></td>
+        </tr>
+        <tr>
+            <td>Updated At</td>
+            <td><%= new Date(account.balances.updatedAt).toLocaleString() %></td>
+        </tr>
+    </table>
+
+    <h2>Users</h2>
+    <% if (account.users.length > 0) { %>
+        <table>
+            <tr>
+                <th>Attribute</th>
+                <th>Value</th>
+            </tr>
+            <% account.users.forEach((user) => { %>
+                <tr>
+                    <td>Email</td>
+                    <td><%= user.email %></td>
+                </tr>
+                <tr>
+                    <td>Username</td>
+                    <td><%= user.username %></td>
+                </tr>
+                <tr>
+                    <td>ID</td>
+                    <td><%= user.id %></td>
+                </tr>
+            <% }); %>
+        </table>
+    <% } %>
+
+    <h2>Metadata</h2>
+    <table>
+        <tr>
+            <th>Attribute</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>Open Date</td>
+            <td><%= account.metadata.open_date %></td>
+        </tr>
+        <tr>
+            <td>Dividend Due</td>
+            <td><%= account.metadata.dividend_due %></td>
+        </tr>
+        <tr>
+            <td>Dividend Rate</td>
+            <td><%= account.metadata.dividend_rate %></td>
+        </tr>
+        <tr>
+            <td>Last Dividend</td>
+            <td><%= account.metadata.last_dividend %></td>
+        </tr>
+        <tr>
+            <td>Maturity Date</td>
+            <td><%= account.metadata.maturity_date %></td>
+        </tr>
+        <tr>
+            <td>Minimum Balance</td>
+            <td><%= account.metadata.minimum_balance %></td>
+        </tr>
+        <tr>
+            <td>Dividend Last Year</td>
+            <td><%= account.metadata.dividend_last_year %></td>
+        </tr>
+        <tr>
+            <td>Dividend Year to Date</td>
+            <td><%= account.metadata.dividend_year_to_date %></td>
+        </tr>
+    </table>
+
+</body>
+</html>

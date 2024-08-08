@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h1>Narmi Public API</h1>
+    <a href="/accounts/">Accounts</a> <br>    
+    <a href="/balances/">Account Balances</a> <br>
+    <a href="/login/">Login</a> <br>
+    <br>
+    <br>
+    <% if (msg) { %>
+        <!-- HTML to display if the condition is true -->
+        <p><%= msg %></p>
+        <p>Access Token: <%= accessToken %></p>
+        <p>Secret: <%= secret %></p>
+    <% } %>
+    
+</body>
+</html>

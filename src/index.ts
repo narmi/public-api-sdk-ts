@@ -1,44 +1,27 @@
 import express from 'express';
-import * as publicApiSDK from './public-api-sdk/index';
-import { Configuration, ResponseError } from './public-api-sdk/runtime';
-import { HeaderSignatureMiddleware } from './middleware';
 import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+import * as publicApiSDK from './public-api-sdk/index';
+import * as utils from "./utils"
 
 dotenv.config();
 
-export const tokenUrl = process.env.ROOT_URL + "/v2/oauth/token/"
-export const authorizeUrl = process.env.ROOT_URL + "/v2/oauth/authorize"
+export const tokenUrl = process.env.AUTH_URL + "/v2/oauth/token/"
+export const authorizeUrl = process.env.AUTH_URL + "/v2/oauth/authorize/"
 export const SCOPES = "read write openid fdx:accountdetailed:read fdx:transactions:read"
 
 const app = express();
-const port = 3000;
-
-function parseCookies(cookieHeader: string | undefined) {
-  const cookies: { [key: string]: string } = {};
-  if (cookieHeader) {
-      cookieHeader.split(';').forEach(cookie => {
-          const [name, ...rest] = cookie.split('=');
-          const value = rest.join('=').trim();
-          if (name && value) {
-              cookies[name.trim()] = decodeURIComponent(value);
-          }
-      });
-  }
-  return cookies;
-};
-
-function getConfiguration(accessToken: string, headerSecret: string): Configuration {
-  return new Configuration({
-    basePath: process.env.ROOT_URL,
-    accessToken: accessToken,
-    middleware: [new HeaderSignatureMiddleware(accessToken, headerSecret)]
-  })
-}
+app.set("view engine", "ejs")
+app.use(bodyParser.urlencoded({extended:true})); 
 
 app.get('/', async (req: express.Request, res: express.Response) => {
-  const cookies = parseCookies(req.headers.cookie);
+  const cookies = utils.parseCookies(req.headers.cookie);
   const APIS = Object.keys(publicApiSDK).filter((k) => k.endsWith("Api"))
-  res.send({"token": cookies.access_token, "secret": cookies.header_secret, "availableApis": APIS})
+  if (!cookies.access_token || !cookies.header_secret) {
+    res.redirect("/login/")
+  } else {
+    res.render("index", {"msg": null})
+  }
 })
 
 app.get('/login/', async (req: express.Request, res: express.Response) => {
@@ -52,7 +35,7 @@ app.get('/login/', async (req: express.Request, res: express.Response) => {
     );
 });
 
-app.get('/receive-authorization-code', async (req: express.Request, res: express.Response) => {
+app.get('/receive-authorization-code/', async (req: express.Request, res: express.Response) => {
   const response = await fetch(tokenUrl, {
     method: 'POST',
     headers: {
@@ -73,7 +56,7 @@ app.get('/receive-authorization-code', async (req: express.Request, res: express
   }
   
   const responseData = await response.json();
-
+  // For dev, save to session cookie, in production, best to persist within application.
   res.cookie('access_token', responseData.access_token, {
     maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
     httpOnly: true,
@@ -97,29 +80,42 @@ app.get('/receive-authorization-code', async (req: express.Request, res: express
       httpOnly: true,
       sameSite: 'lax'
   });
-
-  res.redirect('/');
+  res.render("index", {"msg": "You are logged in!", "accessToken": responseData.access_token, "secret": responseData.secret})
 })
 
-app.get('/account_balances', async (req: express.Request, res: express.Response) => {
-  const cookies = parseCookies(req.headers.cookie);
-  let api = new publicApiSDK["AccountBalancesApi"](getConfiguration(cookies.access_token, cookies.header_secret))
+app.get('/balances/', async (req: express.Request, res: express.Response) => {
+  const cookies = utils.parseCookies(req.headers.cookie);
+  let api = new publicApiSDK.AccountBalancesApi(utils.getConfiguration(cookies.access_token, cookies.header_secret))
   try {
     let response = await api.accountBalancesList()
-    res.send(response);
+    res.render("account-balances", response)
   } catch(e) {
-    // https://developer.mozilla.org/en-US/docs/Web/API/Response
-    if (e instanceof ResponseError) {
-      res.status(e.response.status).send(await e.response.json());
-    } else if (e instanceof Error) {
-      res.status(424).send(e.message)
-    } else {
-      res.status(500).send("Unknown Error")
-    }
+    utils.handleError(e, res)
+  }
+});
 
+app.get('/accounts/:accountId/', async (req: express.Request, res: express.Response) => {
+  const cookies = utils.parseCookies(req.headers.cookie);
+  let api = new publicApiSDK.AccountsApi(utils.getConfiguration(cookies.access_token, cookies.header_secret))
+  try {
+    let response = await api.accountsRetrieve({"uuid": req.params.accountId})
+    res.render("account", response)
+  } catch(e) {
+    utils.handleError(e, res)
+  }
+});
+
+app.get('/accounts/', async (req: express.Request, res: express.Response) => {
+  const cookies = utils.parseCookies(req.headers.cookie);
+  let api = new publicApiSDK.AccountsApi(utils.getConfiguration(cookies.access_token, cookies.header_secret))
+  try {
+    let response = await api.accountsList()
+    res.render("accounts", response);
+  } catch(e) {
+    utils.handleError(e, res)
   }
 });
 
 app.listen(process.env.PORT, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+  console.log(`Server is running at http://localhost:${process.env.PORT}`);
 });

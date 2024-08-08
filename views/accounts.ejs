@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounts Summary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        h1 {
+            margin: 0 0 20px 0;
+        }
+        .link {
+            display: block;
+            margin: 20px 0;
+            font-size: 16px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Accounts Summary</h1>
+    <% if (accounts.length > 0) { %>
+        <% accounts.forEach((account) => { %>
+            <table>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td><%= account.name %></td>
+                </tr>
+                <tr>
+                    <td>Nickname</td>
+                    <td><%= account.nickname %></td>
+                </tr>
+                <tr>
+                    <td>ID</td>
+                    <td><%= account.id %></td>
+                </tr>
+                <tr>
+                    <td>Number</td>
+                    <td><%= account.number %></td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td><%= account.type %></td>
+                </tr>
+                <tr>
+                    <td>Product Type</td>
+                    <td><%= account.product.type %></td>
+                </tr>
+                <tr>
+                    <td>Product Description</td>
+                    <td><%= account.product.description %></td>
+                </tr>
+                <tr>
+                    <td>FI Name</td>
+                    <td><%= account.fiName %></td>
+                </tr>
+                <tr>
+                    <td>Verified</td>
+                    <td><%= account.verified %></td>
+                </tr>
+                <tr>
+                    <td>Routing</td>
+                    <td><%= account.routing %></td>
+                </tr>
+                <tr>
+                    <td>State</td>
+                    <td><%= account.state %></td>
+                </tr>
+                <tr>
+                    <td>Favorited</td>
+                    <td><%= account.favorited %></td>
+                </tr>
+            </table>
+
+            <!-- Link to balance page -->
+            <a class="link" href="/accounts/<%= account.id %>">View Account Details</a>
+        <% }); %>
+    <% } else { %>
+        <p>No account details available.</p>
+    <% } %>
+</body>
+</html>

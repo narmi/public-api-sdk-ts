@@ -1,19 +1,50 @@
 # Getting started 
+1. Setup .env file with CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, API_URL, PORT
+2. Run `npm run build; npm start`
+3. Navigate to http://localhost:3000/login
+4. Login to Narmi sandbox as `testuser`
+5. Use index page to view user account information.
 
-1. Run `npm run download-schema`
-2. Run `npm run generate-sdk`
-3. Run `npm run watch`
-4. Run `npm start`
-5. Navigate to http://localhost:3000/login
-6. Login to Narmi dev1 as `eddie`
-7. Use index page to view available APIs
+# Understanding How it Works
+
+The generated API creates a series of classes representing each *tag* of the documenation at https://online.sandbox.narmi.dev/v1/docs as an API. For instance, https://online.dev1.narmi.dev/v1/docs#tag/accounts becomes: 
+
+```typescript
+import * as publicApiSDK from './public-api-sdk/index';
+let apiClass = publicApiSDK.AccountsApi
+```
+
+Each API must be provided with a configuration object when instantiated for authentication purposes. A utility has been defined at `public-api-sdk/src/utils.ts` to make this easier:
+
+```typescript
+import * as utils from "./utils"
+let api = new publicApiSDK.AccountsApi(utils.getConfiguration(access_token, header_secret))
+```
+
+Each API method is defined to represent an operation id from the documentation, so https://online.dev1.narmi.dev/v1/docs#tag/accounts/operation/accounts_list becomes `accountsList`:
+
+```typescript
+let response = await api.accountsList()
+```
+
+Responses will be promises resolving to typed data structures, allowing typescript compatible linters to assist you with interacting with them. In the event of an error response, the SDK will throw an error instead of returning the unadultered response, so it's best to try/catch:
+```typescript
+  try {
+    let response = await api.accountsRetrieve({"uuid": req.params.accountId})
+    res.render("account", response)
+  } catch(e) {
+    utils.handleError(e, res)
+  }
+```
+
+These examples are taken from `public-api-sdk/index.ts`, which powers the introductory application. 
 
 ## API Rubric
 | Operation ID                               | SDK Verified | Schemathesis Verified | Notes/Considerations |
 |--------------------------------------------|--------------|-----------------------|----------------------|
-| account_balances_list                      | 🌕           | 🟢                    |                      |
+| account_balances_list                      | 🟢           | 🟢                    |                      |
 | account_balances_retrieve                  | 🌕           | 🌕                    |                      |
-| accounts_list                              | 🌕           | 🟢                    |                      |
+| accounts_list                              | 🟢           | 🟢                    |                      |
 | accounts_create                            | 🌕           | 🌕                    |                      |
 | user_transactions_list                     | 🌕           | 🌕                    |                      |
 | accounts_documents_retrieve                | 🌕           | 🌕                    |                      |
@@ -21,7 +52,7 @@
 | accounts_stops_retrieve                    | 🌕           | 🌕                    |                      |
 | accounts_stops_create                      | 🌕           | 🌕                    |                      |
 | accounts_transactions_download_retrieve    | 🌕           | 🌕                    |                      |
-| accounts_retrieve                          | 🌕           | 🟢                    |                      |
+| accounts_retrieve                          | 🟢           | 🟢                    |                      |
 | accounts_update                            | 🌕           | 🌕                    |                      |
 | accounts_destroy                           | 🌕           | 🌕                    |                      |
 | account_verify                             | 🌕           | 🌕                    |                      |
