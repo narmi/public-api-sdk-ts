@@ -7,7 +7,7 @@
 
 # Understanding How it Works
 
-The generated API creates a series of classes representing each *tag* of the documenation at https://online.sandbox.narmi.dev/v1/docs as an API. For instance, https://online.dev1.narmi.dev/v1/docs#tag/accounts becomes: 
+The generated API creates a series of classes representing each *tag* of the documenation at https://online.sandbox.narmi.dev/v1/docs as an API. For instance, https://online.sandbox.narmi.dev/v1/docs#tag/accounts becomes: 
 
 ```typescript
 import * as publicApiSDK from './public-api-sdk/index';
@@ -21,7 +21,7 @@ import * as utils from "./utils"
 let api = new publicApiSDK.AccountsApi(utils.getConfiguration(access_token, header_secret))
 ```
 
-Each API method is defined to represent an operation id from the documentation, so https://online.dev1.narmi.dev/v1/docs#tag/accounts/operation/accounts_list becomes `accountsList`:
+Each API method is defined to represent an operation id from the documentation, so https://online.sandbox.narmi.dev/v1/docs#tag/accounts/operation/accounts_list becomes `accountsList`:
 
 ```typescript
 let response = await api.accountsList()
