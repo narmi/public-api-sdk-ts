@@ -7,11 +7,12 @@
     "build": "tsc",
     "watch": "tsc --watch",
     "start": "nodemon dist/index.js",
-    "download-schema": "curl -o ./narmi-public-api-schema.yaml https://online.demo1.narmi.dev/v1/schema",
-    "generate-sdk": "openapi-generator-cli generate -i ./narmi-public-api-schema.yaml -g typescript-fetch -o ./src/public-api-sdk --skip-validate-spec"
+    "download-schema": "curl -o ./narmi-public-api-schema.yaml https://online.sandbox.narmi.dev",
+    "generate-sdk": "openapi-generator-cli generate -i ./narmi-public-api-schema.yaml -g typescript-fetch -o ./src/public-api-sdk --skip-validate-spec",
+    "remove-sdk": "rm -rf ./src/public-api-sdk"
   },
   "keywords": [],
-  "author": "",
+  "author": "Narmi",
   "license": "ISC",
   "description": "",
   "dependencies": {
@@ -22,6 +23,7 @@
     "express": "^4.19.2"
   },
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.13.4",
     "@types/express": "^4.17.21",
     "@types/node": "^22.0.1",
     "nodemon": "^3.1.4",

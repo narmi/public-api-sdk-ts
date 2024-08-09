@@ -1,0 +1,38 @@
+name: Generate SDK and commit
+
+on:
+  workflow_dispatch:
+
+jobs:
+  insert-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: npm install --include=dev
+
+    - name: Run command to insert files
+      run: |
+        npm run download-schema
+        npm run remove-sdk
+        npm run generate-sdk
+
+    - name: Commit changes
+      run: |
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git add src/public-api-sdk
+        git commit -am "Build triggered by ${{ github.actor }} on $(date +"%Y-%m-%d %H:%M:%S")"
+
+    - name: Push changes
+      uses: ad-m/github-push-action@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
