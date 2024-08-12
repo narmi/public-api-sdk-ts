@@ -15,27 +15,27 @@
 
 import * as runtime from '../runtime';
 import type {
+  AccountsDocumentsRetrieve404Response,
   BillPayDestroy,
-  CardsList403Response,
   InvalidRequestError,
   PaginatedBillPaymentList,
-  WritePayment,
+  WritePaymentRequest,
 } from '../models/index';
 import {
+    AccountsDocumentsRetrieve404ResponseFromJSON,
+    AccountsDocumentsRetrieve404ResponseToJSON,
     BillPayDestroyFromJSON,
     BillPayDestroyToJSON,
-    CardsList403ResponseFromJSON,
-    CardsList403ResponseToJSON,
     InvalidRequestErrorFromJSON,
     InvalidRequestErrorToJSON,
     PaginatedBillPaymentListFromJSON,
     PaginatedBillPaymentListToJSON,
-    WritePaymentFromJSON,
-    WritePaymentToJSON,
+    WritePaymentRequestFromJSON,
+    WritePaymentRequestToJSON,
 } from '../models/index';
 
 export interface PaymentsCreateRequest {
-    writePayment: Omit<WritePayment, 'id'|'state'|'from_account_id'>;
+    writePaymentRequest: WritePaymentRequest;
     format?: PaymentsCreateFormatEnum;
 }
 
@@ -61,10 +61,10 @@ export class PaymentsApi extends runtime.BaseAPI {
      * Create a payment
      */
     async paymentsCreateRaw(requestParameters: PaymentsCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>> {
-        if (requestParameters['writePayment'] == null) {
+        if (requestParameters['writePaymentRequest'] == null) {
             throw new runtime.RequiredError(
-                'writePayment',
-                'Required parameter "writePayment" was null or undefined when calling paymentsCreate().'
+                'writePaymentRequest',
+                'Required parameter "writePaymentRequest" was null or undefined when calling paymentsCreate().'
             );
         }
 
@@ -91,7 +91,7 @@ export class PaymentsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: WritePaymentToJSON(requestParameters['writePayment']),
+            body: WritePaymentRequestToJSON(requestParameters['writePaymentRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);

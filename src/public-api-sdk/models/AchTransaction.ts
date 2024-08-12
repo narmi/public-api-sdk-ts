@@ -31,7 +31,7 @@ export interface AchTransaction {
      * @type {string}
      * @memberof AchTransaction
      */
-    readonly id: string;
+    readonly id?: string;
     /**
      * Indicates the status of the transfer, for instance, if it's been processed or is pending.
      * 
@@ -45,13 +45,13 @@ export interface AchTransaction {
      * @type {AchTransactionStateEnum}
      * @memberof AchTransaction
      */
-    readonly state: AchTransactionStateEnum;
+    readonly state?: AchTransactionStateEnum;
     /**
      * 
      * @type {Date}
      * @memberof AchTransaction
      */
-    readonly createdAt: Date;
+    readonly createdAt?: Date;
     /**
      * A field that returns the original value in the currency's smallest unit (e.g. cents).
      * @type {number}
@@ -71,50 +71,26 @@ export interface AchTransaction {
      */
     toAccountId: string;
     /**
-     * Whether or not the terms of the transfer were agreed to.
-     * @type {boolean}
+     * 
+     * @type {Date}
      * @memberof AchTransaction
      */
-    agreement: boolean;
-    /**
-     * Device 'fingerprint' from alloy/iovation.
-     * @type {string}
-     * @memberof AchTransaction
-     */
-    deviceId?: string;
+    readonly estimatedProcessDate?: Date;
     /**
      * 
      * @type {Date}
      * @memberof AchTransaction
      */
-    readonly estimatedProcessDate: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof AchTransaction
-     */
-    readonly estimatedArrivalDate: Date;
-    /**
-     * Free-form description of transfer.
-     * @type {string}
-     * @memberof AchTransaction
-     */
-    memo?: string;
+    readonly estimatedArrivalDate?: Date;
 }
 
 /**
  * Check if a given object implements the AchTransaction interface.
  */
 export function instanceOfAchTransaction(value: object): value is AchTransaction {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('state' in value) || value['state'] === undefined) return false;
-    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
     if (!('amount' in value) || value['amount'] === undefined) return false;
     if (!('fromAccountId' in value) || value['fromAccountId'] === undefined) return false;
     if (!('toAccountId' in value) || value['toAccountId'] === undefined) return false;
-    if (!('agreement' in value) || value['agreement'] === undefined) return false;
-    if (!('estimatedProcessDate' in value) || value['estimatedProcessDate'] === undefined) return false;
-    if (!('estimatedArrivalDate' in value) || value['estimatedArrivalDate'] === undefined) return false;
     return true;
 }
 
@@ -128,17 +104,14 @@ export function AchTransactionFromJSONTyped(json: any, ignoreDiscriminator: bool
     }
     return {
         
-        'id': json['id'],
-        'state': AchTransactionStateEnumFromJSON(json['state']),
-        'createdAt': (new Date(json['created_at'])),
+        'id': json['id'] == null ? undefined : json['id'],
+        'state': json['state'] == null ? undefined : AchTransactionStateEnumFromJSON(json['state']),
+        'createdAt': json['created_at'] == null ? undefined : (new Date(json['created_at'])),
         'amount': json['amount'],
         'fromAccountId': json['from_account_id'],
         'toAccountId': json['to_account_id'],
-        'agreement': json['agreement'],
-        'deviceId': json['device_id'] == null ? undefined : json['device_id'],
-        'estimatedProcessDate': (new Date(json['estimated_process_date'])),
-        'estimatedArrivalDate': (new Date(json['estimated_arrival_date'])),
-        'memo': json['memo'] == null ? undefined : json['memo'],
+        'estimatedProcessDate': json['estimated_process_date'] == null ? undefined : (new Date(json['estimated_process_date'])),
+        'estimatedArrivalDate': json['estimated_arrival_date'] == null ? undefined : (new Date(json['estimated_arrival_date'])),
     };
 }
 
@@ -151,9 +124,6 @@ export function AchTransactionToJSON(value?: Omit<AchTransaction, 'id'|'state'|'
         'amount': value['amount'],
         'from_account_id': value['fromAccountId'],
         'to_account_id': value['toAccountId'],
-        'agreement': value['agreement'],
-        'device_id': value['deviceId'],
-        'memo': value['memo'],
     };
 }
 

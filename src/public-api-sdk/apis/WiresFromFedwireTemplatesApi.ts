@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   GeneralError,
   WireTransaction,
+  WireTransactionRequest,
   WiresFedwireTemplatesCreate409Response,
 } from '../models/index';
 import {
@@ -24,12 +25,14 @@ import {
     GeneralErrorToJSON,
     WireTransactionFromJSON,
     WireTransactionToJSON,
+    WireTransactionRequestFromJSON,
+    WireTransactionRequestToJSON,
     WiresFedwireTemplatesCreate409ResponseFromJSON,
     WiresFedwireTemplatesCreate409ResponseToJSON,
 } from '../models/index';
 
 export interface WiresFedwireTemplatesCreateRequest {
-    wireTransaction: Omit<WireTransaction, 'id'|'created_at'|'processed_at'|'from_account_display'|'display_state'|'to_account_institution_name'|'from_account'|'to_account_number'|'to_account_routing_number'|'beneficiary_name'|'beneficiary_address_1'|'beneficiary_address_2'|'beneficiary_address_3'|'memo_1'|'memo_2'|'memo_3'|'memo_4'|'template_name'|'state'>;
+    wireTransactionRequest: WireTransactionRequest;
     format?: WiresFedwireTemplatesCreateFormatEnum;
 }
 
@@ -43,10 +46,10 @@ export class WiresFromFedwireTemplatesApi extends runtime.BaseAPI {
      * Send a wire using a wire template
      */
     async wiresFedwireTemplatesCreateRaw(requestParameters: WiresFedwireTemplatesCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WireTransaction>> {
-        if (requestParameters['wireTransaction'] == null) {
+        if (requestParameters['wireTransactionRequest'] == null) {
             throw new runtime.RequiredError(
-                'wireTransaction',
-                'Required parameter "wireTransaction" was null or undefined when calling wiresFedwireTemplatesCreate().'
+                'wireTransactionRequest',
+                'Required parameter "wireTransactionRequest" was null or undefined when calling wiresFedwireTemplatesCreate().'
             );
         }
 
@@ -60,15 +63,12 @@ export class WiresFromFedwireTemplatesApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
-        }
         const response = await this.request({
             path: `/v1/wires/fedwire_templates/`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: WireTransactionToJSON(requestParameters['wireTransaction']),
+            body: WireTransactionRequestToJSON(requestParameters['wireTransactionRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => WireTransactionFromJSON(jsonValue));

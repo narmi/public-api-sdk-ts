@@ -24,14 +24,13 @@ export interface Check {
      * @type {string}
      * @memberof Check
      */
-    readonly number: string;
+    readonly number?: string;
 }
 
 /**
  * Check if a given object implements the Check interface.
  */
 export function instanceOfCheck(value: object): value is Check {
-    if (!('number' in value) || value['number'] === undefined) return false;
     return true;
 }
 
@@ -45,7 +44,7 @@ export function CheckFromJSONTyped(json: any, ignoreDiscriminator: boolean): Che
     }
     return {
         
-        'number': json['number'],
+        'number': json['number'] == null ? undefined : json['number'],
     };
 }
 

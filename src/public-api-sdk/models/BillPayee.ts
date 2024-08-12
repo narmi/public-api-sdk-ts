@@ -43,13 +43,13 @@ export interface BillPayee {
      * @type {string}
      * @memberof BillPayee
      */
-    readonly id: string;
+    readonly id?: string;
     /**
      * 
      * @type {string}
      * @memberof BillPayee
      */
-    readonly maskedAccountNumber: string;
+    readonly maskedAccountNumber?: string;
     /**
      * Whether the payment recipient is a person or business.
      * @type {Type5d6Enum}
@@ -110,8 +110,6 @@ export interface BillPayee {
  * Check if a given object implements the BillPayee interface.
  */
 export function instanceOfBillPayee(value: object): value is BillPayee {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('maskedAccountNumber' in value) || value['maskedAccountNumber'] === undefined) return false;
     if (!('type' in value) || value['type'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
     return true;
@@ -127,8 +125,8 @@ export function BillPayeeFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     }
     return {
         
-        'id': json['id'],
-        'maskedAccountNumber': json['masked_account_number'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'maskedAccountNumber': json['masked_account_number'] == null ? undefined : json['masked_account_number'],
         'type': Type5d6EnumFromJSON(json['type']),
         'name': json['name'],
         'description': json['description'] == null ? undefined : json['description'],

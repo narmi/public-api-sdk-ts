@@ -20,25 +20,23 @@ import { mapValues } from '../runtime';
  */
 export interface CheckImage {
     /**
-     * 
+     * A base 64 encoded image of the front of the check
      * @type {string}
      * @memberof CheckImage
      */
-    readonly front: string;
+    readonly front?: string;
     /**
-     * 
+     * A base 64 encoded image of the back of the check
      * @type {string}
      * @memberof CheckImage
      */
-    readonly back: string;
+    readonly back?: string;
 }
 
 /**
  * Check if a given object implements the CheckImage interface.
  */
 export function instanceOfCheckImage(value: object): value is CheckImage {
-    if (!('front' in value) || value['front'] === undefined) return false;
-    if (!('back' in value) || value['back'] === undefined) return false;
     return true;
 }
 
@@ -52,8 +50,8 @@ export function CheckImageFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     }
     return {
         
-        'front': json['front'],
-        'back': json['back'],
+        'front': json['front'] == null ? undefined : json['front'],
+        'back': json['back'] == null ? undefined : json['back'],
     };
 }
 

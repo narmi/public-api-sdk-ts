@@ -24,19 +24,19 @@ export interface BillDeliveryOption {
      * @type {string}
      * @memberof BillDeliveryOption
      */
-    readonly description: string;
+    readonly description?: string;
     /**
      * A field that returns the original value in the currency's smallest unit (e.g. cents).
      * @type {number}
      * @memberof BillDeliveryOption
      */
-    readonly fee: number;
+    readonly fee?: number;
     /**
      * 
      * @type {number}
      * @memberof BillDeliveryOption
      */
-    readonly transitDays: number;
+    readonly transitDays?: number;
     /**
      * 
      * @type {Date}
@@ -49,9 +49,6 @@ export interface BillDeliveryOption {
  * Check if a given object implements the BillDeliveryOption interface.
  */
 export function instanceOfBillDeliveryOption(value: object): value is BillDeliveryOption {
-    if (!('description' in value) || value['description'] === undefined) return false;
-    if (!('fee' in value) || value['fee'] === undefined) return false;
-    if (!('transitDays' in value) || value['transitDays'] === undefined) return false;
     if (!('date' in value) || value['date'] === undefined) return false;
     return true;
 }
@@ -66,9 +63,9 @@ export function BillDeliveryOptionFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'description': json['description'],
-        'fee': json['fee'],
-        'transitDays': json['transit_days'],
+        'description': json['description'] == null ? undefined : json['description'],
+        'fee': json['fee'] == null ? undefined : json['fee'],
+        'transitDays': json['transit_days'] == null ? undefined : json['transit_days'],
         'date': (new Date(json['date'])),
     };
 }

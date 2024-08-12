@@ -31,7 +31,7 @@ export interface WireRecipient {
      * @type {string}
      * @memberof WireRecipient
      */
-    readonly id: string;
+    readonly id?: string;
     /**
      * 
      * @type {string}
@@ -61,19 +61,17 @@ export interface WireRecipient {
      * @type {string}
      * @memberof WireRecipient
      */
-    readonly destinationInstitutionName: string;
+    readonly destinationInstitutionName?: string;
 }
 
 /**
  * Check if a given object implements the WireRecipient interface.
  */
 export function instanceOfWireRecipient(value: object): value is WireRecipient {
-    if (!('id' in value) || value['id'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
     if (!('routingNumber' in value) || value['routingNumber'] === undefined) return false;
     if (!('accountNumber' in value) || value['accountNumber'] === undefined) return false;
     if (!('address' in value) || value['address'] === undefined) return false;
-    if (!('destinationInstitutionName' in value) || value['destinationInstitutionName'] === undefined) return false;
     return true;
 }
 
@@ -87,12 +85,12 @@ export function WireRecipientFromJSONTyped(json: any, ignoreDiscriminator: boole
     }
     return {
         
-        'id': json['id'],
+        'id': json['id'] == null ? undefined : json['id'],
         'name': json['name'],
         'routingNumber': json['routing_number'],
         'accountNumber': json['account_number'],
         'address': WireRecipientAddressFromJSON(json['address']),
-        'destinationInstitutionName': json['destination_institution_name'],
+        'destinationInstitutionName': json['destination_institution_name'] == null ? undefined : json['destination_institution_name'],
     };
 }
 

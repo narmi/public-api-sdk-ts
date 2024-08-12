@@ -19,12 +19,6 @@ import {
     DeviceFromJSONTyped,
     DeviceToJSON,
 } from './Device';
-import type { EnrollmentUserCategoryEnum } from './EnrollmentUserCategoryEnum';
-import {
-    EnrollmentUserCategoryEnumFromJSON,
-    EnrollmentUserCategoryEnumFromJSONTyped,
-    EnrollmentUserCategoryEnumToJSON,
-} from './EnrollmentUserCategoryEnum';
 import type { Profile } from './Profile';
 import {
     ProfileFromJSON,
@@ -40,60 +34,22 @@ import {
 export interface Enrollment {
     /**
      * 
-     * @type {EnrollmentUserCategoryEnum}
-     * @memberof Enrollment
-     */
-    userCategory?: EnrollmentUserCategoryEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof Enrollment
-     */
-    primaryAccountNumber?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Enrollment
-     */
-    dob?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof Enrollment
-     */
-    ssn?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Enrollment
-     */
-    ein?: string;
-    /**
-     * If user is pre-validated via Link Service, supply encoded payload instead of other fields.
-     * @type {string}
-     * @memberof Enrollment
-     */
-    payload?: string;
-    /**
-     * 
      * @type {Profile}
      * @memberof Enrollment
      */
-    readonly user: Profile;
+    readonly user?: Profile;
     /**
      * 
      * @type {Array<Device>}
      * @memberof Enrollment
      */
-    readonly devices: Array<Device>;
+    readonly devices?: Array<Device>;
 }
 
 /**
  * Check if a given object implements the Enrollment interface.
  */
 export function instanceOfEnrollment(value: object): value is Enrollment {
-    if (!('user' in value) || value['user'] === undefined) return false;
-    if (!('devices' in value) || value['devices'] === undefined) return false;
     return true;
 }
 
@@ -107,14 +63,8 @@ export function EnrollmentFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     }
     return {
         
-        'userCategory': json['user_category'] == null ? undefined : EnrollmentUserCategoryEnumFromJSON(json['user_category']),
-        'primaryAccountNumber': json['primary_account_number'] == null ? undefined : json['primary_account_number'],
-        'dob': json['dob'] == null ? undefined : (new Date(json['dob'])),
-        'ssn': json['ssn'] == null ? undefined : json['ssn'],
-        'ein': json['ein'] == null ? undefined : json['ein'],
-        'payload': json['payload'] == null ? undefined : json['payload'],
-        'user': ProfileFromJSON(json['user']),
-        'devices': ((json['devices'] as Array<any>).map(DeviceFromJSON)),
+        'user': json['user'] == null ? undefined : ProfileFromJSON(json['user']),
+        'devices': json['devices'] == null ? undefined : ((json['devices'] as Array<any>).map(DeviceFromJSON)),
     };
 }
 
@@ -124,12 +74,6 @@ export function EnrollmentToJSON(value?: Omit<Enrollment, 'user'|'devices'> | nu
     }
     return {
         
-        'user_category': EnrollmentUserCategoryEnumToJSON(value['userCategory']),
-        'primary_account_number': value['primaryAccountNumber'],
-        'dob': value['dob'] == null ? undefined : ((value['dob']).toISOString().substring(0,10)),
-        'ssn': value['ssn'],
-        'ein': value['ein'],
-        'payload': value['payload'],
     };
 }
 

@@ -24,14 +24,13 @@ export interface BillPayDestroy {
      * @type {string}
      * @memberof BillPayDestroy
      */
-    readonly deleted: string;
+    readonly deleted?: string;
 }
 
 /**
  * Check if a given object implements the BillPayDestroy interface.
  */
 export function instanceOfBillPayDestroy(value: object): value is BillPayDestroy {
-    if (!('deleted' in value) || value['deleted'] === undefined) return false;
     return true;
 }
 
@@ -45,7 +44,7 @@ export function BillPayDestroyFromJSONTyped(json: any, ignoreDiscriminator: bool
     }
     return {
         
-        'deleted': json['deleted'],
+        'deleted': json['deleted'] == null ? undefined : json['deleted'],
     };
 }
 

@@ -24,28 +24,25 @@ export interface Device {
      * @type {string}
      * @memberof Device
      */
-    readonly id: string;
+    readonly id?: string;
     /**
      * 
      * @type {string}
      * @memberof Device
      */
-    readonly numberType: string;
+    readonly numberType?: string;
     /**
      * 
      * @type {string}
      * @memberof Device
      */
-    readonly name: string;
+    readonly name?: string;
 }
 
 /**
  * Check if a given object implements the Device interface.
  */
 export function instanceOfDevice(value: object): value is Device {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('numberType' in value) || value['numberType'] === undefined) return false;
-    if (!('name' in value) || value['name'] === undefined) return false;
     return true;
 }
 
@@ -59,9 +56,9 @@ export function DeviceFromJSONTyped(json: any, ignoreDiscriminator: boolean): De
     }
     return {
         
-        'id': json['id'],
-        'numberType': json['number_type'],
-        'name': json['name'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'numberType': json['number_type'] == null ? undefined : json['number_type'],
+        'name': json['name'] == null ? undefined : json['name'],
     };
 }
 

@@ -15,20 +15,20 @@
 
 import * as runtime from '../runtime';
 import type {
-  AchTransaction,
-  CardsList403Response,
+  AccountsDocumentsRetrieve404Response,
+  AchTransactionRequest,
   NestedScheduledTransfer,
   PaginatedAchTransactionList,
   PaginatedScheduledTransferList,
   RetrieveAchTransaction,
-  ScheduledTransfer,
+  ScheduledTransferRequest,
   TransfersCreate422Response,
 } from '../models/index';
 import {
-    AchTransactionFromJSON,
-    AchTransactionToJSON,
-    CardsList403ResponseFromJSON,
-    CardsList403ResponseToJSON,
+    AccountsDocumentsRetrieve404ResponseFromJSON,
+    AccountsDocumentsRetrieve404ResponseToJSON,
+    AchTransactionRequestFromJSON,
+    AchTransactionRequestToJSON,
     NestedScheduledTransferFromJSON,
     NestedScheduledTransferToJSON,
     PaginatedAchTransactionListFromJSON,
@@ -37,8 +37,8 @@ import {
     PaginatedScheduledTransferListToJSON,
     RetrieveAchTransactionFromJSON,
     RetrieveAchTransactionToJSON,
-    ScheduledTransferFromJSON,
-    ScheduledTransferToJSON,
+    ScheduledTransferRequestFromJSON,
+    ScheduledTransferRequestToJSON,
     TransfersCreate422ResponseFromJSON,
     TransfersCreate422ResponseToJSON,
 } from '../models/index';
@@ -50,7 +50,7 @@ export interface ScheduledTransferListRequest {
 }
 
 export interface TransfersCreateRequest {
-    achTransaction: Omit<AchTransaction, 'id'|'state'|'created_at'|'estimated_process_date'|'estimated_arrival_date'>;
+    achTransactionRequest: AchTransactionRequest;
     format?: TransfersCreateFormatEnum;
 }
 
@@ -62,7 +62,7 @@ export interface TransfersListRequest {
 }
 
 export interface TransfersScheduledCreateRequest {
-    scheduledTransfer: Omit<ScheduledTransfer, 'id'|'state'|'created_at'|'next_transfer_at'>;
+    scheduledTransferRequest: ScheduledTransferRequest;
     format?: TransfersScheduledCreateFormatEnum;
 }
 
@@ -71,7 +71,7 @@ export interface TransfersScheduledDestroyRequest {
 }
 
 export interface TransfersScheduledUpdateRequest {
-    scheduledTransfer: Omit<ScheduledTransfer, 'id'|'state'|'created_at'|'next_transfer_at'>;
+    scheduledTransferRequest: ScheduledTransferRequest;
     format?: TransfersScheduledUpdateFormatEnum;
 }
 
@@ -133,10 +133,10 @@ export class TransfersApi extends runtime.BaseAPI {
      * Create a transfer
      */
     async transfersCreateRaw(requestParameters: TransfersCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RetrieveAchTransaction>> {
-        if (requestParameters['achTransaction'] == null) {
+        if (requestParameters['achTransactionRequest'] == null) {
             throw new runtime.RequiredError(
-                'achTransaction',
-                'Required parameter "achTransaction" was null or undefined when calling transfersCreate().'
+                'achTransactionRequest',
+                'Required parameter "achTransactionRequest" was null or undefined when calling transfersCreate().'
             );
         }
 
@@ -163,7 +163,7 @@ export class TransfersApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AchTransactionToJSON(requestParameters['achTransaction']),
+            body: AchTransactionRequestToJSON(requestParameters['achTransactionRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => RetrieveAchTransactionFromJSON(jsonValue));
@@ -235,10 +235,10 @@ export class TransfersApi extends runtime.BaseAPI {
      * Create a scheduled transfer
      */
     async transfersScheduledCreateRaw(requestParameters: TransfersScheduledCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<NestedScheduledTransfer>> {
-        if (requestParameters['scheduledTransfer'] == null) {
+        if (requestParameters['scheduledTransferRequest'] == null) {
             throw new runtime.RequiredError(
-                'scheduledTransfer',
-                'Required parameter "scheduledTransfer" was null or undefined when calling transfersScheduledCreate().'
+                'scheduledTransferRequest',
+                'Required parameter "scheduledTransferRequest" was null or undefined when calling transfersScheduledCreate().'
             );
         }
 
@@ -265,7 +265,7 @@ export class TransfersApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ScheduledTransferToJSON(requestParameters['scheduledTransfer']),
+            body: ScheduledTransferRequestToJSON(requestParameters['scheduledTransferRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => NestedScheduledTransferFromJSON(jsonValue));
@@ -324,10 +324,10 @@ export class TransfersApi extends runtime.BaseAPI {
      * Edit a scheduled transfer
      */
     async transfersScheduledUpdateRaw(requestParameters: TransfersScheduledUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<NestedScheduledTransfer>> {
-        if (requestParameters['scheduledTransfer'] == null) {
+        if (requestParameters['scheduledTransferRequest'] == null) {
             throw new runtime.RequiredError(
-                'scheduledTransfer',
-                'Required parameter "scheduledTransfer" was null or undefined when calling transfersScheduledUpdate().'
+                'scheduledTransferRequest',
+                'Required parameter "scheduledTransferRequest" was null or undefined when calling transfersScheduledUpdate().'
             );
         }
 
@@ -354,7 +354,7 @@ export class TransfersApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: ScheduledTransferToJSON(requestParameters['scheduledTransfer']),
+            body: ScheduledTransferRequestToJSON(requestParameters['scheduledTransferRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => NestedScheduledTransferFromJSON(jsonValue));

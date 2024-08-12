@@ -15,28 +15,28 @@
 
 import * as runtime from '../runtime';
 import type {
-  CardsList403Response,
+  AccountsDocumentsRetrieve404Response,
   InvalidRequestError,
-  MessageCreate,
+  MessageCreateRequest,
   MessageCreateResponse,
   MessageResponse,
   MessagesResponse,
   NotFoundError,
-  ThreadCreate,
+  ThreadCreateRequest,
   ThreadResponse,
-  ThreadUpdate,
-  ThreadUploadPolicyCreate,
+  ThreadUpdateRequest,
+  ThreadUploadPolicyCreateDocRequest,
   ThreadUploadPolicyResponse,
   ThreadsResponse,
   UploadFileError,
 } from '../models/index';
 import {
-    CardsList403ResponseFromJSON,
-    CardsList403ResponseToJSON,
+    AccountsDocumentsRetrieve404ResponseFromJSON,
+    AccountsDocumentsRetrieve404ResponseToJSON,
     InvalidRequestErrorFromJSON,
     InvalidRequestErrorToJSON,
-    MessageCreateFromJSON,
-    MessageCreateToJSON,
+    MessageCreateRequestFromJSON,
+    MessageCreateRequestToJSON,
     MessageCreateResponseFromJSON,
     MessageCreateResponseToJSON,
     MessageResponseFromJSON,
@@ -45,14 +45,14 @@ import {
     MessagesResponseToJSON,
     NotFoundErrorFromJSON,
     NotFoundErrorToJSON,
-    ThreadCreateFromJSON,
-    ThreadCreateToJSON,
+    ThreadCreateRequestFromJSON,
+    ThreadCreateRequestToJSON,
     ThreadResponseFromJSON,
     ThreadResponseToJSON,
-    ThreadUpdateFromJSON,
-    ThreadUpdateToJSON,
-    ThreadUploadPolicyCreateFromJSON,
-    ThreadUploadPolicyCreateToJSON,
+    ThreadUpdateRequestFromJSON,
+    ThreadUpdateRequestToJSON,
+    ThreadUploadPolicyCreateDocRequestFromJSON,
+    ThreadUploadPolicyCreateDocRequestToJSON,
     ThreadUploadPolicyResponseFromJSON,
     ThreadUploadPolicyResponseToJSON,
     ThreadsResponseFromJSON,
@@ -62,12 +62,12 @@ import {
 } from '../models/index';
 
 export interface ThreadFilesPoliciesCreateRequest {
-    threadUploadPolicyCreate: ThreadUploadPolicyCreate;
+    threadUploadPolicyCreateDocRequest: ThreadUploadPolicyCreateDocRequest;
     format?: ThreadFilesPoliciesCreateFormatEnum;
 }
 
 export interface ThreadsCreateRequest {
-    threadCreate: ThreadCreate;
+    threadCreateRequest: ThreadCreateRequest;
     format?: ThreadsCreateFormatEnum;
 }
 
@@ -87,7 +87,7 @@ export interface ThreadsRetrieveRequest {
 export interface UserMessagesCreateRequest {
     threadUuids: string;
     format?: UserMessagesCreateFormatEnum;
-    messageCreate?: MessageCreate;
+    messageCreateRequest?: MessageCreateRequest;
 }
 
 export interface UserMessagesListRequest {
@@ -109,7 +109,7 @@ export interface UserThreadsRetrieveRequest {
 export interface UserThreadsUpdateRequest {
     uuid: string;
     format?: UserThreadsUpdateFormatEnum;
-    threadUpdate?: ThreadUpdate;
+    threadUpdateRequest?: ThreadUpdateRequest;
 }
 
 /**
@@ -118,14 +118,14 @@ export interface UserThreadsUpdateRequest {
 export class ThreadsApi extends runtime.BaseAPI {
 
     /**
-     * Creates the payload for a signed request to upload a file directly to S3.Further documentation can be found via the AWS documentation: https://aws.amazon.com/blogs/compute/uploading-to-amazon-s3-directly-from-a-web-or-mobile-application/
+     * Creates the payload for a signed request to upload a file directly to S3. Further documentation can be found via the AWS documentation: https://aws.amazon.com/blogs/compute/uploading-to-amazon-s3-directly-from-a-web-or-mobile-application/
      * Create a signed request for uploading a file to S3
      */
     async threadFilesPoliciesCreateRaw(requestParameters: ThreadFilesPoliciesCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ThreadUploadPolicyResponse>> {
-        if (requestParameters['threadUploadPolicyCreate'] == null) {
+        if (requestParameters['threadUploadPolicyCreateDocRequest'] == null) {
             throw new runtime.RequiredError(
-                'threadUploadPolicyCreate',
-                'Required parameter "threadUploadPolicyCreate" was null or undefined when calling threadFilesPoliciesCreate().'
+                'threadUploadPolicyCreateDocRequest',
+                'Required parameter "threadUploadPolicyCreateDocRequest" was null or undefined when calling threadFilesPoliciesCreate().'
             );
         }
 
@@ -152,14 +152,14 @@ export class ThreadsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ThreadUploadPolicyCreateToJSON(requestParameters['threadUploadPolicyCreate']),
+            body: ThreadUploadPolicyCreateDocRequestToJSON(requestParameters['threadUploadPolicyCreateDocRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ThreadUploadPolicyResponseFromJSON(jsonValue));
     }
 
     /**
-     * Creates the payload for a signed request to upload a file directly to S3.Further documentation can be found via the AWS documentation: https://aws.amazon.com/blogs/compute/uploading-to-amazon-s3-directly-from-a-web-or-mobile-application/
+     * Creates the payload for a signed request to upload a file directly to S3. Further documentation can be found via the AWS documentation: https://aws.amazon.com/blogs/compute/uploading-to-amazon-s3-directly-from-a-web-or-mobile-application/
      * Create a signed request for uploading a file to S3
      */
     async threadFilesPoliciesCreate(requestParameters: ThreadFilesPoliciesCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ThreadUploadPolicyResponse> {
@@ -172,10 +172,10 @@ export class ThreadsApi extends runtime.BaseAPI {
      * Create message thread for a user
      */
     async threadsCreateRaw(requestParameters: ThreadsCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ThreadResponse>> {
-        if (requestParameters['threadCreate'] == null) {
+        if (requestParameters['threadCreateRequest'] == null) {
             throw new runtime.RequiredError(
-                'threadCreate',
-                'Required parameter "threadCreate" was null or undefined when calling threadsCreate().'
+                'threadCreateRequest',
+                'Required parameter "threadCreateRequest" was null or undefined when calling threadsCreate().'
             );
         }
 
@@ -202,7 +202,7 @@ export class ThreadsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ThreadCreateToJSON(requestParameters['threadCreate']),
+            body: ThreadCreateRequestToJSON(requestParameters['threadCreateRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ThreadResponseFromJSON(jsonValue));
@@ -237,9 +237,6 @@ export class ThreadsApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
-        }
         const response = await this.request({
             path: `/v1/threads/{uuid}/mark_read/`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters['uuid']))),
             method: 'PUT',
@@ -349,7 +346,7 @@ export class ThreadsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: MessageCreateToJSON(requestParameters['messageCreate']),
+            body: MessageCreateRequestToJSON(requestParameters['messageCreateRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => MessageCreateResponseFromJSON(jsonValue));
@@ -547,7 +544,7 @@ export class ThreadsApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: ThreadUpdateToJSON(requestParameters['threadUpdate']),
+            body: ThreadUpdateRequestToJSON(requestParameters['threadUpdateRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ThreadResponseFromJSON(jsonValue));

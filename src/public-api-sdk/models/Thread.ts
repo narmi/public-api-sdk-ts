@@ -31,13 +31,13 @@ export interface Thread {
      * @type {string}
      * @memberof Thread
      */
-    readonly id: string;
+    readonly id?: string;
     /**
      * Subject of the thread.
      * @type {string}
      * @memberof Thread
      */
-    readonly subject: string;
+    readonly subject?: string;
     /**
      * Indicates whether the thread has been closed or remains open.
      * 
@@ -46,44 +46,37 @@ export interface Thread {
      * @type {StateFf1Enum}
      * @memberof Thread
      */
-    readonly state: StateFf1Enum;
+    readonly state?: StateFf1Enum;
     /**
      * Text content of the initial message for this thread.
      * @type {string}
      * @memberof Thread
      */
-    readonly messagePreview: string;
+    readonly messagePreview?: string;
     /**
      * 
      * @type {Date}
      * @memberof Thread
      */
-    readonly createdAt: Date;
+    readonly createdAt?: Date;
     /**
      * 
      * @type {Date}
      * @memberof Thread
      */
-    readonly updatedAt: Date;
+    readonly updatedAt?: Date;
     /**
      * 
      * @type {boolean}
      * @memberof Thread
      */
-    readonly isRead: boolean;
+    readonly isRead?: boolean;
 }
 
 /**
  * Check if a given object implements the Thread interface.
  */
 export function instanceOfThread(value: object): value is Thread {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('subject' in value) || value['subject'] === undefined) return false;
-    if (!('state' in value) || value['state'] === undefined) return false;
-    if (!('messagePreview' in value) || value['messagePreview'] === undefined) return false;
-    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
-    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
-    if (!('isRead' in value) || value['isRead'] === undefined) return false;
     return true;
 }
 
@@ -97,13 +90,13 @@ export function ThreadFromJSONTyped(json: any, ignoreDiscriminator: boolean): Th
     }
     return {
         
-        'id': json['id'],
-        'subject': json['subject'],
-        'state': StateFf1EnumFromJSON(json['state']),
-        'messagePreview': json['message_preview'],
-        'createdAt': (new Date(json['created_at'])),
-        'updatedAt': (new Date(json['updated_at'])),
-        'isRead': json['is_read'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'subject': json['subject'] == null ? undefined : json['subject'],
+        'state': json['state'] == null ? undefined : StateFf1EnumFromJSON(json['state']),
+        'messagePreview': json['message_preview'] == null ? undefined : json['message_preview'],
+        'createdAt': json['created_at'] == null ? undefined : (new Date(json['created_at'])),
+        'updatedAt': json['updated_at'] == null ? undefined : (new Date(json['updated_at'])),
+        'isRead': json['is_read'] == null ? undefined : json['is_read'],
     };
 }
 

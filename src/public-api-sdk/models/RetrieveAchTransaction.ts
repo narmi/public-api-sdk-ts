@@ -31,14 +31,13 @@ export interface RetrieveAchTransaction {
      * @type {AchTransaction}
      * @memberof RetrieveAchTransaction
      */
-    readonly transfer: AchTransaction;
+    readonly transfer?: AchTransaction;
 }
 
 /**
  * Check if a given object implements the RetrieveAchTransaction interface.
  */
 export function instanceOfRetrieveAchTransaction(value: object): value is RetrieveAchTransaction {
-    if (!('transfer' in value) || value['transfer'] === undefined) return false;
     return true;
 }
 
@@ -52,7 +51,7 @@ export function RetrieveAchTransactionFromJSONTyped(json: any, ignoreDiscriminat
     }
     return {
         
-        'transfer': AchTransactionFromJSON(json['transfer']),
+        'transfer': json['transfer'] == null ? undefined : AchTransactionFromJSON(json['transfer']),
     };
 }
 

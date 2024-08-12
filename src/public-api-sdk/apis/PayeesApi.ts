@@ -19,7 +19,7 @@ import type {
   InvalidRequestError,
   PaginatedBillPayeeList,
   ReadPayee,
-  WritePayee,
+  WritePayeeRequest,
 } from '../models/index';
 import {
     BillPayDestroyFromJSON,
@@ -30,12 +30,12 @@ import {
     PaginatedBillPayeeListToJSON,
     ReadPayeeFromJSON,
     ReadPayeeToJSON,
-    WritePayeeFromJSON,
-    WritePayeeToJSON,
+    WritePayeeRequestFromJSON,
+    WritePayeeRequestToJSON,
 } from '../models/index';
 
 export interface PayeesCreateRequest {
-    writePayee: Omit<WritePayee, 'id'|'masked_account_number'>;
+    writePayeeRequest: WritePayeeRequest;
     format?: PayeesCreateFormatEnum;
 }
 
@@ -57,7 +57,7 @@ export interface PayeesRetrieveRequest {
 
 export interface PayeesUpdateRequest {
     id: string;
-    writePayee: Omit<WritePayee, 'id'|'masked_account_number'>;
+    writePayeeRequest: WritePayeeRequest;
     format?: PayeesUpdateFormatEnum;
 }
 
@@ -71,10 +71,10 @@ export class PayeesApi extends runtime.BaseAPI {
      * Create a payee
      */
     async payeesCreateRaw(requestParameters: PayeesCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ReadPayee>> {
-        if (requestParameters['writePayee'] == null) {
+        if (requestParameters['writePayeeRequest'] == null) {
             throw new runtime.RequiredError(
-                'writePayee',
-                'Required parameter "writePayee" was null or undefined when calling payeesCreate().'
+                'writePayeeRequest',
+                'Required parameter "writePayeeRequest" was null or undefined when calling payeesCreate().'
             );
         }
 
@@ -101,7 +101,7 @@ export class PayeesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: WritePayeeToJSON(requestParameters['writePayee']),
+            body: WritePayeeRequestToJSON(requestParameters['writePayeeRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ReadPayeeFromJSON(jsonValue));
@@ -270,10 +270,10 @@ export class PayeesApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['writePayee'] == null) {
+        if (requestParameters['writePayeeRequest'] == null) {
             throw new runtime.RequiredError(
-                'writePayee',
-                'Required parameter "writePayee" was null or undefined when calling payeesUpdate().'
+                'writePayeeRequest',
+                'Required parameter "writePayeeRequest" was null or undefined when calling payeesUpdate().'
             );
         }
 
@@ -300,7 +300,7 @@ export class PayeesApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: WritePayeeToJSON(requestParameters['writePayee']),
+            body: WritePayeeRequestToJSON(requestParameters['writePayeeRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ReadPayeeFromJSON(jsonValue));

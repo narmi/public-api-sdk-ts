@@ -13,12 +13,12 @@
  */
 
 import { mapValues } from '../runtime';
-import type { State432Enum } from './State432Enum';
+import type { BillPaymentStateEnum } from './BillPaymentStateEnum';
 import {
-    State432EnumFromJSON,
-    State432EnumFromJSONTyped,
-    State432EnumToJSON,
-} from './State432Enum';
+    BillPaymentStateEnumFromJSON,
+    BillPaymentStateEnumFromJSONTyped,
+    BillPaymentStateEnumToJSON,
+} from './BillPaymentStateEnum';
 
 /**
  * 
@@ -31,13 +31,13 @@ export interface BillPayment {
      * @type {string}
      * @memberof BillPayment
      */
-    readonly id: string;
+    readonly id?: string;
     /**
      * Indicates the status of the payment, for instance, if it's been processed or is pending.
-     * @type {State432Enum}
+     * @type {BillPaymentStateEnum}
      * @memberof BillPayment
      */
-    readonly state: State432Enum;
+    readonly state?: BillPaymentStateEnum;
     /**
      * Identifies payment recipient to the payment processor.
      * @type {string}
@@ -79,22 +79,19 @@ export interface BillPayment {
      * @type {string}
      * @memberof BillPayment
      */
-    readonly fromAccountId: string | null;
+    readonly fromAccountId?: string | null;
 }
 
 /**
  * Check if a given object implements the BillPayment interface.
  */
 export function instanceOfBillPayment(value: object): value is BillPayment {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('state' in value) || value['state'] === undefined) return false;
     if (!('payeeId' in value) || value['payeeId'] === undefined) return false;
     if (!('amount' in value) || value['amount'] === undefined) return false;
     if (!('sendDate' in value) || value['sendDate'] === undefined) return false;
     if (!('expectedArrivalDate' in value) || value['expectedArrivalDate'] === undefined) return false;
     if (!('type' in value) || value['type'] === undefined) return false;
     if (!('recurringRule' in value) || value['recurringRule'] === undefined) return false;
-    if (!('fromAccountId' in value) || value['fromAccountId'] === undefined) return false;
     return true;
 }
 
@@ -108,15 +105,15 @@ export function BillPaymentFromJSONTyped(json: any, ignoreDiscriminator: boolean
     }
     return {
         
-        'id': json['id'],
-        'state': State432EnumFromJSON(json['state']),
+        'id': json['id'] == null ? undefined : json['id'],
+        'state': json['state'] == null ? undefined : BillPaymentStateEnumFromJSON(json['state']),
         'payeeId': json['payee_id'],
         'amount': json['amount'],
         'sendDate': (new Date(json['send_date'])),
         'expectedArrivalDate': (new Date(json['expected_arrival_date'])),
         'type': json['type'],
         'recurringRule': json['recurring_rule'],
-        'fromAccountId': json['from_account_id'],
+        'fromAccountId': json['from_account_id'] == null ? undefined : json['from_account_id'],
     };
 }
 

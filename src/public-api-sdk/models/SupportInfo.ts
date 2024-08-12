@@ -24,42 +24,37 @@ export interface SupportInfo {
      * @type {any}
      * @memberof SupportInfo
      */
-    readonly contacts: any | null;
+    readonly contacts?: any | null;
     /**
      * Frequently Asked Questions for support, defined by the `Support Page Frequently Asked Questions` institution setting
      * @type {any}
      * @memberof SupportInfo
      */
-    readonly faqs: any | null;
+    readonly faqs?: any | null;
     /**
      * Support links to documentation and utilities, defined by the `Support Page Quick Links` institution setting
      * @type {any}
      * @memberof SupportInfo
      */
-    readonly links: any | null;
+    readonly links?: any | null;
     /**
      * Support reply time, defined by the `Support Message Reply Time` institution setting
      * @type {string}
      * @memberof SupportInfo
      */
-    readonly supportMessageReplyTime: string;
+    readonly supportMessageReplyTime?: string;
     /**
      * Disclaimer information, defined by the `Support Message Reply Disclaimer` institution setting
      * @type {string}
      * @memberof SupportInfo
      */
-    readonly supportMessageReplyDisclaimer: string;
+    readonly supportMessageReplyDisclaimer?: string;
 }
 
 /**
  * Check if a given object implements the SupportInfo interface.
  */
 export function instanceOfSupportInfo(value: object): value is SupportInfo {
-    if (!('contacts' in value) || value['contacts'] === undefined) return false;
-    if (!('faqs' in value) || value['faqs'] === undefined) return false;
-    if (!('links' in value) || value['links'] === undefined) return false;
-    if (!('supportMessageReplyTime' in value) || value['supportMessageReplyTime'] === undefined) return false;
-    if (!('supportMessageReplyDisclaimer' in value) || value['supportMessageReplyDisclaimer'] === undefined) return false;
     return true;
 }
 
@@ -73,11 +68,11 @@ export function SupportInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean
     }
     return {
         
-        'contacts': json['contacts'],
-        'faqs': json['faqs'],
-        'links': json['links'],
-        'supportMessageReplyTime': json['support_message_reply_time'],
-        'supportMessageReplyDisclaimer': json['support_message_reply_disclaimer'],
+        'contacts': json['contacts'] == null ? undefined : json['contacts'],
+        'faqs': json['faqs'] == null ? undefined : json['faqs'],
+        'links': json['links'] == null ? undefined : json['links'],
+        'supportMessageReplyTime': json['support_message_reply_time'] == null ? undefined : json['support_message_reply_time'],
+        'supportMessageReplyDisclaimer': json['support_message_reply_disclaimer'] == null ? undefined : json['support_message_reply_disclaimer'],
     };
 }
 

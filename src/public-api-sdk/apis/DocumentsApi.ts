@@ -15,26 +15,26 @@
 
 import * as runtime from '../runtime';
 import type {
-  DocumentResponse,
-  DocumentsList,
-  NotFoundError,
+  AccountsDocumentsRetrieve404Response,
+  PaginatedDocumentList,
   ServiceFailureError,
+  UserDocument,
 } from '../models/index';
 import {
-    DocumentResponseFromJSON,
-    DocumentResponseToJSON,
-    DocumentsListFromJSON,
-    DocumentsListToJSON,
-    NotFoundErrorFromJSON,
-    NotFoundErrorToJSON,
+    AccountsDocumentsRetrieve404ResponseFromJSON,
+    AccountsDocumentsRetrieve404ResponseToJSON,
+    PaginatedDocumentListFromJSON,
+    PaginatedDocumentListToJSON,
     ServiceFailureErrorFromJSON,
     ServiceFailureErrorToJSON,
+    UserDocumentFromJSON,
+    UserDocumentToJSON,
 } from '../models/index';
 
 export interface DocumentsListRequest {
-    after?: number;
-    filter?: string;
     format?: DocumentsListFormatEnum;
+    limit?: number;
+    offset?: number;
 }
 
 export interface DocumentsRetrieveRequest {
@@ -52,19 +52,19 @@ export class DocumentsApi extends runtime.BaseAPI {
      * List the authenticated user\'s documents (statements, tax forms, etc.).
      * List documents
      */
-    async documentsListRaw(requestParameters: DocumentsListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DocumentsList>> {
+    async documentsListRaw(requestParameters: DocumentsListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedDocumentList>> {
         const queryParameters: any = {};
-
-        if (requestParameters['after'] != null) {
-            queryParameters['after'] = requestParameters['after'];
-        }
-
-        if (requestParameters['filter'] != null) {
-            queryParameters['filter'] = requestParameters['filter'];
-        }
 
         if (requestParameters['format'] != null) {
             queryParameters['format'] = requestParameters['format'];
+        }
+
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
+        }
+
+        if (requestParameters['offset'] != null) {
+            queryParameters['offset'] = requestParameters['offset'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -84,14 +84,14 @@ export class DocumentsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => DocumentsListFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => PaginatedDocumentListFromJSON(jsonValue));
     }
 
     /**
      * List the authenticated user\'s documents (statements, tax forms, etc.).
      * List documents
      */
-    async documentsList(requestParameters: DocumentsListRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DocumentsList> {
+    async documentsList(requestParameters: DocumentsListRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedDocumentList> {
         const response = await this.documentsListRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -100,7 +100,7 @@ export class DocumentsApi extends runtime.BaseAPI {
      * Fetch a specific statement by statement ID.   An invalid document ID will typically return the documented error response, however if the `statements` feature is not enabled, it may also return a blank 404 response.  This endpoint will return a 404 if a trailing slash is included in the request.
      * Retrieve a document
      */
-    async documentsRetrieveRaw(requestParameters: DocumentsRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DocumentResponse>> {
+    async documentsRetrieveRaw(requestParameters: DocumentsRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserDocument>> {
         if (requestParameters['documentId'] == null) {
             throw new runtime.RequiredError(
                 'documentId',
@@ -135,14 +135,14 @@ export class DocumentsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => DocumentResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserDocumentFromJSON(jsonValue));
     }
 
     /**
      * Fetch a specific statement by statement ID.   An invalid document ID will typically return the documented error response, however if the `statements` feature is not enabled, it may also return a blank 404 response.  This endpoint will return a 404 if a trailing slash is included in the request.
      * Retrieve a document
      */
-    async documentsRetrieve(requestParameters: DocumentsRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DocumentResponse> {
+    async documentsRetrieve(requestParameters: DocumentsRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserDocument> {
         const response = await this.documentsRetrieveRaw(requestParameters, initOverrides);
         return await response.value();
     }

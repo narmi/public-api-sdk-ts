@@ -31,7 +31,7 @@ export interface Message {
      * @type {string}
      * @memberof Message
      */
-    readonly body: string;
+    readonly body?: string;
     /**
      * Link to the file url for a thread file/attachment, should not be specified with the `body` parameter.
      * @type {string}
@@ -49,43 +49,37 @@ export interface Message {
      * @type {string}
      * @memberof Message
      */
-    readonly id: string;
+    readonly id?: string;
     /**
      * The UUID of the thread to which the message belongs.
      * @type {string}
      * @memberof Message
      */
-    readonly threadId: string;
+    readonly threadId?: string;
     /**
      * User information about the author of the message.
      * @type {Profile}
      * @memberof Message
      */
-    readonly author: Profile;
+    readonly author?: Profile;
     /**
      * 
      * @type {Date}
      * @memberof Message
      */
-    readonly createdAt: Date;
+    readonly createdAt?: Date;
     /**
      * 
      * @type {Date}
      * @memberof Message
      */
-    readonly updatedAt: Date;
+    readonly updatedAt?: Date;
 }
 
 /**
  * Check if a given object implements the Message interface.
  */
 export function instanceOfMessage(value: object): value is Message {
-    if (!('body' in value) || value['body'] === undefined) return false;
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('threadId' in value) || value['threadId'] === undefined) return false;
-    if (!('author' in value) || value['author'] === undefined) return false;
-    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
-    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     return true;
 }
 
@@ -99,14 +93,14 @@ export function MessageFromJSONTyped(json: any, ignoreDiscriminator: boolean): M
     }
     return {
         
-        'body': json['body'],
+        'body': json['body'] == null ? undefined : json['body'],
         'url': json['url'] == null ? undefined : json['url'],
         'internalNote': json['internal_note'] == null ? undefined : json['internal_note'],
-        'id': json['id'],
-        'threadId': json['thread_id'],
-        'author': ProfileFromJSON(json['author']),
-        'createdAt': (new Date(json['created_at'])),
-        'updatedAt': (new Date(json['updated_at'])),
+        'id': json['id'] == null ? undefined : json['id'],
+        'threadId': json['thread_id'] == null ? undefined : json['thread_id'],
+        'author': json['author'] == null ? undefined : ProfileFromJSON(json['author']),
+        'createdAt': json['created_at'] == null ? undefined : (new Date(json['created_at'])),
+        'updatedAt': json['updated_at'] == null ? undefined : (new Date(json['updated_at'])),
     };
 }
 

@@ -24,28 +24,25 @@ export interface LoanDetails {
      * @type {number}
      * @memberof LoanDetails
      */
-    readonly minimumPayment: number;
+    readonly minimumPayment?: number;
     /**
      * 
      * @type {string}
      * @memberof LoanDetails
      */
-    readonly interestRate: string;
+    readonly interestRate?: string;
     /**
      * 
      * @type {Date}
      * @memberof LoanDetails
      */
-    readonly nextPaymentAt: Date;
+    readonly nextPaymentAt?: Date;
 }
 
 /**
  * Check if a given object implements the LoanDetails interface.
  */
 export function instanceOfLoanDetails(value: object): value is LoanDetails {
-    if (!('minimumPayment' in value) || value['minimumPayment'] === undefined) return false;
-    if (!('interestRate' in value) || value['interestRate'] === undefined) return false;
-    if (!('nextPaymentAt' in value) || value['nextPaymentAt'] === undefined) return false;
     return true;
 }
 
@@ -59,9 +56,9 @@ export function LoanDetailsFromJSONTyped(json: any, ignoreDiscriminator: boolean
     }
     return {
         
-        'minimumPayment': json['minimum_payment'],
-        'interestRate': json['interest_rate'],
-        'nextPaymentAt': (new Date(json['next_payment_at'])),
+        'minimumPayment': json['minimum_payment'] == null ? undefined : json['minimum_payment'],
+        'interestRate': json['interest_rate'] == null ? undefined : json['interest_rate'],
+        'nextPaymentAt': json['next_payment_at'] == null ? undefined : (new Date(json['next_payment_at'])),
     };
 }
 

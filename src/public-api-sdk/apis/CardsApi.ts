@@ -15,33 +15,33 @@
 
 import * as runtime from '../runtime';
 import type {
+  AccountsDocumentsRetrieve404Response,
   Address,
-  Card,
   CardInfo,
+  CardRequest,
   CardResponse,
-  CardsList403Response,
   CardsReplaceCardCreate400Response,
   CommonCard,
-  MissingCard,
+  MissingCardRequest,
   PaginatedCardInfoList,
 } from '../models/index';
 import {
+    AccountsDocumentsRetrieve404ResponseFromJSON,
+    AccountsDocumentsRetrieve404ResponseToJSON,
     AddressFromJSON,
     AddressToJSON,
-    CardFromJSON,
-    CardToJSON,
     CardInfoFromJSON,
     CardInfoToJSON,
+    CardRequestFromJSON,
+    CardRequestToJSON,
     CardResponseFromJSON,
     CardResponseToJSON,
-    CardsList403ResponseFromJSON,
-    CardsList403ResponseToJSON,
     CardsReplaceCardCreate400ResponseFromJSON,
     CardsReplaceCardCreate400ResponseToJSON,
     CommonCardFromJSON,
     CommonCardToJSON,
-    MissingCardFromJSON,
-    MissingCardToJSON,
+    MissingCardRequestFromJSON,
+    MissingCardRequestToJSON,
     PaginatedCardInfoListFromJSON,
     PaginatedCardInfoListToJSON,
 } from '../models/index';
@@ -63,7 +63,7 @@ export interface CardsLockCreateRequest {
 
 export interface CardsReplaceCardCreateRequest {
     cardId: string;
-    missingCard: MissingCard;
+    missingCardRequest: MissingCardRequest;
     format?: CardsReplaceCardCreateFormatEnum;
 }
 
@@ -79,7 +79,7 @@ export interface CardsUnlockCreateRequest {
 
 export interface CardsUpdateRequest {
     cardId: string;
-    card: Omit<Card, 'id'|'core_user_id'|'bin'|'last_four_digits'|'svg'|'is_card_number_on_front'|'card_text_color'>;
+    cardRequest: CardRequest;
     format?: CardsUpdateFormatEnum;
 }
 
@@ -238,10 +238,10 @@ export class CardsApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['missingCard'] == null) {
+        if (requestParameters['missingCardRequest'] == null) {
             throw new runtime.RequiredError(
-                'missingCard',
-                'Required parameter "missingCard" was null or undefined when calling cardsReplaceCardCreate().'
+                'missingCardRequest',
+                'Required parameter "missingCardRequest" was null or undefined when calling cardsReplaceCardCreate().'
             );
         }
 
@@ -268,7 +268,7 @@ export class CardsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: MissingCardToJSON(requestParameters['missingCard']),
+            body: MissingCardRequestToJSON(requestParameters['missingCardRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CommonCardFromJSON(jsonValue));
@@ -390,10 +390,10 @@ export class CardsApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['card'] == null) {
+        if (requestParameters['cardRequest'] == null) {
             throw new runtime.RequiredError(
-                'card',
-                'Required parameter "card" was null or undefined when calling cardsUpdate().'
+                'cardRequest',
+                'Required parameter "cardRequest" was null or undefined when calling cardsUpdate().'
             );
         }
 
@@ -420,7 +420,7 @@ export class CardsApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: CardToJSON(requestParameters['card']),
+            body: CardRequestToJSON(requestParameters['cardRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CardResponseFromJSON(jsonValue));
