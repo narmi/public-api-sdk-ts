@@ -1,9 +1,12 @@
-# Getting started 
-1. Setup .env file with CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, API_URL, PORT
-2. Run `npm run build; npm start`
-3. Navigate to http://localhost:3000/login
-4. Login to Narmi sandbox as `testuser`
-5. Use index page to view user account information.
+# Getting started
+1. Request `testuser` login credentials as well as OAuth application credentials from Narmi.
+2. Clone https://github.com/narmi/public-api-sdk-ts (`git clone git@github.com:narmi/public-api-sdk-ts.git`)
+3. Install [Node.js](https://nodejs.org/en/download/package-manager/current) v22.4.1. This should include `npm`, but if not also install npm@v10.8.2
+4. Create `.env` file in root directory and set values for OAuth and other configuration (`CLIENT_ID`, `CLIENT_SECRET`, `REDIRECT_URI`, `AUTH_URL`, `API_URL`, `PORT=3000`).
+5. Run `npm install --dev; npm run build; npm start`.
+6. Navigate to http://localhost:3000/login.
+7. Login to Narmi's sandbox banking application as `testuser`.
+8. Use index page to view user account information.
 
 # Understanding How it Works
 
@@ -135,4 +138,4 @@ These examples are taken from `public-api-sdk/index.ts`, which powers the introd
 | wire_recipients_update                     | 🌕           | 🌕                    |                      |
 | wire_recipients_partial_update             | 🌕           | 🌕                    |                      |
 | wire_recipients_destroy                    | 🌕           | 🌕                    |                      |
-| wires_fedwire_templates_create             | 🌕           |                       |                      |
+| wires_fedwire_templates_create             | 🌕           | 🌕                    |                      |
