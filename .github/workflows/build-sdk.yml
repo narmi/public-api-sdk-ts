@@ -1,6 +1,7 @@
 name: Generate SDK and commit
 
 on:
+  # execute on demand
   workflow_dispatch:
 
 jobs:
@@ -14,7 +15,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '16'
+        node-version: '20'
 
     - name: Set up Java
       uses: actions/setup-java@v3
@@ -27,7 +28,9 @@ jobs:
 
     - name: Run command to insert files
       run: |
+        pwd && ls -la
         npm run download-schema
+        pwd && ls -la        
         npm run remove-sdk
         npm run generate-sdk
 
@@ -41,4 +44,5 @@ jobs:
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
+        branch: master
         github_token: ${{ secrets.GITHUB_TOKEN }}
