@@ -24,13 +24,13 @@ export interface Hold {
      * @type {string}
      * @memberof Hold
      */
-    readonly id: string;
+    readonly id?: string;
     /**
      * The amount to hold on the account.
      * @type {number}
      * @memberof Hold
      */
-    readonly amount: number;
+    readonly amount?: number;
     /**
      * A plain text description of the hold.
      * @type {string}
@@ -42,16 +42,13 @@ export interface Hold {
      * @type {Date}
      * @memberof Hold
      */
-    readonly expiresAt: Date;
+    readonly expiresAt?: Date;
 }
 
 /**
  * Check if a given object implements the Hold interface.
  */
 export function instanceOfHold(value: object): value is Hold {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('amount' in value) || value['amount'] === undefined) return false;
-    if (!('expiresAt' in value) || value['expiresAt'] === undefined) return false;
     return true;
 }
 
@@ -65,10 +62,10 @@ export function HoldFromJSONTyped(json: any, ignoreDiscriminator: boolean): Hold
     }
     return {
         
-        'id': json['id'],
-        'amount': json['amount'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'amount': json['amount'] == null ? undefined : json['amount'],
         'description': json['description'] == null ? undefined : json['description'],
-        'expiresAt': (new Date(json['expires_at'])),
+        'expiresAt': json['expires_at'] == null ? undefined : (new Date(json['expires_at'])),
     };
 }
 

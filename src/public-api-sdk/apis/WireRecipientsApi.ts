@@ -16,20 +16,23 @@
 import * as runtime from '../runtime';
 import type {
   PaginatedWireRecipientList,
-  PatchedWireRecipient,
+  PatchedWireRecipientRequest,
   WireRecipient,
+  WireRecipientRequest,
 } from '../models/index';
 import {
     PaginatedWireRecipientListFromJSON,
     PaginatedWireRecipientListToJSON,
-    PatchedWireRecipientFromJSON,
-    PatchedWireRecipientToJSON,
+    PatchedWireRecipientRequestFromJSON,
+    PatchedWireRecipientRequestToJSON,
     WireRecipientFromJSON,
     WireRecipientToJSON,
+    WireRecipientRequestFromJSON,
+    WireRecipientRequestToJSON,
 } from '../models/index';
 
 export interface WireRecipientsCreateRequest {
-    wireRecipient: Omit<WireRecipient, 'id'|'destination_institution_name'>;
+    wireRecipientRequest: WireRecipientRequest;
     format?: WireRecipientsCreateFormatEnum;
 }
 
@@ -45,7 +48,7 @@ export interface WireRecipientsListRequest {
 
 export interface WireRecipientsPartialUpdateRequest {
     uuid: string;
-    patchedWireRecipient: Omit<PatchedWireRecipient, 'id'|'destination_institution_name'>;
+    patchedWireRecipientRequest: PatchedWireRecipientRequest;
     format?: WireRecipientsPartialUpdateFormatEnum;
 }
 
@@ -56,7 +59,7 @@ export interface WireRecipientsRetrieveRequest {
 
 export interface WireRecipientsUpdateRequest {
     uuid: string;
-    wireRecipient: Omit<WireRecipient, 'id'|'destination_institution_name'>;
+    wireRecipientRequest: WireRecipientRequest;
     format?: WireRecipientsUpdateFormatEnum;
 }
 
@@ -70,10 +73,10 @@ export class WireRecipientsApi extends runtime.BaseAPI {
      * Create wire recipients
      */
     async wireRecipientsCreateRaw(requestParameters: WireRecipientsCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WireRecipient>> {
-        if (requestParameters['wireRecipient'] == null) {
+        if (requestParameters['wireRecipientRequest'] == null) {
             throw new runtime.RequiredError(
-                'wireRecipient',
-                'Required parameter "wireRecipient" was null or undefined when calling wireRecipientsCreate().'
+                'wireRecipientRequest',
+                'Required parameter "wireRecipientRequest" was null or undefined when calling wireRecipientsCreate().'
             );
         }
 
@@ -87,15 +90,12 @@ export class WireRecipientsApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
-        }
         const response = await this.request({
             path: `/v1/wire_recipients/`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: WireRecipientToJSON(requestParameters['wireRecipient']),
+            body: WireRecipientRequestToJSON(requestParameters['wireRecipientRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => WireRecipientFromJSON(jsonValue));
@@ -130,9 +130,6 @@ export class WireRecipientsApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
-        }
         const response = await this.request({
             path: `/v1/wire_recipients/{uuid}/`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters['uuid']))),
             method: 'DELETE',
@@ -168,9 +165,6 @@ export class WireRecipientsApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
-        }
         const response = await this.request({
             path: `/v1/wire_recipients/`,
             method: 'GET',
@@ -202,10 +196,10 @@ export class WireRecipientsApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['patchedWireRecipient'] == null) {
+        if (requestParameters['patchedWireRecipientRequest'] == null) {
             throw new runtime.RequiredError(
-                'patchedWireRecipient',
-                'Required parameter "patchedWireRecipient" was null or undefined when calling wireRecipientsPartialUpdate().'
+                'patchedWireRecipientRequest',
+                'Required parameter "patchedWireRecipientRequest" was null or undefined when calling wireRecipientsPartialUpdate().'
             );
         }
 
@@ -219,15 +213,12 @@ export class WireRecipientsApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
-        }
         const response = await this.request({
             path: `/v1/wire_recipients/{uuid}/`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters['uuid']))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: PatchedWireRecipientToJSON(requestParameters['patchedWireRecipient']),
+            body: PatchedWireRecipientRequestToJSON(requestParameters['patchedWireRecipientRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => WireRecipientFromJSON(jsonValue));
@@ -262,9 +253,6 @@ export class WireRecipientsApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
-        }
         const response = await this.request({
             path: `/v1/wire_recipients/{uuid}/`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters['uuid']))),
             method: 'GET',
@@ -296,10 +284,10 @@ export class WireRecipientsApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['wireRecipient'] == null) {
+        if (requestParameters['wireRecipientRequest'] == null) {
             throw new runtime.RequiredError(
-                'wireRecipient',
-                'Required parameter "wireRecipient" was null or undefined when calling wireRecipientsUpdate().'
+                'wireRecipientRequest',
+                'Required parameter "wireRecipientRequest" was null or undefined when calling wireRecipientsUpdate().'
             );
         }
 
@@ -313,15 +301,12 @@ export class WireRecipientsApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
-        }
         const response = await this.request({
             path: `/v1/wire_recipients/{uuid}/`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters['uuid']))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: WireRecipientToJSON(requestParameters['wireRecipient']),
+            body: WireRecipientRequestToJSON(requestParameters['wireRecipientRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => WireRecipientFromJSON(jsonValue));

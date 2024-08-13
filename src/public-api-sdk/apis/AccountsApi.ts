@@ -16,12 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   AccountStopResponse,
-  AccountVerify,
-  AccountWithdrawal,
+  AccountWithdrawalRequest,
+  AccountsDocumentsRetrieve404Response,
   AccountsNotFoundError,
-  DocumentResponse,
-  ExternalAccountCreate,
-  ExternalAccountVerification,
+  ExternalAccountCreateRequest,
+  ExternalAccountVerificationRequest,
   GeneralError,
   HoldsListResponse,
   InvalidRequestError,
@@ -30,28 +29,27 @@ import type {
   NotFoundError,
   PaginatedAccountStopsResponse,
   PaginatedAccounts,
-  PatchedAccountStop,
+  PatchedAccountStopRequest,
   PermissionDeniedError,
   ServiceFailureError,
   Success,
   TransactionsResponse,
-  UpdateAccount,
+  UpdateAccountDocRequest,
+  UserDocument,
 } from '../models/index';
 import {
     AccountStopResponseFromJSON,
     AccountStopResponseToJSON,
-    AccountVerifyFromJSON,
-    AccountVerifyToJSON,
-    AccountWithdrawalFromJSON,
-    AccountWithdrawalToJSON,
+    AccountWithdrawalRequestFromJSON,
+    AccountWithdrawalRequestToJSON,
+    AccountsDocumentsRetrieve404ResponseFromJSON,
+    AccountsDocumentsRetrieve404ResponseToJSON,
     AccountsNotFoundErrorFromJSON,
     AccountsNotFoundErrorToJSON,
-    DocumentResponseFromJSON,
-    DocumentResponseToJSON,
-    ExternalAccountCreateFromJSON,
-    ExternalAccountCreateToJSON,
-    ExternalAccountVerificationFromJSON,
-    ExternalAccountVerificationToJSON,
+    ExternalAccountCreateRequestFromJSON,
+    ExternalAccountCreateRequestToJSON,
+    ExternalAccountVerificationRequestFromJSON,
+    ExternalAccountVerificationRequestToJSON,
     GeneralErrorFromJSON,
     GeneralErrorToJSON,
     HoldsListResponseFromJSON,
@@ -68,8 +66,8 @@ import {
     PaginatedAccountStopsResponseToJSON,
     PaginatedAccountsFromJSON,
     PaginatedAccountsToJSON,
-    PatchedAccountStopFromJSON,
-    PatchedAccountStopToJSON,
+    PatchedAccountStopRequestFromJSON,
+    PatchedAccountStopRequestToJSON,
     PermissionDeniedErrorFromJSON,
     PermissionDeniedErrorToJSON,
     ServiceFailureErrorFromJSON,
@@ -78,23 +76,25 @@ import {
     SuccessToJSON,
     TransactionsResponseFromJSON,
     TransactionsResponseToJSON,
-    UpdateAccountFromJSON,
-    UpdateAccountToJSON,
+    UpdateAccountDocRequestFromJSON,
+    UpdateAccountDocRequestToJSON,
+    UserDocumentFromJSON,
+    UserDocumentToJSON,
 } from '../models/index';
 
 export interface AccountVerifyRequest {
     uuid: string;
     format?: AccountVerifyFormatEnum;
-    externalAccountVerification?: ExternalAccountVerification;
+    externalAccountVerificationRequest?: ExternalAccountVerificationRequest;
 }
 
 export interface AccountVerifyInstantRequest {
     format?: AccountVerifyInstantFormatEnum;
-    externalAccountVerification?: ExternalAccountVerification;
+    externalAccountVerificationRequest?: ExternalAccountVerificationRequest;
 }
 
 export interface AccountsCreateRequest {
-    externalAccountCreate: ExternalAccountCreate;
+    externalAccountCreateRequest: ExternalAccountCreateRequest;
     format?: AccountsCreateFormatEnum;
 }
 
@@ -127,7 +127,7 @@ export interface AccountsRetrieveRequest {
 export interface AccountsStopsCreateRequest {
     accountUuid: string;
     format?: AccountsStopsCreateFormatEnum;
-    patchedAccountStop?: Omit<PatchedAccountStop, 'account_id'>;
+    patchedAccountStopRequest?: PatchedAccountStopRequest;
 }
 
 export interface AccountsStopsRetrieveRequest {
@@ -147,12 +147,12 @@ export interface AccountsTransactionsDownloadRetrieveRequest {
 export interface AccountsUpdateRequest {
     uuid: string;
     format?: AccountsUpdateFormatEnum;
-    updateAccount?: UpdateAccount;
+    updateAccountDocRequest?: UpdateAccountDocRequest;
 }
 
 export interface AccountsWithdrawalsCreateRequest {
     uuid: string;
-    accountWithdrawal: AccountWithdrawal;
+    accountWithdrawalRequest: AccountWithdrawalRequest;
     format?: AccountsWithdrawalsCreateFormatEnum;
 }
 
@@ -176,7 +176,7 @@ export class AccountsApi extends runtime.BaseAPI {
      * Verify the micro-deposit amounts for a specified external account. Additional information on micro-deposits/micro-entries and how they work can be found here https://www.nacha.org/micro-entries.  In the event that the account does not exist or cannot be associated with the user, or ACH is not enabled, the endpoint will return a 404.  In the event that the user does not have permission to modify the account, the endpoint will return a 403.
      * Run account verification
      */
-    async accountVerifyRaw(requestParameters: AccountVerifyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AccountVerify>> {
+    async accountVerifyRaw(requestParameters: AccountVerifyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<NestedAccounts>> {
         if (requestParameters['uuid'] == null) {
             throw new runtime.RequiredError(
                 'uuid',
@@ -207,17 +207,17 @@ export class AccountsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ExternalAccountVerificationToJSON(requestParameters['externalAccountVerification']),
+            body: ExternalAccountVerificationRequestToJSON(requestParameters['externalAccountVerificationRequest']),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AccountVerifyFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => NestedAccountsFromJSON(jsonValue));
     }
 
     /**
      * Verify the micro-deposit amounts for a specified external account. Additional information on micro-deposits/micro-entries and how they work can be found here https://www.nacha.org/micro-entries.  In the event that the account does not exist or cannot be associated with the user, or ACH is not enabled, the endpoint will return a 404.  In the event that the user does not have permission to modify the account, the endpoint will return a 403.
      * Run account verification
      */
-    async accountVerify(requestParameters: AccountVerifyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AccountVerify> {
+    async accountVerify(requestParameters: AccountVerifyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<NestedAccounts> {
         const response = await this.accountVerifyRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -226,7 +226,7 @@ export class AccountsApi extends runtime.BaseAPI {
      * Instant verification for accounts that have been linked through MX. The FI must have features `ach` and `instant_account_verification` enabled. If ACH is not enabled the endpoint will return a 404. If `instant_account_verification` is not enabled, the endpoint will return a 422 detailing the issue. In the event that there is an issue running verification, the endpoint will return a 500.
      * Run instant account verification
      */
-    async accountVerifyInstantRaw(requestParameters: AccountVerifyInstantRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<NestedAccount>> {
+    async accountVerifyInstantRaw(requestParameters: AccountVerifyInstantRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<NestedAccounts>> {
         const queryParameters: any = {};
 
         if (requestParameters['format'] != null) {
@@ -250,17 +250,17 @@ export class AccountsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ExternalAccountVerificationToJSON(requestParameters['externalAccountVerification']),
+            body: ExternalAccountVerificationRequestToJSON(requestParameters['externalAccountVerificationRequest']),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => NestedAccountFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => NestedAccountsFromJSON(jsonValue));
     }
 
     /**
      * Instant verification for accounts that have been linked through MX. The FI must have features `ach` and `instant_account_verification` enabled. If ACH is not enabled the endpoint will return a 404. If `instant_account_verification` is not enabled, the endpoint will return a 422 detailing the issue. In the event that there is an issue running verification, the endpoint will return a 500.
      * Run instant account verification
      */
-    async accountVerifyInstant(requestParameters: AccountVerifyInstantRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<NestedAccount> {
+    async accountVerifyInstant(requestParameters: AccountVerifyInstantRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<NestedAccounts> {
         const response = await this.accountVerifyInstantRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -270,10 +270,10 @@ export class AccountsApi extends runtime.BaseAPI {
      * Create external account
      */
     async accountsCreateRaw(requestParameters: AccountsCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<NestedAccounts>> {
-        if (requestParameters['externalAccountCreate'] == null) {
+        if (requestParameters['externalAccountCreateRequest'] == null) {
             throw new runtime.RequiredError(
-                'externalAccountCreate',
-                'Required parameter "externalAccountCreate" was null or undefined when calling accountsCreate().'
+                'externalAccountCreateRequest',
+                'Required parameter "externalAccountCreateRequest" was null or undefined when calling accountsCreate().'
             );
         }
 
@@ -300,7 +300,7 @@ export class AccountsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ExternalAccountCreateToJSON(requestParameters['externalAccountCreate']),
+            body: ExternalAccountCreateRequestToJSON(requestParameters['externalAccountCreateRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => NestedAccountsFromJSON(jsonValue));
@@ -365,7 +365,7 @@ export class AccountsApi extends runtime.BaseAPI {
      * Fetch a specific statement by statement ID.   An invalid document ID will typically return the documented error response, however if the `statements` feature is not enabled, it may also return a blank 404 response.  This endpoint will return a 404 if a trailing slash is included in the request.
      * Retrieve a document
      */
-    async accountsDocumentsRetrieveRaw(requestParameters: AccountsDocumentsRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DocumentResponse>> {
+    async accountsDocumentsRetrieveRaw(requestParameters: AccountsDocumentsRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserDocument>> {
         if (requestParameters['accountUuid'] == null) {
             throw new runtime.RequiredError(
                 'accountUuid',
@@ -407,14 +407,14 @@ export class AccountsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => DocumentResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserDocumentFromJSON(jsonValue));
     }
 
     /**
      * Fetch a specific statement by statement ID.   An invalid document ID will typically return the documented error response, however if the `statements` feature is not enabled, it may also return a blank 404 response.  This endpoint will return a 404 if a trailing slash is included in the request.
      * Retrieve a document
      */
-    async accountsDocumentsRetrieve(requestParameters: AccountsDocumentsRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DocumentResponse> {
+    async accountsDocumentsRetrieve(requestParameters: AccountsDocumentsRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserDocument> {
         const response = await this.accountsDocumentsRetrieveRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -588,7 +588,7 @@ export class AccountsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: PatchedAccountStopToJSON(requestParameters['patchedAccountStop']),
+            body: PatchedAccountStopRequestToJSON(requestParameters['patchedAccountStopRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AccountStopResponseFromJSON(jsonValue));
@@ -747,7 +747,7 @@ export class AccountsApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: UpdateAccountToJSON(requestParameters['updateAccount']),
+            body: UpdateAccountDocRequestToJSON(requestParameters['updateAccountDocRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => NestedAccountFromJSON(jsonValue));
@@ -774,10 +774,10 @@ export class AccountsApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['accountWithdrawal'] == null) {
+        if (requestParameters['accountWithdrawalRequest'] == null) {
             throw new runtime.RequiredError(
-                'accountWithdrawal',
-                'Required parameter "accountWithdrawal" was null or undefined when calling accountsWithdrawalsCreate().'
+                'accountWithdrawalRequest',
+                'Required parameter "accountWithdrawalRequest" was null or undefined when calling accountsWithdrawalsCreate().'
             );
         }
 
@@ -804,7 +804,7 @@ export class AccountsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AccountWithdrawalToJSON(requestParameters['accountWithdrawal']),
+            body: AccountWithdrawalRequestToJSON(requestParameters['accountWithdrawalRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SuccessFromJSON(jsonValue));

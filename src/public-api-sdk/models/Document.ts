@@ -24,55 +24,43 @@ export interface Document {
      * @type {string}
      * @memberof Document
      */
-    readonly id: string;
+    readonly id?: string;
     /**
      * Document type, this value can vary between document stores.
      * @type {string}
      * @memberof Document
      */
-    readonly type: string | null;
+    readonly type?: string | null;
     /**
      * Human readable type, defaults to value of `type` field when missing.
      * @type {string}
      * @memberof Document
      */
-    readonly typeLabel: string | null;
+    readonly typeLabel?: string | null;
     /**
      * 
      * @type {string}
      * @memberof Document
      */
-    readonly description: string | null;
+    readonly description?: string | null;
     /**
      * The date-time the document was posted.
      * @type {string}
      * @memberof Document
      */
-    readonly createdAt: string;
+    readonly createdAt?: string;
     /**
-     * 
+     * The URL of the retrieve API call.
      * @type {string}
      * @memberof Document
      */
-    readonly url: string | null;
-    /**
-     * Binary PDF file data, base64 encoded. This is included when `data` parameter is specified.
-     * @type {string}
-     * @memberof Document
-     */
-    data?: string;
+    readonly url?: string | null;
 }
 
 /**
  * Check if a given object implements the Document interface.
  */
 export function instanceOfDocument(value: object): value is Document {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('type' in value) || value['type'] === undefined) return false;
-    if (!('typeLabel' in value) || value['typeLabel'] === undefined) return false;
-    if (!('description' in value) || value['description'] === undefined) return false;
-    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
-    if (!('url' in value) || value['url'] === undefined) return false;
     return true;
 }
 
@@ -86,13 +74,12 @@ export function DocumentFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     }
     return {
         
-        'id': json['id'],
-        'type': json['type'],
-        'typeLabel': json['type_label'],
-        'description': json['description'],
-        'createdAt': json['created_at'],
-        'url': json['url'],
-        'data': json['data'] == null ? undefined : json['data'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'type': json['type'] == null ? undefined : json['type'],
+        'typeLabel': json['type_label'] == null ? undefined : json['type_label'],
+        'description': json['description'] == null ? undefined : json['description'],
+        'createdAt': json['created_at'] == null ? undefined : json['created_at'],
+        'url': json['url'] == null ? undefined : json['url'],
     };
 }
 
@@ -102,7 +89,6 @@ export function DocumentToJSON(value?: Omit<Document, 'id'|'type'|'type_label'|'
     }
     return {
         
-        'data': value['data'],
     };
 }
 

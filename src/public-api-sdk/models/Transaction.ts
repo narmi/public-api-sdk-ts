@@ -13,6 +13,12 @@
  */
 
 import { mapValues } from '../runtime';
+import type { TransactionTypeEnum } from './TransactionTypeEnum';
+import {
+    TransactionTypeEnumFromJSON,
+    TransactionTypeEnumFromJSONTyped,
+    TransactionTypeEnumToJSON,
+} from './TransactionTypeEnum';
 import type { Check } from './Check';
 import {
     CheckFromJSON,
@@ -27,9 +33,7 @@ import {
 } from './Location';
 
 /**
- * A base class for serializers that automatically demote resource
- * representations according to provided transform classes for the resource.
- * Note that the one provided by rest_framework_transforms is locked to ModelSerializer.
+ * Representation of a non-pending monetary transaction.
  * @export
  * @interface Transaction
  */
@@ -39,79 +43,79 @@ export interface Transaction {
      * @type {string}
      * @memberof Transaction
      */
-    readonly description: string;
+    readonly description?: string;
     /**
      * Full description of the transaction.
      * @type {string}
      * @memberof Transaction
      */
-    readonly rawDescription: string;
+    readonly rawDescription?: string;
     /**
      * UUID of the transaction.
      * @type {string}
      * @memberof Transaction
      */
-    readonly id: string;
+    readonly id?: string;
     /**
      * Type of transaction typically starts with a value such as "withdrawal", "transfer", "deposit", "dividend", "fee", "loan_distribution", "loan_payment", and concatenated with a detail such as "ACH", "ATM", "Bill Payment", "Card", "Cash", "Check", "Draft", "Fee", "Home Banking", "Point of Sale".
      * @type {string}
      * @memberof Transaction
      */
-    readonly source: string;
+    readonly source?: string;
     /**
      * Date-time the transaction was settled. Null for non-final transactions.
      * @type {Date}
      * @memberof Transaction
      */
-    readonly settledAt: Date;
+    readonly settledAt?: Date;
     /**
      * Date-time when the transaction was created in the database.
      * @type {Date}
      * @memberof Transaction
      */
-    readonly createdAt: Date;
+    readonly createdAt?: Date;
     /**
      * UUID of the account.
      * @type {string}
      * @memberof Transaction
      */
-    readonly accountId: string;
+    readonly accountId?: string;
     /**
      * Category of the transaction. Defaults to `"Unknown"`.
      * @type {string}
      * @memberof Transaction
      */
-    readonly category: string;
+    readonly category?: string;
     /**
      * Sub-category of the transaction. Defaults to empty string `""`.
      * @type {string}
      * @memberof Transaction
      */
-    readonly subCategory: string;
+    readonly subCategory?: string;
     /**
      * Total amount of the transaction.
      * @type {number}
      * @memberof Transaction
      */
-    readonly amount: number;
+    readonly amount?: number;
     /**
      * New balance as of this transaction.
      * @type {number}
      * @memberof Transaction
      */
-    readonly ledgerBalance: number;
+    readonly ledgerBalance?: number;
     /**
      * Geographic location where the transaction was executed.
      * @type {Location}
      * @memberof Transaction
      */
-    readonly location: Location;
+    readonly location?: Location;
     /**
      * Details for the check related to a transaction.
      * @type {Check}
      * @memberof Transaction
      */
-    readonly check: Check;
+    readonly check?: Check;
     /**
      * A list of user-defined tags associated with the transaction.
      * @type {Array<string>}
@@ -123,13 +127,13 @@ export interface Transaction {
      * @type {string}
      * @memberof Transaction
      */
-    readonly merchant: string;
+    readonly merchant?: string;
     /**
      * Supplemental information associated with the account. This is often set to an empty object `{}`.
      * @type {{ [key: string]: any; }}
      * @memberof Transaction
      */
-    readonly metadata: { [key: string]: any; };
+    readonly metadata?: { [key: string]: any; };
     /**
      * Notes about the transaction set by the user.
      * @type {string}
@@ -137,11 +141,11 @@ export interface Transaction {
      */
     note?: string;
     /**
-     * Type of transaction (e.g. loan, withdrawal). Can contain additional details about the transaction type.
-     * @type {string}
+     * 
+     * @type {TransactionTypeEnum}
      * @memberof Transaction
      */
-    readonly type: string | null;
+    type?: TransactionTypeEnum | null;
     /**
      * Whether this is a recurring transaction.
      * @type {boolean}
@@ -154,22 +158,6 @@ export interface Transaction {
  * Check if a given object implements the Transaction interface.
  */
 export function instanceOfTransaction(value: object): value is Transaction {
-    if (!('description' in value) || value['description'] === undefined) return false;
-    if (!('rawDescription' in value) || value['rawDescription'] === undefined) return false;
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('source' in value) || value['source'] === undefined) return false;
-    if (!('settledAt' in value) || value['settledAt'] === undefined) return false;
-    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
-    if (!('accountId' in value) || value['accountId'] === undefined) return false;
-    if (!('category' in value) || value['category'] === undefined) return false;
-    if (!('subCategory' in value) || value['subCategory'] === undefined) return false;
-    if (!('amount' in value) || value['amount'] === undefined) return false;
-    if (!('ledgerBalance' in value) || value['ledgerBalance'] === undefined) return false;
-    if (!('location' in value) || value['location'] === undefined) return false;
-    if (!('check' in value) || value['check'] === undefined) return false;
-    if (!('merchant' in value) || value['merchant'] === undefined) return false;
-    if (!('metadata' in value) || value['metadata'] === undefined) return false;
-    if (!('type' in value) || value['type'] === undefined) return false;
     return true;
 }
 
@@ -183,29 +171,29 @@ export function TransactionFromJSONTyped(json: any, ignoreDiscriminator: boolean
     }
     return {
         
-        'description': json['description'],
-        'rawDescription': json['raw_description'],
-        'id': json['id'],
-        'source': json['source'],
-        'settledAt': (new Date(json['settled_at'])),
-        'createdAt': (new Date(json['created_at'])),
-        'accountId': json['account_id'],
-        'category': json['category'],
-        'subCategory': json['sub_category'],
-        'amount': json['amount'],
-        'ledgerBalance': json['ledger_balance'],
-        'location': LocationFromJSON(json['location']),
-        'check': CheckFromJSON(json['check']),
+        'description': json['description'] == null ? undefined : json['description'],
+        'rawDescription': json['raw_description'] == null ? undefined : json['raw_description'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'source': json['source'] == null ? undefined : json['source'],
+        'settledAt': json['settled_at'] == null ? undefined : (new Date(json['settled_at'])),
+        'createdAt': json['created_at'] == null ? undefined : (new Date(json['created_at'])),
+        'accountId': json['account_id'] == null ? undefined : json['account_id'],
+        'category': json['category'] == null ? undefined : json['category'],
+        'subCategory': json['sub_category'] == null ? undefined : json['sub_category'],
+        'amount': json['amount'] == null ? undefined : json['amount'],
+        'ledgerBalance': json['ledger_balance'] == null ? undefined : json['ledger_balance'],
+        'location': json['location'] == null ? undefined : LocationFromJSON(json['location']),
+        'check': json['check'] == null ? undefined : CheckFromJSON(json['check']),
         'tags': json['tags'] == null ? undefined : json['tags'],
-        'merchant': json['merchant'],
-        'metadata': json['metadata'],
+        'merchant': json['merchant'] == null ? undefined : json['merchant'],
+        'metadata': json['metadata'] == null ? undefined : json['metadata'],
         'note': json['note'] == null ? undefined : json['note'],
-        'type': json['type'],
+        'type': json['type'] == null ? undefined : TransactionTypeEnumFromJSON(json['type']),
         'recurring': json['recurring'] == null ? undefined : json['recurring'],
     };
 }
 
-export function TransactionToJSON(value?: Omit<Transaction, 'description'|'raw_description'|'id'|'source'|'settled_at'|'created_at'|'account_id'|'category'|'sub_category'|'amount'|'ledger_balance'|'location'|'check'|'merchant'|'metadata'|'type'> | null): any {
+export function TransactionToJSON(value?: Omit<Transaction, 'description'|'raw_description'|'id'|'source'|'settled_at'|'created_at'|'account_id'|'category'|'sub_category'|'amount'|'ledger_balance'|'location'|'check'|'merchant'|'metadata'> | null): any {
     if (value == null) {
         return value;
     }
@@ -213,6 +201,7 @@ export function TransactionToJSON(value?: Omit<Transaction, 'description'|'raw_d
         
         'tags': value['tags'],
         'note': value['note'],
+        'type': TransactionTypeEnumToJSON(value['type']),
         'recurring': value['recurring'],
     };
 }

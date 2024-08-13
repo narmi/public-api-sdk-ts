@@ -24,7 +24,7 @@ export interface AccountStop {
      * @type {string}
      * @memberof AccountStop
      */
-    readonly accountId: string;
+    readonly accountId?: string;
     /**
      * The lower bound check number which the stop applies to or the check number when targeting a single check with a specified amount.
      * @type {string}
@@ -49,7 +49,6 @@ export interface AccountStop {
  * Check if a given object implements the AccountStop interface.
  */
 export function instanceOfAccountStop(value: object): value is AccountStop {
-    if (!('accountId' in value) || value['accountId'] === undefined) return false;
     if (!('minCheckNumber' in value) || value['minCheckNumber'] === undefined) return false;
     return true;
 }
@@ -64,7 +63,7 @@ export function AccountStopFromJSONTyped(json: any, ignoreDiscriminator: boolean
     }
     return {
         
-        'accountId': json['account_id'],
+        'accountId': json['account_id'] == null ? undefined : json['account_id'],
         'minCheckNumber': json['min_check_number'],
         'maxCheckNumber': json['max_check_number'] == null ? undefined : json['max_check_number'],
         'amount': json['amount'] == null ? undefined : json['amount'],

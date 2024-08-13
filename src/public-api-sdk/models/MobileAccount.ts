@@ -61,67 +61,67 @@ export interface MobileAccount {
      * @type {string}
      * @memberof MobileAccount
      */
-    readonly name: string;
+    readonly name?: string;
     /**
      * Customizable nickname for the account, this is blank if custom name is not set.
      * @type {string}
      * @memberof MobileAccount
      */
-    readonly nickname: string;
+    readonly nickname?: string;
     /**
      * UUID of the account, can be used to query the account elsewhere in the API.
      * @type {string}
      * @memberof MobileAccount
      */
-    readonly id: string;
+    readonly id?: string;
     /**
      * Account number.
      * @type {string}
      * @memberof MobileAccount
      */
-    readonly number: string;
+    readonly number?: string;
     /**
      * Account type, can be set to `credit`, `debit`, or `deposit`.
      * @type {string}
      * @memberof MobileAccount
      */
-    readonly type: string;
+    readonly type?: string;
     /**
      * Product type for the account, can be one of `checking`, `savings`, `certificate_of_deposit`, `hsa`, `ira`, `ira_certificate_of_deposit`, `money_market`, `line_of_credit`, `credit_card`, `loan`, `mortgage`, or `lease`.
      * @type {Product}
      * @memberof MobileAccount
      */
-    readonly product: Product;
+    readonly product?: Product;
     /**
      * Date the account was last updated or changed.
      * @type {Date}
      * @memberof MobileAccount
      */
-    readonly updatedAt: Date;
+    readonly updatedAt?: Date;
     /**
      * List of users associated with the account.
      * @type {Array<Profile>}
      * @memberof MobileAccount
      */
-    readonly users: Array<Profile>;
+    readonly users?: Array<Profile>;
     /**
      * List of capabilities for the account. Dictates when and how money can be moved to and from the account. Can contain any of the values `transfer_destination`, `transfer_source`, `ach_destination`, `ach_source`, `check_order`, `stop_payment`, `check_withdrawal`, `external_loan_management`, and `zero_balance`.
      * @type {Array<string>}
      * @memberof MobileAccount
      */
-    readonly features: Array<string>;
+    readonly features?: Array<string>;
     /**
      * Routing number for the account.
      * @type {string}
      * @memberof MobileAccount
      */
-    readonly routing: string | null;
+    readonly routing?: string | null;
     /**
      * Information related to loan payments associated with the account.
      * @type {LoanDetails}
      * @memberof MobileAccount
      */
-    readonly loanDetails: LoanDetails;
+    readonly loanDetails?: LoanDetails;
     /**
      * Set to `institution` for internal accounts and `external` for external accounts.
      * 
@@ -130,109 +130,85 @@ export interface MobileAccount {
      * @type {SourceEnum}
      * @memberof MobileAccount
      */
-    readonly source: SourceEnum;
+    readonly source?: SourceEnum;
     /**
      * Indicates whether the account is active (unlocked) or inactive (locked). This does not affect the data returned from the list accounts endpoint.
      * @type {StateE11Enum}
      * @memberof MobileAccount
      */
-    readonly state: StateE11Enum;
+    readonly state?: StateE11Enum;
     /**
      * Per-user preference used to mark favorited accounts. This does not affect the data returned from the list accounts endpoint.
      * @type {boolean}
      * @memberof MobileAccount
      */
-    readonly favorited: boolean;
+    readonly favorited?: boolean;
     /**
      * Per-user preference to mark hidden accounts. This does not affect the data returned from the list accounts endpoint.
      * @type {boolean}
      * @memberof MobileAccount
      */
-    readonly hidden: boolean;
+    readonly hidden?: boolean;
     /**
      * Whether the account has been recently updated successfully from the upstream core banking system. The threshold is defined by a setting that can vary, but by default is set to 300 seconds.
      * @type {boolean}
      * @memberof MobileAccount
      */
-    readonly outOfDate: boolean;
+    readonly outOfDate?: boolean;
     /**
      * Last datetime the account was updated from the core.
      * @type {Date}
      * @memberof MobileAccount
      */
-    readonly updatedFromSourceAt: Date;
+    readonly updatedFromSourceAt?: Date;
     /**
      * A unique identifier that has a one-to-one mapping with an account number. This identifier is typically printed on the MICR line of physical checks written against this account and/or used in other externally facing bank payments like ACH or wires. Depending on the financial institution, it may be the same as account number or a different value.
      * @type {string}
      * @memberof MobileAccount
      */
-    readonly checkMicr: string;
+    readonly checkMicr?: string | null;
     /**
      * Additional information about the account such as interest rates, minimum balances, maturity date, etc.
      * @type {{ [key: string]: any; }}
      * @memberof MobileAccount
      */
-    readonly metadata: { [key: string]: any; };
+    readonly metadata?: { [key: string]: any; };
     /**
      * Primary, available, and ledger balance information.
      * @type {AccountBalance}
      * @memberof MobileAccount
      */
-    readonly balances: AccountBalance;
+    readonly balances?: AccountBalance;
     /**
      * Display name of the financial institution the account belongs to, derived from the routing number on the account.
      * @type {string}
      * @memberof MobileAccount
      */
-    readonly fiName: string;
+    readonly fiName?: string | null;
     /**
      * Date account was created in the database.
      * @type {string}
      * @memberof MobileAccount
      */
-    readonly createdAt: string;
+    readonly createdAt?: string;
     /**
      * Whether the account has been verified. Always true for internal accounts.
      * @type {boolean}
      * @memberof MobileAccount
      */
-    readonly verified: boolean;
+    readonly verified?: boolean;
     /**
      * Logo data for the financial institution in SVG (HTML) format.
      * @type {string}
      * @memberof MobileAccount
      */
-    readonly fiSvg: string;
+    readonly fiSvg?: string;
 }
 
 /**
  * Check if a given object implements the MobileAccount interface.
  */
 export function instanceOfMobileAccount(value: object): value is MobileAccount {
-    if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('nickname' in value) || value['nickname'] === undefined) return false;
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('number' in value) || value['number'] === undefined) return false;
-    if (!('type' in value) || value['type'] === undefined) return false;
-    if (!('product' in value) || value['product'] === undefined) return false;
-    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
-    if (!('users' in value) || value['users'] === undefined) return false;
-    if (!('features' in value) || value['features'] === undefined) return false;
-    if (!('routing' in value) || value['routing'] === undefined) return false;
-    if (!('loanDetails' in value) || value['loanDetails'] === undefined) return false;
-    if (!('source' in value) || value['source'] === undefined) return false;
-    if (!('state' in value) || value['state'] === undefined) return false;
-    if (!('favorited' in value) || value['favorited'] === undefined) return false;
-    if (!('hidden' in value) || value['hidden'] === undefined) return false;
-    if (!('outOfDate' in value) || value['outOfDate'] === undefined) return false;
-    if (!('updatedFromSourceAt' in value) || value['updatedFromSourceAt'] === undefined) return false;
-    if (!('checkMicr' in value) || value['checkMicr'] === undefined) return false;
-    if (!('metadata' in value) || value['metadata'] === undefined) return false;
-    if (!('balances' in value) || value['balances'] === undefined) return false;
-    if (!('fiName' in value) || value['fiName'] === undefined) return false;
-    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
-    if (!('verified' in value) || value['verified'] === undefined) return false;
-    if (!('fiSvg' in value) || value['fiSvg'] === undefined) return false;
     return true;
 }
 
@@ -246,30 +222,30 @@ export function MobileAccountFromJSONTyped(json: any, ignoreDiscriminator: boole
     }
     return {
         
-        'name': json['name'],
-        'nickname': json['nickname'],
-        'id': json['id'],
-        'number': json['number'],
-        'type': json['type'],
-        'product': ProductFromJSON(json['product']),
-        'updatedAt': (new Date(json['updated_at'])),
-        'users': ((json['users'] as Array<any>).map(ProfileFromJSON)),
-        'features': json['features'],
-        'routing': json['routing'],
-        'loanDetails': LoanDetailsFromJSON(json['loan_details']),
-        'source': SourceEnumFromJSON(json['source']),
-        'state': StateE11EnumFromJSON(json['state']),
-        'favorited': json['favorited'],
-        'hidden': json['hidden'],
-        'outOfDate': json['out_of_date'],
-        'updatedFromSourceAt': (new Date(json['updated_from_source_at'])),
-        'checkMicr': json['check_micr'],
-        'metadata': json['metadata'],
-        'balances': AccountBalanceFromJSON(json['balances']),
-        'fiName': json['fi_name'],
-        'createdAt': json['created_at'],
-        'verified': json['verified'],
-        'fiSvg': json['fi_svg'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'nickname': json['nickname'] == null ? undefined : json['nickname'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'number': json['number'] == null ? undefined : json['number'],
+        'type': json['type'] == null ? undefined : json['type'],
+        'product': json['product'] == null ? undefined : ProductFromJSON(json['product']),
+        'updatedAt': json['updated_at'] == null ? undefined : (new Date(json['updated_at'])),
+        'users': json['users'] == null ? undefined : ((json['users'] as Array<any>).map(ProfileFromJSON)),
+        'features': json['features'] == null ? undefined : json['features'],
+        'routing': json['routing'] == null ? undefined : json['routing'],
+        'loanDetails': json['loan_details'] == null ? undefined : LoanDetailsFromJSON(json['loan_details']),
+        'source': json['source'] == null ? undefined : SourceEnumFromJSON(json['source']),
+        'state': json['state'] == null ? undefined : StateE11EnumFromJSON(json['state']),
+        'favorited': json['favorited'] == null ? undefined : json['favorited'],
+        'hidden': json['hidden'] == null ? undefined : json['hidden'],
+        'outOfDate': json['out_of_date'] == null ? undefined : json['out_of_date'],
+        'updatedFromSourceAt': json['updated_from_source_at'] == null ? undefined : (new Date(json['updated_from_source_at'])),
+        'checkMicr': json['check_micr'] == null ? undefined : json['check_micr'],
+        'metadata': json['metadata'] == null ? undefined : json['metadata'],
+        'balances': json['balances'] == null ? undefined : AccountBalanceFromJSON(json['balances']),
+        'fiName': json['fi_name'] == null ? undefined : json['fi_name'],
+        'createdAt': json['created_at'] == null ? undefined : json['created_at'],
+        'verified': json['verified'] == null ? undefined : json['verified'],
+        'fiSvg': json['fi_svg'] == null ? undefined : json['fi_svg'],
     };
 }
 

@@ -16,7 +16,7 @@
 import * as runtime from '../runtime';
 import type {
   CheckDepositError,
-  CreateDepositRequest,
+  CreateDepositRequestRequest,
   CreateDepositResponse,
   DepositResponse,
   DepositsResponse,
@@ -28,8 +28,8 @@ import type {
 import {
     CheckDepositErrorFromJSON,
     CheckDepositErrorToJSON,
-    CreateDepositRequestFromJSON,
-    CreateDepositRequestToJSON,
+    CreateDepositRequestRequestFromJSON,
+    CreateDepositRequestRequestToJSON,
     CreateDepositResponseFromJSON,
     CreateDepositResponseToJSON,
     DepositResponseFromJSON,
@@ -47,7 +47,7 @@ import {
 } from '../models/index';
 
 export interface DepositsCreateRequest {
-    createDepositRequest: CreateDepositRequest;
+    createDepositRequestRequest: CreateDepositRequestRequest;
     format?: DepositsCreateFormatEnum;
 }
 
@@ -70,10 +70,10 @@ export class DepositsApi extends runtime.BaseAPI {
      * Create a deposit
      */
     async depositsCreateRaw(requestParameters: DepositsCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateDepositResponse>> {
-        if (requestParameters['createDepositRequest'] == null) {
+        if (requestParameters['createDepositRequestRequest'] == null) {
             throw new runtime.RequiredError(
-                'createDepositRequest',
-                'Required parameter "createDepositRequest" was null or undefined when calling depositsCreate().'
+                'createDepositRequestRequest',
+                'Required parameter "createDepositRequestRequest" was null or undefined when calling depositsCreate().'
             );
         }
 
@@ -100,7 +100,7 @@ export class DepositsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateDepositRequestToJSON(requestParameters['createDepositRequest']),
+            body: CreateDepositRequestRequestToJSON(requestParameters['createDepositRequestRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateDepositResponseFromJSON(jsonValue));

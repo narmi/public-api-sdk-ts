@@ -40,43 +40,43 @@ export interface Card {
      * @type {string}
      * @memberof Card
      */
-    readonly id: string;
+    readonly id?: string;
     /**
      * String uniquely identifying a user or user's primary account on the banking core.
      * @type {string}
      * @memberof Card
      */
-    readonly coreUserId: string;
+    readonly coreUserId?: string;
     /**
      * Bank Identification Number (BIN), the first 6 to 8 digits of the Primary Account Number (PAN)
      * @type {string}
      * @memberof Card
      */
-    readonly bin: string;
+    readonly bin?: string;
     /**
      * Last four digits of the card number.
      * @type {string}
      * @memberof Card
      */
-    readonly lastFourDigits: string;
+    readonly lastFourDigits?: string;
     /**
      * An image of the card or a placeholder image.
      * @type {string}
      * @memberof Card
      */
-    readonly svg: string;
+    readonly svg?: string;
     /**
      * "True" or "False"
      * @type {string}
      * @memberof Card
      */
-    readonly isCardNumberOnFront: string;
+    readonly isCardNumberOnFront?: string;
     /**
      * Hex value representing card text color.
      * @type {string}
      * @memberof Card
      */
-    readonly cardTextColor: string;
+    readonly cardTextColor?: string;
 }
 
 /**
@@ -84,13 +84,6 @@ export interface Card {
  */
 export function instanceOfCard(value: object): value is Card {
     if (!('state' in value) || value['state'] === undefined) return false;
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('coreUserId' in value) || value['coreUserId'] === undefined) return false;
-    if (!('bin' in value) || value['bin'] === undefined) return false;
-    if (!('lastFourDigits' in value) || value['lastFourDigits'] === undefined) return false;
-    if (!('svg' in value) || value['svg'] === undefined) return false;
-    if (!('isCardNumberOnFront' in value) || value['isCardNumberOnFront'] === undefined) return false;
-    if (!('cardTextColor' in value) || value['cardTextColor'] === undefined) return false;
     return true;
 }
 
@@ -105,13 +98,13 @@ export function CardFromJSONTyped(json: any, ignoreDiscriminator: boolean): Card
     return {
         
         'state': CardStateEnumFromJSON(json['state']),
-        'id': json['id'],
-        'coreUserId': json['core_user_id'],
-        'bin': json['bin'],
-        'lastFourDigits': json['last_four_digits'],
-        'svg': json['svg'],
-        'isCardNumberOnFront': json['is_card_number_on_front'],
-        'cardTextColor': json['card_text_color'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'coreUserId': json['core_user_id'] == null ? undefined : json['core_user_id'],
+        'bin': json['bin'] == null ? undefined : json['bin'],
+        'lastFourDigits': json['last_four_digits'] == null ? undefined : json['last_four_digits'],
+        'svg': json['svg'] == null ? undefined : json['svg'],
+        'isCardNumberOnFront': json['is_card_number_on_front'] == null ? undefined : json['is_card_number_on_front'],
+        'cardTextColor': json['card_text_color'] == null ? undefined : json['card_text_color'],
     };
 }
 

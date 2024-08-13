@@ -15,29 +15,32 @@
 
 import * as runtime from '../runtime';
 import type {
+  AccountsDocumentsRetrieve404Response,
   AccountsNotFoundError,
+  AutomaticSavingsEnrollmentRetrieve422Response,
   InvalidRequestError,
-  PatchedTransaction,
-  TransactionImagesRetrieve,
+  PatchedTransactionRequest,
+  TransactionImagesResponse,
+  TransactionsDetail,
   TransactionsResponse,
-  TransactionsRetrieve,
-  TransactionsUpdate,
 } from '../models/index';
 import {
+    AccountsDocumentsRetrieve404ResponseFromJSON,
+    AccountsDocumentsRetrieve404ResponseToJSON,
     AccountsNotFoundErrorFromJSON,
     AccountsNotFoundErrorToJSON,
+    AutomaticSavingsEnrollmentRetrieve422ResponseFromJSON,
+    AutomaticSavingsEnrollmentRetrieve422ResponseToJSON,
     InvalidRequestErrorFromJSON,
     InvalidRequestErrorToJSON,
-    PatchedTransactionFromJSON,
-    PatchedTransactionToJSON,
-    TransactionImagesRetrieveFromJSON,
-    TransactionImagesRetrieveToJSON,
+    PatchedTransactionRequestFromJSON,
+    PatchedTransactionRequestToJSON,
+    TransactionImagesResponseFromJSON,
+    TransactionImagesResponseToJSON,
+    TransactionsDetailFromJSON,
+    TransactionsDetailToJSON,
     TransactionsResponseFromJSON,
     TransactionsResponseToJSON,
-    TransactionsRetrieveFromJSON,
-    TransactionsRetrieveToJSON,
-    TransactionsUpdateFromJSON,
-    TransactionsUpdateToJSON,
 } from '../models/index';
 
 export interface TransactionsImagesRetrieveRequest {
@@ -54,7 +57,7 @@ export interface TransactionsRetrieveRequest {
 export interface TransactionsUpdateRequest {
     uuid: string;
     format?: TransactionsUpdateFormatEnum;
-    patchedTransaction?: Omit<PatchedTransaction, 'description'|'raw_description'|'id'|'source'|'settled_at'|'created_at'|'account_id'|'category'|'sub_category'|'amount'|'ledger_balance'|'location'|'check'|'merchant'|'metadata'|'type'>;
+    patchedTransactionRequest?: PatchedTransactionRequest;
 }
 
 export interface UserTransactionsList2Request {
@@ -73,10 +76,10 @@ export interface UserTransactionsList2Request {
 export class TransactionsApi extends runtime.BaseAPI {
 
     /**
-     * Fetch a specified transaction image.
+     * Fetch the base 64 encoded front and back check images for a specified transaction. This endpoint may return 503 or 422 status codes when interacting with the 3rd party integration that manages these images.
      * Retrieve transaction image
      */
-    async transactionsImagesRetrieveRaw(requestParameters: TransactionsImagesRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TransactionImagesRetrieve>> {
+    async transactionsImagesRetrieveRaw(requestParameters: TransactionsImagesRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TransactionImagesResponse>> {
         if (requestParameters['uuid'] == null) {
             throw new runtime.RequiredError(
                 'uuid',
@@ -107,14 +110,14 @@ export class TransactionsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TransactionImagesRetrieveFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => TransactionImagesResponseFromJSON(jsonValue));
     }
 
     /**
-     * Fetch a specified transaction image.
+     * Fetch the base 64 encoded front and back check images for a specified transaction. This endpoint may return 503 or 422 status codes when interacting with the 3rd party integration that manages these images.
      * Retrieve transaction image
      */
-    async transactionsImagesRetrieve(requestParameters: TransactionsImagesRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TransactionImagesRetrieve> {
+    async transactionsImagesRetrieve(requestParameters: TransactionsImagesRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TransactionImagesResponse> {
         const response = await this.transactionsImagesRetrieveRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -123,7 +126,7 @@ export class TransactionsApi extends runtime.BaseAPI {
      * Fetch a specified transaction.
      * Retrieve transaction
      */
-    async transactionsRetrieveRaw(requestParameters: TransactionsRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TransactionsRetrieve>> {
+    async transactionsRetrieveRaw(requestParameters: TransactionsRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TransactionsDetail>> {
         if (requestParameters['uuid'] == null) {
             throw new runtime.RequiredError(
                 'uuid',
@@ -158,14 +161,14 @@ export class TransactionsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TransactionsRetrieveFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => TransactionsDetailFromJSON(jsonValue));
     }
 
     /**
      * Fetch a specified transaction.
      * Retrieve transaction
      */
-    async transactionsRetrieve(requestParameters: TransactionsRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TransactionsRetrieve> {
+    async transactionsRetrieve(requestParameters: TransactionsRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TransactionsDetail> {
         const response = await this.transactionsRetrieveRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -174,7 +177,7 @@ export class TransactionsApi extends runtime.BaseAPI {
      * Update fields for a specified transaction.
      * Update transaction
      */
-    async transactionsUpdateRaw(requestParameters: TransactionsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TransactionsUpdate>> {
+    async transactionsUpdateRaw(requestParameters: TransactionsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TransactionsDetail>> {
         if (requestParameters['uuid'] == null) {
             throw new runtime.RequiredError(
                 'uuid',
@@ -205,17 +208,17 @@ export class TransactionsApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: PatchedTransactionToJSON(requestParameters['patchedTransaction']),
+            body: PatchedTransactionRequestToJSON(requestParameters['patchedTransactionRequest']),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TransactionsUpdateFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => TransactionsDetailFromJSON(jsonValue));
     }
 
     /**
      * Update fields for a specified transaction.
      * Update transaction
      */
-    async transactionsUpdate(requestParameters: TransactionsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TransactionsUpdate> {
+    async transactionsUpdate(requestParameters: TransactionsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TransactionsDetail> {
         const response = await this.transactionsUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }

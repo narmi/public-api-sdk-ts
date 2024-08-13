@@ -24,19 +24,19 @@ export interface FedwireTemplate {
      * @type {Date}
      * @memberof FedwireTemplate
      */
-    readonly lastUsed: Date;
+    readonly lastUsed?: Date;
     /**
      * The version ID of the template, based on when template or recipient details were last updated.
      * @type {string}
      * @memberof FedwireTemplate
      */
-    readonly versionId: string;
+    readonly versionId?: string;
     /**
      * 
      * @type {string}
      * @memberof FedwireTemplate
      */
-    readonly id: string;
+    readonly id?: string;
     /**
      * The UUID of the wire recipient for wires sent using this template.
      * @type {string}
@@ -79,9 +79,6 @@ export interface FedwireTemplate {
  * Check if a given object implements the FedwireTemplate interface.
  */
 export function instanceOfFedwireTemplate(value: object): value is FedwireTemplate {
-    if (!('lastUsed' in value) || value['lastUsed'] === undefined) return false;
-    if (!('versionId' in value) || value['versionId'] === undefined) return false;
-    if (!('id' in value) || value['id'] === undefined) return false;
     if (!('recipient' in value) || value['recipient'] === undefined) return false;
     if (!('sourceAccount' in value) || value['sourceAccount'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
@@ -98,9 +95,9 @@ export function FedwireTemplateFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'lastUsed': (new Date(json['last_used'])),
-        'versionId': json['version_id'],
-        'id': json['id'],
+        'lastUsed': json['last_used'] == null ? undefined : (new Date(json['last_used'])),
+        'versionId': json['version_id'] == null ? undefined : json['version_id'],
+        'id': json['id'] == null ? undefined : json['id'],
         'recipient': json['recipient'],
         'sourceAccount': json['source_account'],
         'name': json['name'],

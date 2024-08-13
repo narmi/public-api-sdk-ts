@@ -35,109 +35,109 @@ export interface WireTransaction {
      * @type {string}
      * @memberof WireTransaction
      */
-    readonly id: string;
+    readonly id?: string;
     /**
      * 
      * @type {Date}
      * @memberof WireTransaction
      */
-    readonly createdAt: Date;
+    readonly createdAt?: Date;
     /**
      * 
      * @type {Date}
      * @memberof WireTransaction
      */
-    readonly processedAt: Date | null;
+    readonly processedAt?: Date | null;
     /**
      * The account name and masked account number.
      * @type {string}
      * @memberof WireTransaction
      */
-    readonly fromAccountDisplay: string;
+    readonly fromAccountDisplay?: string;
     /**
      * The current human-readable state of the wire transaction.
      * @type {string}
      * @memberof WireTransaction
      */
-    readonly displayState: string;
+    readonly displayState?: string;
     /**
      * The abbreviated, capitalized name of the destination financial institution.
      * @type {string}
      * @memberof WireTransaction
      */
-    readonly toAccountInstitutionName: string;
+    readonly toAccountInstitutionName?: string;
     /**
      * The account from which the wire transaction was sent.
      * @type {string}
      * @memberof WireTransaction
      */
-    readonly fromAccount: string;
+    readonly fromAccount?: string;
     /**
      * The account number of the recipient.
      * @type {string}
      * @memberof WireTransaction
      */
-    readonly toAccountNumber: string;
+    readonly toAccountNumber?: string;
     /**
      * The routing number of the recipient.
      * @type {string}
      * @memberof WireTransaction
      */
-    readonly toAccountRoutingNumber: string;
+    readonly toAccountRoutingNumber?: string;
     /**
      * The name of the recipient.
      * @type {string}
      * @memberof WireTransaction
      */
-    readonly beneficiaryName: string;
+    readonly beneficiaryName?: string;
     /**
      * The first line of the recipient's address.
      * @type {string}
      * @memberof WireTransaction
      */
-    readonly beneficiaryAddress1: string;
+    readonly beneficiaryAddress1?: string;
     /**
      * The second line of the recipient's address. Usually, this is the apartment, floor, or suite.
      * @type {string}
      * @memberof WireTransaction
      */
-    readonly beneficiaryAddress2: string;
+    readonly beneficiaryAddress2?: string;
     /**
      * The third line of the recipient's address. Usually, this is the city, state, postal code and country code.
      * @type {string}
      * @memberof WireTransaction
      */
-    readonly beneficiaryAddress3: string;
+    readonly beneficiaryAddress3?: string;
     /**
      * The first 35 characters of the memo used to create the wire transaction. If the memo is longer than 35 characters, the memo will be split into additional memo lines.
      * @type {string}
      * @memberof WireTransaction
      */
-    readonly memo1: string;
+    readonly memo1?: string;
     /**
      * Characters 36-70 of the memo used to create the wire transaction.
      * @type {string}
      * @memberof WireTransaction
      */
-    readonly memo2: string;
+    readonly memo2?: string;
     /**
      * Characters 71-105 of the memo used to create the wire transaction.
      * @type {string}
      * @memberof WireTransaction
      */
-    readonly memo3: string;
+    readonly memo3?: string;
     /**
      * Characters 106-140 of the memo used to create the wire transaction.
      * @type {string}
      * @memberof WireTransaction
      */
-    readonly memo4: string;
+    readonly memo4?: string;
     /**
      * The name of the template used to create the wire transaction.
      * @type {string}
      * @memberof WireTransaction
      */
-    readonly templateName: string | null;
+    readonly templateName?: string | null;
     /**
      * Choices are configurable via Institution Settings. Please refer to Institution Settings for the most current list of wire reason types. 
      * @type {string}
@@ -149,58 +149,19 @@ export interface WireTransaction {
      * @type {WireTransactionStateEnum}
      * @memberof WireTransaction
      */
-    readonly state: WireTransactionStateEnum;
-    /**
-     * The UUID of the fedwire template to use for the wire transaction.
-     * @type {string}
-     * @memberof WireTransaction
-     */
-    fedwireTemplate: string;
+    readonly state?: WireTransactionStateEnum;
     /**
      * A field that returns the original value in the currency's smallest unit (e.g. cents).
      * @type {number}
      * @memberof WireTransaction
      */
     amount?: number;
-    /**
-     * Memo for the wire transaction. If not provided, the memo will be generated from the template's memo field.
-     * @type {string}
-     * @memberof WireTransaction
-     */
-    memo?: string | null;
-    /**
-     * The version ID of the template, based on when template or recipient details were last updated. This value is used to ensure that the template hasn't been updated since the user began drafting a wire using this template.
-     * @type {string}
-     * @memberof WireTransaction
-     */
-    versionId: string;
 }
 
 /**
  * Check if a given object implements the WireTransaction interface.
  */
 export function instanceOfWireTransaction(value: object): value is WireTransaction {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
-    if (!('processedAt' in value) || value['processedAt'] === undefined) return false;
-    if (!('fromAccountDisplay' in value) || value['fromAccountDisplay'] === undefined) return false;
-    if (!('displayState' in value) || value['displayState'] === undefined) return false;
-    if (!('toAccountInstitutionName' in value) || value['toAccountInstitutionName'] === undefined) return false;
-    if (!('fromAccount' in value) || value['fromAccount'] === undefined) return false;
-    if (!('toAccountNumber' in value) || value['toAccountNumber'] === undefined) return false;
-    if (!('toAccountRoutingNumber' in value) || value['toAccountRoutingNumber'] === undefined) return false;
-    if (!('beneficiaryName' in value) || value['beneficiaryName'] === undefined) return false;
-    if (!('beneficiaryAddress1' in value) || value['beneficiaryAddress1'] === undefined) return false;
-    if (!('beneficiaryAddress2' in value) || value['beneficiaryAddress2'] === undefined) return false;
-    if (!('beneficiaryAddress3' in value) || value['beneficiaryAddress3'] === undefined) return false;
-    if (!('memo1' in value) || value['memo1'] === undefined) return false;
-    if (!('memo2' in value) || value['memo2'] === undefined) return false;
-    if (!('memo3' in value) || value['memo3'] === undefined) return false;
-    if (!('memo4' in value) || value['memo4'] === undefined) return false;
-    if (!('templateName' in value) || value['templateName'] === undefined) return false;
-    if (!('state' in value) || value['state'] === undefined) return false;
-    if (!('fedwireTemplate' in value) || value['fedwireTemplate'] === undefined) return false;
-    if (!('versionId' in value) || value['versionId'] === undefined) return false;
     return true;
 }
 
@@ -214,30 +175,27 @@ export function WireTransactionFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'id': json['id'],
-        'createdAt': (new Date(json['created_at'])),
-        'processedAt': (json['processed_at'] == null ? null : new Date(json['processed_at'])),
-        'fromAccountDisplay': json['from_account_display'],
-        'displayState': json['display_state'],
-        'toAccountInstitutionName': json['to_account_institution_name'],
-        'fromAccount': json['from_account'],
-        'toAccountNumber': json['to_account_number'],
-        'toAccountRoutingNumber': json['to_account_routing_number'],
-        'beneficiaryName': json['beneficiary_name'],
-        'beneficiaryAddress1': json['beneficiary_address_1'],
-        'beneficiaryAddress2': json['beneficiary_address_2'],
-        'beneficiaryAddress3': json['beneficiary_address_3'],
-        'memo1': json['memo_1'],
-        'memo2': json['memo_2'],
-        'memo3': json['memo_3'],
-        'memo4': json['memo_4'],
-        'templateName': json['template_name'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'createdAt': json['created_at'] == null ? undefined : (new Date(json['created_at'])),
+        'processedAt': json['processed_at'] == null ? undefined : (new Date(json['processed_at'])),
+        'fromAccountDisplay': json['from_account_display'] == null ? undefined : json['from_account_display'],
+        'displayState': json['display_state'] == null ? undefined : json['display_state'],
+        'toAccountInstitutionName': json['to_account_institution_name'] == null ? undefined : json['to_account_institution_name'],
+        'fromAccount': json['from_account'] == null ? undefined : json['from_account'],
+        'toAccountNumber': json['to_account_number'] == null ? undefined : json['to_account_number'],
+        'toAccountRoutingNumber': json['to_account_routing_number'] == null ? undefined : json['to_account_routing_number'],
+        'beneficiaryName': json['beneficiary_name'] == null ? undefined : json['beneficiary_name'],
+        'beneficiaryAddress1': json['beneficiary_address_1'] == null ? undefined : json['beneficiary_address_1'],
+        'beneficiaryAddress2': json['beneficiary_address_2'] == null ? undefined : json['beneficiary_address_2'],
+        'beneficiaryAddress3': json['beneficiary_address_3'] == null ? undefined : json['beneficiary_address_3'],
+        'memo1': json['memo_1'] == null ? undefined : json['memo_1'],
+        'memo2': json['memo_2'] == null ? undefined : json['memo_2'],
+        'memo3': json['memo_3'] == null ? undefined : json['memo_3'],
+        'memo4': json['memo_4'] == null ? undefined : json['memo_4'],
+        'templateName': json['template_name'] == null ? undefined : json['template_name'],
         'wireReason': json['wire_reason'] == null ? undefined : json['wire_reason'],
-        'state': WireTransactionStateEnumFromJSON(json['state']),
-        'fedwireTemplate': json['fedwire_template'],
+        'state': json['state'] == null ? undefined : WireTransactionStateEnumFromJSON(json['state']),
         'amount': json['amount'] == null ? undefined : json['amount'],
-        'memo': json['memo'] == null ? undefined : json['memo'],
-        'versionId': json['version_id'],
     };
 }
 
@@ -248,10 +206,7 @@ export function WireTransactionToJSON(value?: Omit<WireTransaction, 'id'|'create
     return {
         
         'wire_reason': value['wireReason'],
-        'fedwire_template': value['fedwireTemplate'],
         'amount': value['amount'],
-        'memo': value['memo'],
-        'version_id': value['versionId'],
     };
 }
 

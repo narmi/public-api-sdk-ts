@@ -15,53 +15,56 @@
 
 import * as runtime from '../runtime';
 import type {
+  AccountsDocumentsRetrieve404Response,
   AutomaticSavingsEnrollmentRetrieve422Response,
-  CardsList403Response,
   CreateEnrollmentUrlsResponse,
   EnrollCreate400Response,
   Enrollment,
-  EnrollmentUrlCreate,
-  GenericError,
-  NotFoundError,
+  EnrollmentCompleteDocRequest,
+  EnrollmentDocRequest,
+  EnrollmentUrlCreateRequest,
   UsersEnrollmentCodeCreate200Response,
   VerifyEnrollment,
+  VerifyEnrollmentDocRequest,
 } from '../models/index';
 import {
+    AccountsDocumentsRetrieve404ResponseFromJSON,
+    AccountsDocumentsRetrieve404ResponseToJSON,
     AutomaticSavingsEnrollmentRetrieve422ResponseFromJSON,
     AutomaticSavingsEnrollmentRetrieve422ResponseToJSON,
-    CardsList403ResponseFromJSON,
-    CardsList403ResponseToJSON,
     CreateEnrollmentUrlsResponseFromJSON,
     CreateEnrollmentUrlsResponseToJSON,
     EnrollCreate400ResponseFromJSON,
     EnrollCreate400ResponseToJSON,
     EnrollmentFromJSON,
     EnrollmentToJSON,
-    EnrollmentUrlCreateFromJSON,
-    EnrollmentUrlCreateToJSON,
-    GenericErrorFromJSON,
-    GenericErrorToJSON,
-    NotFoundErrorFromJSON,
-    NotFoundErrorToJSON,
+    EnrollmentCompleteDocRequestFromJSON,
+    EnrollmentCompleteDocRequestToJSON,
+    EnrollmentDocRequestFromJSON,
+    EnrollmentDocRequestToJSON,
+    EnrollmentUrlCreateRequestFromJSON,
+    EnrollmentUrlCreateRequestToJSON,
     UsersEnrollmentCodeCreate200ResponseFromJSON,
     UsersEnrollmentCodeCreate200ResponseToJSON,
     VerifyEnrollmentFromJSON,
     VerifyEnrollmentToJSON,
+    VerifyEnrollmentDocRequestFromJSON,
+    VerifyEnrollmentDocRequestToJSON,
 } from '../models/index';
 
 export interface EnrollCreateRequest {
     format?: EnrollCreateFormatEnum;
-    enrollment?: Omit<Enrollment, 'user'|'devices'>;
+    enrollmentDocRequest?: EnrollmentDocRequest;
 }
 
 export interface EnrollVerifyCreateRequest {
-    verifyEnrollment: Omit<VerifyEnrollment, 'user'>;
+    verifyEnrollmentDocRequest: VerifyEnrollmentDocRequest;
     format?: EnrollVerifyCreateFormatEnum;
 }
 
 export interface EnrollmentsCreateRequest {
     format?: EnrollmentsCreateFormatEnum;
-    enrollmentUrlCreate?: EnrollmentUrlCreate;
+    enrollmentUrlCreateRequest?: EnrollmentUrlCreateRequest;
 }
 
 export interface UsersEnrollmentCodeCreateRequest {
@@ -72,6 +75,7 @@ export interface UsersEnrollmentCodeCreateRequest {
 export interface UsersEnrollmentCompleteCreateRequest {
     userUuid: string;
     format?: UsersEnrollmentCompleteCreateFormatEnum;
+    enrollmentCompleteDocRequest?: EnrollmentCompleteDocRequest;
 }
 
 /**
@@ -94,15 +98,12 @@ export class EnrollmentsApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
-        }
         const response = await this.request({
             path: `/v1/enroll/`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: EnrollmentToJSON(requestParameters['enrollment']),
+            body: EnrollmentDocRequestToJSON(requestParameters['enrollmentDocRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EnrollmentFromJSON(jsonValue));
@@ -118,14 +119,14 @@ export class EnrollmentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Verifies an enrolling user\'s enrollment code. If verified, returns user information.
+     * Verifies an enrolling user\'s enrollment code.  Enrollment codes can be generated via the <a href=\"#tag/enrollments/operation/users_enrollment_code_create\">regenerate enrollment code endpoint</a>.  If verified, returns user information.
      * Verify enrollment code
      */
     async enrollVerifyCreateRaw(requestParameters: EnrollVerifyCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<VerifyEnrollment>> {
-        if (requestParameters['verifyEnrollment'] == null) {
+        if (requestParameters['verifyEnrollmentDocRequest'] == null) {
             throw new runtime.RequiredError(
-                'verifyEnrollment',
-                'Required parameter "verifyEnrollment" was null or undefined when calling enrollVerifyCreate().'
+                'verifyEnrollmentDocRequest',
+                'Required parameter "verifyEnrollmentDocRequest" was null or undefined when calling enrollVerifyCreate().'
             );
         }
 
@@ -139,22 +140,19 @@ export class EnrollmentsApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
-        }
         const response = await this.request({
             path: `/v1/enroll_verify/`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: VerifyEnrollmentToJSON(requestParameters['verifyEnrollment']),
+            body: VerifyEnrollmentDocRequestToJSON(requestParameters['verifyEnrollmentDocRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => VerifyEnrollmentFromJSON(jsonValue));
     }
 
     /**
-     * Verifies an enrolling user\'s enrollment code. If verified, returns user information.
+     * Verifies an enrolling user\'s enrollment code.  Enrollment codes can be generated via the <a href=\"#tag/enrollments/operation/users_enrollment_code_create\">regenerate enrollment code endpoint</a>.  If verified, returns user information.
      * Verify enrollment code
      */
     async enrollVerifyCreate(requestParameters: EnrollVerifyCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<VerifyEnrollment> {
@@ -190,7 +188,7 @@ export class EnrollmentsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: EnrollmentUrlCreateToJSON(requestParameters['enrollmentUrlCreate']),
+            body: EnrollmentUrlCreateRequestToJSON(requestParameters['enrollmentUrlCreateRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateEnrollmentUrlsResponseFromJSON(jsonValue));
@@ -225,9 +223,6 @@ export class EnrollmentsApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
-        }
         const response = await this.request({
             path: `/v1/users/{user_uuid}/enrollment_code/`.replace(`{${"user_uuid"}}`, encodeURIComponent(String(requestParameters['userUuid']))),
             method: 'POST',
@@ -267,6 +262,8 @@ export class EnrollmentsApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        headerParameters['Content-Type'] = 'application/json';
+
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
             const tokenString = await token("OAuth2", []);
@@ -280,6 +277,7 @@ export class EnrollmentsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: EnrollmentCompleteDocRequestToJSON(requestParameters['enrollmentCompleteDocRequest']),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);

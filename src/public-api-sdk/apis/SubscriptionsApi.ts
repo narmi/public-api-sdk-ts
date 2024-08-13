@@ -18,8 +18,9 @@ import type {
   AutomaticSavingsEnrollmentRetrieve422Response,
   ObjectNotFoundError,
   PaginatedSubscriptionList,
-  PatchedSubscription,
+  PatchedSubscriptionRequest,
   Subscription,
+  SubscriptionRequest,
   SubscriptionResponse,
 } from '../models/index';
 import {
@@ -29,16 +30,18 @@ import {
     ObjectNotFoundErrorToJSON,
     PaginatedSubscriptionListFromJSON,
     PaginatedSubscriptionListToJSON,
-    PatchedSubscriptionFromJSON,
-    PatchedSubscriptionToJSON,
+    PatchedSubscriptionRequestFromJSON,
+    PatchedSubscriptionRequestToJSON,
     SubscriptionFromJSON,
     SubscriptionToJSON,
+    SubscriptionRequestFromJSON,
+    SubscriptionRequestToJSON,
     SubscriptionResponseFromJSON,
     SubscriptionResponseToJSON,
 } from '../models/index';
 
 export interface SubscriptionsCreateRequest {
-    subscription: Omit<Subscription, 'id'|'secret'|'created_at'|'updated_at'>;
+    subscriptionRequest: SubscriptionRequest;
     format?: SubscriptionsCreateFormatEnum;
 }
 
@@ -54,7 +57,7 @@ export interface SubscriptionsListRequest {
 
 export interface SubscriptionsPartialUpdateRequest {
     uuid: string;
-    patchedSubscription: Omit<PatchedSubscription, 'id'|'secret'|'created_at'|'updated_at'>;
+    patchedSubscriptionRequest: PatchedSubscriptionRequest;
     format?: SubscriptionsPartialUpdateFormatEnum;
 }
 
@@ -65,7 +68,7 @@ export interface SubscriptionsRetrieveRequest {
 
 export interface SubscriptionsUpdateRequest {
     uuid: string;
-    subscription: Omit<Subscription, 'id'|'secret'|'created_at'|'updated_at'>;
+    subscriptionRequest: SubscriptionRequest;
     format?: SubscriptionsUpdateFormatEnum;
 }
 
@@ -79,10 +82,10 @@ export class SubscriptionsApi extends runtime.BaseAPI {
      * Create a subscription
      */
     async subscriptionsCreateRaw(requestParameters: SubscriptionsCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SubscriptionResponse>> {
-        if (requestParameters['subscription'] == null) {
+        if (requestParameters['subscriptionRequest'] == null) {
             throw new runtime.RequiredError(
-                'subscription',
-                'Required parameter "subscription" was null or undefined when calling subscriptionsCreate().'
+                'subscriptionRequest',
+                'Required parameter "subscriptionRequest" was null or undefined when calling subscriptionsCreate().'
             );
         }
 
@@ -109,7 +112,7 @@ export class SubscriptionsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: SubscriptionToJSON(requestParameters['subscription']),
+            body: SubscriptionRequestToJSON(requestParameters['subscriptionRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SubscriptionResponseFromJSON(jsonValue));
@@ -226,10 +229,10 @@ export class SubscriptionsApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['patchedSubscription'] == null) {
+        if (requestParameters['patchedSubscriptionRequest'] == null) {
             throw new runtime.RequiredError(
-                'patchedSubscription',
-                'Required parameter "patchedSubscription" was null or undefined when calling subscriptionsPartialUpdate().'
+                'patchedSubscriptionRequest',
+                'Required parameter "patchedSubscriptionRequest" was null or undefined when calling subscriptionsPartialUpdate().'
             );
         }
 
@@ -256,7 +259,7 @@ export class SubscriptionsApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: PatchedSubscriptionToJSON(requestParameters['patchedSubscription']),
+            body: PatchedSubscriptionRequestToJSON(requestParameters['patchedSubscriptionRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SubscriptionFromJSON(jsonValue));
@@ -330,10 +333,10 @@ export class SubscriptionsApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['subscription'] == null) {
+        if (requestParameters['subscriptionRequest'] == null) {
             throw new runtime.RequiredError(
-                'subscription',
-                'Required parameter "subscription" was null or undefined when calling subscriptionsUpdate().'
+                'subscriptionRequest',
+                'Required parameter "subscriptionRequest" was null or undefined when calling subscriptionsUpdate().'
             );
         }
 
@@ -360,7 +363,7 @@ export class SubscriptionsApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: SubscriptionToJSON(requestParameters['subscription']),
+            body: SubscriptionRequestToJSON(requestParameters['subscriptionRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SubscriptionResponseFromJSON(jsonValue));

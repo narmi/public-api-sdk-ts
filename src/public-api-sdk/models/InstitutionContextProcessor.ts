@@ -24,61 +24,61 @@ export interface InstitutionContextProcessor {
      * @type {string}
      * @memberof InstitutionContextProcessor
      */
-    readonly forgotPasswordUrl: string;
+    readonly forgotPasswordUrl?: string;
     /**
      * 
      * @type {string}
      * @memberof InstitutionContextProcessor
      */
-    readonly registerUrl: string;
+    readonly registerUrl?: string;
     /**
      * 
      * @type {string}
      * @memberof InstitutionContextProcessor
      */
-    readonly mainDomain: string;
+    readonly mainDomain?: string;
     /**
      * 
      * @type {string}
      * @memberof InstitutionContextProcessor
      */
-    readonly shortName: string;
+    readonly shortName?: string;
     /**
      * 
      * @type {string}
      * @memberof InstitutionContextProcessor
      */
-    readonly routingNumber: string;
+    readonly routingNumber?: string;
     /**
      * 
      * @type {string}
      * @memberof InstitutionContextProcessor
      */
-    readonly helpPhone: string;
+    readonly helpPhone?: string;
     /**
      * 
      * @type {string}
      * @memberof InstitutionContextProcessor
      */
-    readonly helpEmail: string;
+    readonly helpEmail?: string;
     /**
      * 
      * @type {string}
      * @memberof InstitutionContextProcessor
      */
-    readonly helpCardPhone: string;
+    readonly helpCardPhone?: string;
     /**
      * 
      * @type {string}
      * @memberof InstitutionContextProcessor
      */
-    readonly termsUrl: string;
+    readonly termsUrl?: string;
     /**
      * 
      * @type {string}
      * @memberof InstitutionContextProcessor
      */
-    readonly logoUrl: string;
+    readonly logoUrl?: string;
     /**
      * 
      * @type {string}
@@ -103,16 +103,6 @@ export interface InstitutionContextProcessor {
  * Check if a given object implements the InstitutionContextProcessor interface.
  */
 export function instanceOfInstitutionContextProcessor(value: object): value is InstitutionContextProcessor {
-    if (!('forgotPasswordUrl' in value) || value['forgotPasswordUrl'] === undefined) return false;
-    if (!('registerUrl' in value) || value['registerUrl'] === undefined) return false;
-    if (!('mainDomain' in value) || value['mainDomain'] === undefined) return false;
-    if (!('shortName' in value) || value['shortName'] === undefined) return false;
-    if (!('routingNumber' in value) || value['routingNumber'] === undefined) return false;
-    if (!('helpPhone' in value) || value['helpPhone'] === undefined) return false;
-    if (!('helpEmail' in value) || value['helpEmail'] === undefined) return false;
-    if (!('helpCardPhone' in value) || value['helpCardPhone'] === undefined) return false;
-    if (!('termsUrl' in value) || value['termsUrl'] === undefined) return false;
-    if (!('logoUrl' in value) || value['logoUrl'] === undefined) return false;
     if (!('tertiaryColorHex' in value) || value['tertiaryColorHex'] === undefined) return false;
     if (!('primaryColorHex' in value) || value['primaryColorHex'] === undefined) return false;
     if (!('secondaryColorHex' in value) || value['secondaryColorHex'] === undefined) return false;
@@ -129,16 +119,16 @@ export function InstitutionContextProcessorFromJSONTyped(json: any, ignoreDiscri
     }
     return {
         
-        'forgotPasswordUrl': json['forgot_password_url'],
-        'registerUrl': json['register_url'],
-        'mainDomain': json['main_domain'],
-        'shortName': json['short_name'],
-        'routingNumber': json['routing_number'],
-        'helpPhone': json['help_phone'],
-        'helpEmail': json['help_email'],
-        'helpCardPhone': json['help_card_phone'],
-        'termsUrl': json['terms_url'],
-        'logoUrl': json['logo_url'],
+        'forgotPasswordUrl': json['forgot_password_url'] == null ? undefined : json['forgot_password_url'],
+        'registerUrl': json['register_url'] == null ? undefined : json['register_url'],
+        'mainDomain': json['main_domain'] == null ? undefined : json['main_domain'],
+        'shortName': json['short_name'] == null ? undefined : json['short_name'],
+        'routingNumber': json['routing_number'] == null ? undefined : json['routing_number'],
+        'helpPhone': json['help_phone'] == null ? undefined : json['help_phone'],
+        'helpEmail': json['help_email'] == null ? undefined : json['help_email'],
+        'helpCardPhone': json['help_card_phone'] == null ? undefined : json['help_card_phone'],
+        'termsUrl': json['terms_url'] == null ? undefined : json['terms_url'],
+        'logoUrl': json['logo_url'] == null ? undefined : json['logo_url'],
         'tertiaryColorHex': json['tertiary_color_hex'],
         'primaryColorHex': json['primary_color_hex'],
         'secondaryColorHex': json['secondary_color_hex'],

@@ -24,28 +24,25 @@ export interface Team {
      * @type {string}
      * @memberof Team
      */
-    readonly uuid: string;
+    readonly uuid?: string;
     /**
      * 
      * @type {string}
      * @memberof Team
      */
-    readonly name: string;
+    readonly name?: string;
     /**
      * 
      * @type {string}
      * @memberof Team
      */
-    readonly description: string;
+    readonly description?: string;
 }
 
 /**
  * Check if a given object implements the Team interface.
  */
 export function instanceOfTeam(value: object): value is Team {
-    if (!('uuid' in value) || value['uuid'] === undefined) return false;
-    if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('description' in value) || value['description'] === undefined) return false;
     return true;
 }
 
@@ -59,9 +56,9 @@ export function TeamFromJSONTyped(json: any, ignoreDiscriminator: boolean): Team
     }
     return {
         
-        'uuid': json['uuid'],
-        'name': json['name'],
-        'description': json['description'],
+        'uuid': json['uuid'] == null ? undefined : json['uuid'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'description': json['description'] == null ? undefined : json['description'],
     };
 }
 

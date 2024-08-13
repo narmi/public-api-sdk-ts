@@ -16,12 +16,15 @@
 import * as runtime from '../runtime';
 import type {
   FedwireTemplate,
+  FedwireTemplateRequest,
   GeneralError,
   PaginatedFedwireTemplateList,
 } from '../models/index';
 import {
     FedwireTemplateFromJSON,
     FedwireTemplateToJSON,
+    FedwireTemplateRequestFromJSON,
+    FedwireTemplateRequestToJSON,
     GeneralErrorFromJSON,
     GeneralErrorToJSON,
     PaginatedFedwireTemplateListFromJSON,
@@ -29,7 +32,7 @@ import {
 } from '../models/index';
 
 export interface FedwireTemplatesCreateRequest {
-    fedwireTemplate: Omit<FedwireTemplate, 'last_used'|'version_id'|'id'>;
+    fedwireTemplateRequest: FedwireTemplateRequest;
     format?: FedwireTemplatesCreateFormatEnum;
 }
 
@@ -50,7 +53,7 @@ export interface FedwireTemplatesRetrieveRequest {
 
 export interface FedwireTemplatesUpdateRequest {
     uuid: string;
-    fedwireTemplate: Omit<FedwireTemplate, 'last_used'|'version_id'|'id'>;
+    fedwireTemplateRequest: FedwireTemplateRequest;
     format?: FedwireTemplatesUpdateFormatEnum;
 }
 
@@ -64,10 +67,10 @@ export class FedwireTemplatesApi extends runtime.BaseAPI {
      * Create a Fedwire template
      */
     async fedwireTemplatesCreateRaw(requestParameters: FedwireTemplatesCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FedwireTemplate>> {
-        if (requestParameters['fedwireTemplate'] == null) {
+        if (requestParameters['fedwireTemplateRequest'] == null) {
             throw new runtime.RequiredError(
-                'fedwireTemplate',
-                'Required parameter "fedwireTemplate" was null or undefined when calling fedwireTemplatesCreate().'
+                'fedwireTemplateRequest',
+                'Required parameter "fedwireTemplateRequest" was null or undefined when calling fedwireTemplatesCreate().'
             );
         }
 
@@ -81,15 +84,12 @@ export class FedwireTemplatesApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
-        }
         const response = await this.request({
             path: `/v1/fedwire_templates/`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: FedwireTemplateToJSON(requestParameters['fedwireTemplate']),
+            body: FedwireTemplateRequestToJSON(requestParameters['fedwireTemplateRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FedwireTemplateFromJSON(jsonValue));
@@ -124,9 +124,6 @@ export class FedwireTemplatesApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
-        }
         const response = await this.request({
             path: `/v1/fedwire_templates/{uuid}/`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters['uuid']))),
             method: 'DELETE',
@@ -162,9 +159,6 @@ export class FedwireTemplatesApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
-        }
         const response = await this.request({
             path: `/v1/fedwire_templates/`,
             method: 'GET',
@@ -204,9 +198,6 @@ export class FedwireTemplatesApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
-        }
         const response = await this.request({
             path: `/v1/fedwire_templates/{uuid}/`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters['uuid']))),
             method: 'GET',
@@ -238,10 +229,10 @@ export class FedwireTemplatesApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['fedwireTemplate'] == null) {
+        if (requestParameters['fedwireTemplateRequest'] == null) {
             throw new runtime.RequiredError(
-                'fedwireTemplate',
-                'Required parameter "fedwireTemplate" was null or undefined when calling fedwireTemplatesUpdate().'
+                'fedwireTemplateRequest',
+                'Required parameter "fedwireTemplateRequest" was null or undefined when calling fedwireTemplatesUpdate().'
             );
         }
 
@@ -255,15 +246,12 @@ export class FedwireTemplatesApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
-        }
         const response = await this.request({
             path: `/v1/fedwire_templates/{uuid}/`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters['uuid']))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: FedwireTemplateToJSON(requestParameters['fedwireTemplate']),
+            body: FedwireTemplateRequestToJSON(requestParameters['fedwireTemplateRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FedwireTemplateFromJSON(jsonValue));

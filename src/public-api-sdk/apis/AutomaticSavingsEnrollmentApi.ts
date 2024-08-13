@@ -16,20 +16,20 @@
 import * as runtime from '../runtime';
 import type {
   AutomaticSavingsEnrollment,
-  AutomaticSavingsEnrollmentDeserializer,
+  AutomaticSavingsEnrollmentDeserializerRequest,
   AutomaticSavingsEnrollmentRetrieve422Response,
 } from '../models/index';
 import {
     AutomaticSavingsEnrollmentFromJSON,
     AutomaticSavingsEnrollmentToJSON,
-    AutomaticSavingsEnrollmentDeserializerFromJSON,
-    AutomaticSavingsEnrollmentDeserializerToJSON,
+    AutomaticSavingsEnrollmentDeserializerRequestFromJSON,
+    AutomaticSavingsEnrollmentDeserializerRequestToJSON,
     AutomaticSavingsEnrollmentRetrieve422ResponseFromJSON,
     AutomaticSavingsEnrollmentRetrieve422ResponseToJSON,
 } from '../models/index';
 
 export interface AutomaticSavingsEnrollmentCreateRequest {
-    automaticSavingsEnrollmentDeserializer: AutomaticSavingsEnrollmentDeserializer;
+    automaticSavingsEnrollmentDeserializerRequest: AutomaticSavingsEnrollmentDeserializerRequest;
     format?: AutomaticSavingsEnrollmentCreateFormatEnum;
 }
 
@@ -51,10 +51,10 @@ export class AutomaticSavingsEnrollmentApi extends runtime.BaseAPI {
      * Create automatic savings enrollment
      */
     async automaticSavingsEnrollmentCreateRaw(requestParameters: AutomaticSavingsEnrollmentCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['automaticSavingsEnrollmentDeserializer'] == null) {
+        if (requestParameters['automaticSavingsEnrollmentDeserializerRequest'] == null) {
             throw new runtime.RequiredError(
-                'automaticSavingsEnrollmentDeserializer',
-                'Required parameter "automaticSavingsEnrollmentDeserializer" was null or undefined when calling automaticSavingsEnrollmentCreate().'
+                'automaticSavingsEnrollmentDeserializerRequest',
+                'Required parameter "automaticSavingsEnrollmentDeserializerRequest" was null or undefined when calling automaticSavingsEnrollmentCreate().'
             );
         }
 
@@ -81,7 +81,7 @@ export class AutomaticSavingsEnrollmentApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AutomaticSavingsEnrollmentDeserializerToJSON(requestParameters['automaticSavingsEnrollmentDeserializer']),
+            body: AutomaticSavingsEnrollmentDeserializerRequestToJSON(requestParameters['automaticSavingsEnrollmentDeserializerRequest']),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);

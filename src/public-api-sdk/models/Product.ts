@@ -24,21 +24,19 @@ export interface Product {
      * @type {string}
      * @memberof Product
      */
-    readonly type: string;
+    readonly type?: string;
     /**
      * 
      * @type {string}
      * @memberof Product
      */
-    readonly description: string;
+    readonly description?: string;
 }
 
 /**
  * Check if a given object implements the Product interface.
  */
 export function instanceOfProduct(value: object): value is Product {
-    if (!('type' in value) || value['type'] === undefined) return false;
-    if (!('description' in value) || value['description'] === undefined) return false;
     return true;
 }
 
@@ -52,8 +50,8 @@ export function ProductFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
     }
     return {
         
-        'type': json['type'],
-        'description': json['description'],
+        'type': json['type'] == null ? undefined : json['type'],
+        'description': json['description'] == null ? undefined : json['description'],
     };
 }
 

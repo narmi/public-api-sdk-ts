@@ -24,28 +24,25 @@ export interface Location {
      * @type {string}
      * @memberof Location
      */
-    readonly city: string;
+    readonly city?: string;
     /**
      * 
      * @type {string}
      * @memberof Location
      */
-    readonly regionCode: string;
+    readonly regionCode?: string;
     /**
      * 
      * @type {string}
      * @memberof Location
      */
-    readonly countryCode: string;
+    readonly countryCode?: string;
 }
 
 /**
  * Check if a given object implements the Location interface.
  */
 export function instanceOfLocation(value: object): value is Location {
-    if (!('city' in value) || value['city'] === undefined) return false;
-    if (!('regionCode' in value) || value['regionCode'] === undefined) return false;
-    if (!('countryCode' in value) || value['countryCode'] === undefined) return false;
     return true;
 }
 
@@ -59,9 +56,9 @@ export function LocationFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     }
     return {
         
-        'city': json['city'],
-        'regionCode': json['region_code'],
-        'countryCode': json['country_code'],
+        'city': json['city'] == null ? undefined : json['city'],
+        'regionCode': json['region_code'] == null ? undefined : json['region_code'],
+        'countryCode': json['country_code'] == null ? undefined : json['country_code'],
     };
 }
 

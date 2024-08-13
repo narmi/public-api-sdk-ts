@@ -24,7 +24,7 @@ export interface Subscription {
      * @type {string}
      * @memberof Subscription
      */
-    readonly id: string;
+    readonly id?: string;
     /**
      * The URL called when the webhook event occurs.
      * @type {string}
@@ -54,7 +54,7 @@ export interface Subscription {
      * @type {string}
      * @memberof Subscription
      */
-    readonly secret: string;
+    readonly secret?: string;
     /**
      * 
      * @type {string}
@@ -66,24 +66,20 @@ export interface Subscription {
      * @type {Date}
      * @memberof Subscription
      */
-    readonly createdAt: Date;
+    readonly createdAt?: Date;
     /**
      * 
      * @type {Date}
      * @memberof Subscription
      */
-    readonly updatedAt: Date;
+    readonly updatedAt?: Date;
 }
 
 /**
  * Check if a given object implements the Subscription interface.
  */
 export function instanceOfSubscription(value: object): value is Subscription {
-    if (!('id' in value) || value['id'] === undefined) return false;
     if (!('url' in value) || value['url'] === undefined) return false;
-    if (!('secret' in value) || value['secret'] === undefined) return false;
-    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
-    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     return true;
 }
 
@@ -97,15 +93,15 @@ export function SubscriptionFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
-        'id': json['id'],
+        'id': json['id'] == null ? undefined : json['id'],
         'url': json['url'],
         'isActive': json['is_active'] == null ? undefined : json['is_active'],
         'version': json['version'] == null ? undefined : json['version'],
         'eventType': json['event_type'] == null ? undefined : json['event_type'],
-        'secret': json['secret'],
+        'secret': json['secret'] == null ? undefined : json['secret'],
         'description': json['description'] == null ? undefined : json['description'],
-        'createdAt': (new Date(json['created_at'])),
-        'updatedAt': (new Date(json['updated_at'])),
+        'createdAt': json['created_at'] == null ? undefined : (new Date(json['created_at'])),
+        'updatedAt': json['updated_at'] == null ? undefined : (new Date(json['updated_at'])),
     };
 }
 

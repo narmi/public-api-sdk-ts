@@ -18,7 +18,7 @@ import type {
   EstatementsResponse,
   InvalidRequestError,
   NotFoundError,
-  PatchedProfileUpdate,
+  PatchedProfileUpdateRequest,
   PermissionDeniedError,
   UserResponse,
 } from '../models/index';
@@ -29,8 +29,8 @@ import {
     InvalidRequestErrorToJSON,
     NotFoundErrorFromJSON,
     NotFoundErrorToJSON,
-    PatchedProfileUpdateFromJSON,
-    PatchedProfileUpdateToJSON,
+    PatchedProfileUpdateRequestFromJSON,
+    PatchedProfileUpdateRequestToJSON,
     PermissionDeniedErrorFromJSON,
     PermissionDeniedErrorToJSON,
     UserResponseFromJSON,
@@ -59,7 +59,7 @@ export interface UsersRetrieveRequest {
 export interface UsersUpdateRequest {
     userUuid: string;
     format?: UsersUpdateFormatEnum;
-    patchedProfileUpdate?: Omit<PatchedProfileUpdate, 'email'|'core_provided_email'|'username'|'id'|'institution_user_identifier'|'updated_at'|'addresses'|'phone_numbers'|'first_name'|'last_name'|'user_category'|'features'|'org_uuid'|'org_role'|'org_name'|'business_permissions'|'dual_approval_required'|'is_staff'|'is_active'|'is_superuser'|'is_narmi'|'date_joined'|'last_login'|'segment'|'metadata'|'has_username'|'has_password'|'has_accepted_latest_terms'|'requires_enrollment_code_verification'|'enabled_estatements_at'|'is_converting'|'has_permitted_device'|'has_backup_codes'>;
+    patchedProfileUpdateRequest?: PatchedProfileUpdateRequest;
 }
 
 /**
@@ -285,7 +285,7 @@ export class UsersApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: PatchedProfileUpdateToJSON(requestParameters['patchedProfileUpdate']),
+            body: PatchedProfileUpdateRequestToJSON(requestParameters['patchedProfileUpdateRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => UserResponseFromJSON(jsonValue));

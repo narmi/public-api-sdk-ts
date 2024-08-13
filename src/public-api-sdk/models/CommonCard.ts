@@ -54,7 +54,7 @@ export interface CommonCard {
      * @type {State435Enum}
      * @memberof CommonCard
      */
-    readonly state: State435Enum;
+    readonly state?: State435Enum;
     /**
      * Bank Identification Number (BIN) is the first 6 to 8 digits of the Primary Account Number (PAN).
      * @type {string}
@@ -82,7 +82,6 @@ export function instanceOfCommonCard(value: object): value is CommonCard {
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('coreUserId' in value) || value['coreUserId'] === undefined) return false;
     if (!('lastFourDigits' in value) || value['lastFourDigits'] === undefined) return false;
-    if (!('state' in value) || value['state'] === undefined) return false;
     if (!('bin' in value) || value['bin'] === undefined) return false;
     if (!('network' in value) || value['network'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
@@ -102,7 +101,7 @@ export function CommonCardFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'id': json['id'],
         'coreUserId': json['core_user_id'],
         'lastFourDigits': json['last_four_digits'],
-        'state': State435EnumFromJSON(json['state']),
+        'state': json['state'] == null ? undefined : State435EnumFromJSON(json['state']),
         'bin': json['bin'],
         'network': json['network'],
         'name': json['name'],

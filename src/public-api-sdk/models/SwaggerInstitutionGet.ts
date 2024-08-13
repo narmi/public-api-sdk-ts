@@ -31,14 +31,13 @@ export interface SwaggerInstitutionGet {
      * @type {InstitutionContextProcessor}
      * @memberof SwaggerInstitutionGet
      */
-    readonly institution: InstitutionContextProcessor;
+    readonly institution?: InstitutionContextProcessor;
 }
 
 /**
  * Check if a given object implements the SwaggerInstitutionGet interface.
  */
 export function instanceOfSwaggerInstitutionGet(value: object): value is SwaggerInstitutionGet {
-    if (!('institution' in value) || value['institution'] === undefined) return false;
     return true;
 }
 
@@ -52,7 +51,7 @@ export function SwaggerInstitutionGetFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
-        'institution': InstitutionContextProcessorFromJSON(json['institution']),
+        'institution': json['institution'] == null ? undefined : InstitutionContextProcessorFromJSON(json['institution']),
     };
 }
 

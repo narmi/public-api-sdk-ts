@@ -31,35 +31,31 @@ export interface MFA {
      * @type {string}
      * @memberof MFA
      */
-    readonly id: string;
+    readonly id?: string;
     /**
      * 
      * @type {string}
      * @memberof MFA
      */
-    readonly name: string;
+    readonly name?: string;
     /**
      * 
      * @type {MFATypeEnum}
      * @memberof MFA
      */
-    readonly type: MFATypeEnum;
+    readonly type?: MFATypeEnum;
     /**
      * 
      * @type {string}
      * @memberof MFA
      */
-    readonly value: string;
+    readonly value?: string;
 }
 
 /**
  * Check if a given object implements the MFA interface.
  */
 export function instanceOfMFA(value: object): value is MFA {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('type' in value) || value['type'] === undefined) return false;
-    if (!('value' in value) || value['value'] === undefined) return false;
     return true;
 }
 
@@ -73,10 +69,10 @@ export function MFAFromJSONTyped(json: any, ignoreDiscriminator: boolean): MFA {
     }
     return {
         
-        'id': json['id'],
-        'name': json['name'],
-        'type': MFATypeEnumFromJSON(json['type']),
-        'value': json['value'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'type': json['type'] == null ? undefined : MFATypeEnumFromJSON(json['type']),
+        'value': json['value'] == null ? undefined : json['value'],
     };
 }
 

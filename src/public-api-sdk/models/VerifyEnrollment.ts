@@ -31,21 +31,13 @@ export interface VerifyEnrollment {
      * @type {Profile}
      * @memberof VerifyEnrollment
      */
-    readonly user: Profile;
-    /**
-     * 
-     * @type {string}
-     * @memberof VerifyEnrollment
-     */
-    enrollmentCode: string;
+    readonly user?: Profile;
 }
 
 /**
  * Check if a given object implements the VerifyEnrollment interface.
  */
 export function instanceOfVerifyEnrollment(value: object): value is VerifyEnrollment {
-    if (!('user' in value) || value['user'] === undefined) return false;
-    if (!('enrollmentCode' in value) || value['enrollmentCode'] === undefined) return false;
     return true;
 }
 
@@ -59,8 +51,7 @@ export function VerifyEnrollmentFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
-        'user': ProfileFromJSON(json['user']),
-        'enrollmentCode': json['enrollment_code'],
+        'user': json['user'] == null ? undefined : ProfileFromJSON(json['user']),
     };
 }
 
@@ -70,7 +61,6 @@ export function VerifyEnrollmentToJSON(value?: Omit<VerifyEnrollment, 'user'> | 
     }
     return {
         
-        'enrollment_code': value['enrollmentCode'],
     };
 }
 

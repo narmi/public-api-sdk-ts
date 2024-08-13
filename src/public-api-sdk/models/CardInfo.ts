@@ -72,13 +72,13 @@ export interface CardInfo {
      * @type {State435Enum}
      * @memberof CardInfo
      */
-    readonly state: State435Enum;
+    readonly state?: State435Enum;
     /**
      * An image of the card or a placeholder image.
      * @type {string}
      * @memberof CardInfo
      */
-    readonly image: string;
+    readonly image?: string;
     /**
      * Hex value indicating text color.
      * @type {string}
@@ -94,8 +94,6 @@ export function instanceOfCardInfo(value: object): value is CardInfo {
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
     if (!('lastFourDigits' in value) || value['lastFourDigits'] === undefined) return false;
-    if (!('state' in value) || value['state'] === undefined) return false;
-    if (!('image' in value) || value['image'] === undefined) return false;
     return true;
 }
 
@@ -114,8 +112,8 @@ export function CardInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'lastFourDigits': json['last_four_digits'],
         'shipping': json['shipping'] == null ? undefined : CardShippingInfoFromJSON(json['shipping']),
         'network': json['network'] == null ? undefined : json['network'],
-        'state': State435EnumFromJSON(json['state']),
-        'image': json['image'],
+        'state': json['state'] == null ? undefined : State435EnumFromJSON(json['state']),
+        'image': json['image'] == null ? undefined : json['image'],
         'textColor': json['text_color'] == null ? undefined : json['text_color'],
     };
 }
