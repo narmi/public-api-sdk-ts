@@ -1,8 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
-import * as publicApiSDK from './public-api-sdk/index';
-import * as utils from "./utils"
+import * as publicApiSDK from "../sdk/index"
 
 dotenv.config();
 
@@ -15,8 +14,7 @@ app.set("view engine", "ejs")
 app.use(bodyParser.urlencoded({extended:true})); 
 
 app.get('/', async (req: express.Request, res: express.Response) => {
-  const cookies = utils.parseCookies(req.headers.cookie);
-  const APIS = Object.keys(publicApiSDK).filter((k) => k.endsWith("Api"))
+  const cookies = publicApiSDK.parseCookies(req.headers.cookie);
   if (!cookies.access_token || !cookies.header_secret) {
     res.redirect("/login/")
   } else {
@@ -84,35 +82,35 @@ app.get('/receive-authorization-code/', async (req: express.Request, res: expres
 })
 
 app.get('/balances/', async (req: express.Request, res: express.Response) => {
-  const cookies = utils.parseCookies(req.headers.cookie);
-  let api = new publicApiSDK.AccountBalancesApi(utils.getConfiguration(cookies.access_token, cookies.header_secret))
+  const cookies = publicApiSDK.parseCookies(req.headers.cookie);
+  let api = new publicApiSDK.AccountBalancesApi(publicApiSDK.getConfiguration(cookies.access_token, cookies.header_secret))
   try {
     let response = await api.accountBalancesList()
     res.render("account-balances", response)
   } catch(e) {
-    utils.handleError(e, res)
+    publicApiSDK.handleError(e, res)
   }
 });
 
 app.get('/accounts/:accountId/', async (req: express.Request, res: express.Response) => {
-  const cookies = utils.parseCookies(req.headers.cookie);
-  let api = new publicApiSDK.AccountsApi(utils.getConfiguration(cookies.access_token, cookies.header_secret))
+  const cookies = publicApiSDK.parseCookies(req.headers.cookie);
+  let api = new publicApiSDK.AccountsApi(publicApiSDK.getConfiguration(cookies.access_token, cookies.header_secret))
   try {
     let response = await api.accountsRetrieve({"uuid": req.params.accountId})
     res.render("account", response)
   } catch(e) {
-    utils.handleError(e, res)
+    publicApiSDK.handleError(e, res)
   }
 });
 
 app.get('/accounts/', async (req: express.Request, res: express.Response) => {
-  const cookies = utils.parseCookies(req.headers.cookie);
-  let api = new publicApiSDK.AccountsApi(utils.getConfiguration(cookies.access_token, cookies.header_secret))
+  const cookies = publicApiSDK.parseCookies(req.headers.cookie);
+  let api = new publicApiSDK.AccountsApi(publicApiSDK.getConfiguration(cookies.access_token, cookies.header_secret))
   try {
     let response = await api.accountsList()
     res.render("accounts", response);
   } catch(e) {
-    utils.handleError(e, res)
+    publicApiSDK.handleError(e, res)
   }
 });
 

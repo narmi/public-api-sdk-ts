@@ -1,5 +1,5 @@
 import { createHmac } from 'crypto';
-import { Middleware, RequestContext, FetchParams } from './public-api-sdk/runtime';
+import { Middleware, RequestContext, FetchParams } from './generated-sdk/index';
 
 export class HeaderSignatureMiddleware implements Middleware {
 

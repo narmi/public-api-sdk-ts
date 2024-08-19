@@ -1,5 +1,5 @@
 import express from 'express';
-import { Configuration, ResponseError } from './public-api-sdk/runtime';
+import { Configuration, ResponseError } from './generated-sdk/runtime';
 import { HeaderSignatureMiddleware } from './middleware';
 
 export function parseCookies(cookieHeader: string | undefined) {
@@ -18,7 +18,6 @@ export function parseCookies(cookieHeader: string | undefined) {
 
 
 export function getConfiguration(accessToken: string, headerSecret: string): Configuration {
-    console.log(process.env.API_URL)
     return new Configuration({
       basePath: process.env.API_URL,
       accessToken: accessToken,

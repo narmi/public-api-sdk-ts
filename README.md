@@ -1,9 +1,9 @@
 # Getting started
 1. Request `testuser` login credentials as well as OAuth application credentials from Narmi.
-2. Clone https://github.com/narmi/public-api-sdk-ts (`git clone git@github.com:narmi/public-api-sdk-ts.git`)
-3. Install [Node.js](https://nodejs.org/en/download/package-manager/current) v22.4.1. This should include `npm`, but if not also install npm@v10.8.2
+2. Clone https://github.com/narmi/public-api-sdk-ts (`git clone git@github.com:narmi/public-api-sdk-ts.git`), then CD into project directory
+3. Install [Node.js](https://nodejs.org/en/download/package-manager/current) v22.4.1. This should include `npm`, but if not also install npm@v10.8.2.
 4. Create `.env` file in root directory and set values for OAuth and other configuration (`CLIENT_ID`, `CLIENT_SECRET`, `REDIRECT_URI`, `AUTH_URL`, `API_URL`, `PORT=3000`).
-5. Run `npm install --dev; npm run build; npm start`.
+5. Run `npm install --include=dev; npm run build; npm start`.
 6. Navigate to http://localhost:3000/login.
 7. Login to Narmi's sandbox banking application as `testuser`.
 8. Use index page to view user account information.
@@ -13,15 +13,14 @@
 The generated API creates a series of classes representing each *tag* of the documenation at https://online.sandbox.narmi.dev/v1/docs as an API. For instance, https://online.sandbox.narmi.dev/v1/docs#tag/accounts becomes: 
 
 ```typescript
-import * as publicApiSDK from './public-api-sdk/index';
+import * as publicApiSDK from "../sdk/index";
 let apiClass = publicApiSDK.AccountsApi
 ```
 
 Each API must be provided with a configuration object when instantiated for authentication purposes. A utility has been defined at `public-api-sdk/src/utils.ts` to make this easier:
 
 ```typescript
-import * as utils from "./utils"
-let api = new publicApiSDK.AccountsApi(utils.getConfiguration(access_token, header_secret))
+let api = new publicApiSDK.AccountsApi(publicApiSDK.getConfiguration(access_token, header_secret))
 ```
 
 Each API method is defined to represent an operation id from the documentation, so https://online.sandbox.narmi.dev/v1/docs#tag/accounts/operation/accounts_list becomes `accountsList`:
@@ -40,7 +39,7 @@ Responses will be promises resolving to typed data structures, allowing typescri
   }
 ```
 
-These examples are taken from `public-api-sdk/index.ts`, which powers the introductory application. 
+These examples are taken from `public-api-sdk/src/test-express-app/index.ts`, which powers the introductory application. 
 
 ## API Rubric
 | Operation ID                               | SDK Verified | Schemathesis Verified | Notes/Considerations |
