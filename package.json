@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/index.ts",
+    "dev": "nodemon --exec ts-node dist/test-express-app/index.js",
     "build": "tsc",
     "watch": "tsc --watch",
-    "start": "nodemon dist/index.js",
+    "start": "nodemon dist/test-express-app/index.js",
     "download-schema": "curl -o narmi-public-api-schema.yaml https://online.sandbox.narmi.dev/v1/schema",
     "remove-schema": "rm narmi-public-api-schema.yaml",
     "generate-sdk": "openapi-generator-cli generate -i narmi-public-api-schema.yaml -g typescript-fetch -o ./src/public-api-sdk --skip-validate-spec",
