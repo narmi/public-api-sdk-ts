@@ -28,11 +28,10 @@ jobs:
 
     - name: Run command to insert files
       run: |
-        pwd && ls -la
-        npm run download-schema
-        pwd && ls -la        
         npm run remove-sdk
+        npm run download-schema
         npm run generate-sdk
+        npm run remove-schema
 
     - name: Commit changes
       run: |
