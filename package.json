@@ -8,6 +8,7 @@
     "watch": "tsc --watch",
     "start": "nodemon dist/index.js",
     "download-schema": "curl -o narmi-public-api-schema.yaml https://online.sandbox.narmi.dev/v1/schema",
+    "remove-schema": "rm narmi-public-api-schema.yaml",
     "generate-sdk": "openapi-generator-cli generate -i narmi-public-api-schema.yaml -g typescript-fetch -o ./src/public-api-sdk --skip-validate-spec",
     "remove-sdk": "rm -rf ./src/public-api-sdk"
   },
