@@ -1,12 +1,14 @@
 # Getting started
 1. Request `testuser` login credentials as well as OAuth application credentials from Narmi.
-2. Clone https://github.com/narmi/public-api-sdk-ts (`git clone git@github.com:narmi/public-api-sdk-ts.git`), then CD into project directory
-3. Install [Node.js](https://nodejs.org/en/download/package-manager/current) v22.4.1. This should include `npm`, but if not also install npm@v10.8.2.
-4. Create `.env` file in root directory and set values for OAuth and other configuration (`CLIENT_ID`, `CLIENT_SECRET`, `REDIRECT_URI`, `AUTH_URL`, `API_URL`, `PORT=3000`).
-5. Run `npm install --include=dev; npm run build; npm start`.
-6. Navigate to http://localhost:3000/login.
-7. Login to Narmi's sandbox banking application as `testuser`.
-8. Use index page to view user account information.
+2. Download your target build from the (releases tag)[https://github.com/narmi/public-api-sdk-ts/tags]
+   - Alternatively you can clone via `git clone git@github.com:narmi/public-api-sdk-ts.git`
+3. `cd` into the project directory `cd public-api-sdk-ts`
+4. Install [Node.js](https://nodejs.org/en/download/package-manager/current) v22.4.1. This should include `npm`, but if not also install npm@v10.8.2.
+5. Create `.env` file in root directory and set values for OAuth and other configuration (`CLIENT_ID`, `CLIENT_SECRET`, `REDIRECT_URI`, `AUTH_URL`, `API_URL`, `PORT=3000`).
+6. Run `npm install --include=dev; npm run build; npm start`.
+7. Navigate to http://localhost:3000/login.
+8. Login to Narmi's sandbox banking application as `testuser`. 
+9. Use index page to view user account information.
 
 # Understanding How it Works
 
