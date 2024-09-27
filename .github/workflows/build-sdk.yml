@@ -39,6 +39,8 @@ jobs:
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git add src/public-api-sdk
         git commit -am "Build triggered by ${{ github.actor }} on $(date +"%Y-%m-%d %H:%M:%S")"
+        git tag main-$(date '+%Y-%m-%d_%H:%M:%S')
+        git push origin main-$(date '+%Y-%m-%d_%H:%M:%S')
 
     - name: Push changes
       uses: ad-m/github-push-action@master
