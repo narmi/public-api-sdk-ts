@@ -3,7 +3,9 @@ name: Generate SDK and commit
 on:
   # execute on demand
   workflow_dispatch:
-
+  repository_dispatch:
+    types:
+      - banking-release-updated
 jobs:
   insert-and-commit:
     runs-on: ubuntu-latest
@@ -29,7 +31,7 @@ jobs:
     - name: Run command to insert files
       run: |
         npm run remove-sdk
-        npm run download-schema
+        curl -o public.yml https://apidocs-narmi.s3.amazonaws.com/public/${{ github.event.client_payload.filename }}
         npm run generate-sdk
         npm run remove-schema
 
@@ -39,8 +41,8 @@ jobs:
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git add src/public-api-sdk
         git commit -am "Build triggered by ${{ github.actor }} on $(date +"%Y-%m-%d %H:%M:%S")"
-        git tag main-$(date '+%Y-%m-%d_%H:%M:%S')
-        git push origin main-$(date '+%Y-%m-%d_%H:%M:%S')
+        git tag ${{ github.event.client_payload.api_version }}
+        git push origin ${{ github.event.client_payload.api_version }}
 
     - name: Push changes
       uses: ad-m/github-push-action@master
