@@ -31,7 +31,7 @@ jobs:
     - name: Run command to insert files
       run: |
         npm run remove-sdk
-        curl -o public.yml https://apidocs-narmi.s3.amazonaws.com/public/${{ github.event.client_payload.filename }}
+        curl -o public.yml "https://apidocs-narmi.s3.amazonaws.com/public/${{ github.event.client_payload.filename }}"
         npm run generate-sdk
         npm run remove-schema
 
