@@ -43,9 +43,15 @@ jobs:
         git commit -am "Build triggered by ${{ github.actor }} on $(date +"%Y-%m-%d %H:%M:%S")"
         git tag ${{ github.event.client_payload.api_version }}
         git push origin ${{ github.event.client_payload.api_version }}
-
-    - name: Push changes
-      uses: ad-m/github-push-action@master
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        branch: main
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        tag_name: ${{ github.event.client_payload.api_version }}
+        release_name: Release ${{ github.event.client_payload.api_version }}
+        body: |
+          Build for ${{ github.event.client_payload.api_version }}
+        draft: false
+        prerelease: false
