@@ -1,7 +1,8 @@
 # Getting started
 1. Request `testuser` login credentials as well as OAuth application credentials from Narmi.
 2. Download your target build from the (releases tag)[https://github.com/narmi/public-api-sdk-ts/tags]
-   - Alternatively you can clone via `git clone git@github.com:narmi/public-api-sdk-ts.git`
+   - Alternatively you can clone via `git clone git@github.com:narmi/public-api-sdk-ts.git` and then checkout the release version.
+   - ex. `git checkout v2024.10.34`
 3. `unzip` and `cd` into the project directory
 ```bash
 $ unzip public-api-sdk-ts-<release_name>.zip
