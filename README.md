@@ -1,14 +1,22 @@
 # Getting started
-1. Request `testuser` login credentials as well as OAuth application credentials from Narmi.
+1. Email `support@narmi.com` to request necessary testing data, including:
+  - Test user credentials; a `username` and a `password`
+  - OAuth-application credentials; a `CLIENT_SECRET`, `CLIENT_ID`, and a `REDIRECT_URI`
+  - Sandbox server information; the `AUTH_URL` and the `API_URL`
+
 2. Download your target build from the (releases tag)[https://github.com/narmi/public-api-sdk-ts/tags]
-   - Alternatively you can clone via `git clone --branch <release-version> --single-branch git@github.com:narmi/public-api-sdk-ts.git` where `<release-version>` will be a value like `v2024.10.34`
+
+<mark> Note:</mark>
+Alternatively you can clone via `git clone git@github.com:narmi/public-api-sdk-ts.git` 
+ but this requires you to install and run the openapi-generator yourself.
+
 3. `unzip` and `cd` into the project directory
 ```bash
 $ unzip public-api-sdk-ts-<release_name>.zip
 $ cd public-api-sdk-ts
 ```
 4. Install [Node.js](https://nodejs.org/en/download/package-manager/current) v22.4.1. This should include `npm`, but if not also install npm@v10.8.2.
-5. Create `.env` file in root directory and set values for OAuth and other configuration.
+5. Create `.env` file in root directory and set values provided by Narmi, as well as a `PORT`.
 ```ini
 # paste the following variables into your .env file
 CLIENT_ID=<oauth client id>
@@ -22,6 +30,14 @@ PORT=3000
 ```bash
 npm install --include=dev
 ```
+
+#### <mark> Note:</mark> If you've cloned the repository, you'll need to generate the SDK yourself. 
+To do this, you'll have to
+   - Download the openapi yaml file corresponding to the version of the API you are implementing via `curl -o public.yml "https://apidocs-narmi.s3.amazonaws.com/public/public-<release-version>.yml"`
+   - Ensure you have Java v17 installed on your development computer. 
+   - Run `npm run generate-sdk`
+   - There may be a few benign errors during SDK generation, if any of them lead to issues using the SDK please email `support@narmi.com`
+
 7. Build the test app
 ```bash
 npm run build
