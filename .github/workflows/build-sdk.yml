@@ -39,7 +39,7 @@ jobs:
       run: |
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git add src/public-api-sdk
+        npm run git-add-sdk
         git commit -am "Build triggered by ${{ github.actor }} on $(date +"%Y-%m-%d %H:%M:%S")"
         git tag v2024.10.34
         git push origin v2024.10.34
