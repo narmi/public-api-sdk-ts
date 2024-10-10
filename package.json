@@ -10,7 +10,8 @@
     "download-schema": "curl -o public.yml https://online.sandbox.narmi.dev/v1/schema",
     "remove-schema": "rm public.yml",
     "generate-sdk": "openapi-generator-cli generate -i public.yml -g typescript-fetch -o ./src/sdk/generated-sdk --skip-validate-spec",
-    "remove-sdk": "rm -rf ./src/sdk/generated-sdk"
+    "remove-sdk": "rm -rf ./src/sdk/generated-sdk",
+    "git-add-sdk": "git add ./src/sdk/generated-sdk"
   },
   "keywords": [],
   "author": "Narmi",
