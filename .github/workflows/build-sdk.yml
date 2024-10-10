@@ -31,7 +31,7 @@ jobs:
     - name: Run command to insert files
       run: |
         npm run remove-sdk
-        curl -o public.yml "https://apidocs-narmi.s3.amazonaws.com/public/public-v2024.10.34.yml"
+        curl -o public.yml "https://apidocs-narmi.s3.amazonaws.com/public/public-v2024.9.221.yml"
         npm run generate-sdk
         npm run remove-schema
 
@@ -41,17 +41,17 @@ jobs:
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         npm run git-add-sdk
         git commit -am "Build triggered by ${{ github.actor }} on $(date +"%Y-%m-%d %H:%M:%S")"
-        git tag v2024.10.34
-        git push origin v2024.10.34
+        git tag v2024.9.221
+        git push origin v2024.9.221
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v2024.10.34
-        release_name: Release v2024.10.34
+        tag_name: v2024.9.221
+        release_name: Release v2024.9.221
         body: |
-          Build for v2024.10.34
+          Build for v2024.9.221
         draft: false
         prerelease: false
