@@ -4,7 +4,7 @@
   - OAuth-application credentials; a `CLIENT_SECRET`, `CLIENT_ID`, and a `REDIRECT_URI`
   - Sandbox server information; the `AUTH_URL` and the `API_URL`
 
-2. Download your target build from the (releases tag)[https://github.com/narmi/public-api-sdk-ts/tags]
+2. Download your target build from the (releases tag)[https://github.com/narmi/public-api-sdk-ts/releases]
 
 <mark> Note:</mark>
 Alternatively you can clone via `git clone git@github.com:narmi/public-api-sdk-ts.git` 
