@@ -1,38 +1,27 @@
----
-name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
-assignees: ''
+### Summary
+_Example: "accountsList method throws a parsing error when fetching account data."_
 
----
+### Environment
+SDK Version:
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+Node.js Version:
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+openapi-generator-cli Version:
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+### Steps to Reproduce
+_Since the SDK code cannot be directly modified, include the request parameters, configuration details, or any other relevant context._
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+### Expected Behavior
+_Describe what you expected to happen when the SDK was used as intended._
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+_Example: "The accountsList method should return a list of accounts without errors."_
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+### Actual Behavior
+_Describe what actually happened, including error messages, stack traces, or other unexpected results._
 
-**Additional context**
-Add any other context about the problem here.
+### Additional Context
+API Version (if applicable):
+
+Specific Endpoint: 
+
+Authentication Setup: 
