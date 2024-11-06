@@ -1,0 +1,18 @@
+{
+  "name": "danger",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "scripts": {
+    "danger": "danger ci"
+  },
+  "engines": {
+    "node": ">= 18",
+    "npm": ">= 8"
+  },
+  "dependencies": {
+    "@conventional-commits/parser": "^0.4.1",
+    "danger": "^10.9.0"
+  }
+}
