@@ -1,4 +1,4 @@
-name: Generate SDK and commit
+name: Build Sanity Check
 
 on:
   pull_request:
