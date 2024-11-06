@@ -3,7 +3,7 @@ name: Build Sanity Check
 on:
   pull_request:
 jobs:
-  insert-and-commit:
+  client-generation-sanity-check:
     runs-on: ubuntu-latest
 
     steps:
