@@ -1,3 +1,10 @@
+---
+name: SDK Feature Template
+about: Template for feature requests/development.
+title: ""
+labels: ["feature"]
+---
+
 ## Summary
 _Provide a concise summary of the feature you’re requesting._
 
