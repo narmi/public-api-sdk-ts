@@ -1,0 +1,33 @@
+name: Generate SDK and commit
+
+on:
+  pull_request:
+jobs:
+  insert-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Install dependencies
+      run: npm install --include=dev
+
+    - name: Test schema generation
+      # will fail when dependency, repo, or schema changes break schema generation
+      run: |
+        npm run remove-sdk
+        curl -o public.yml "https://apidocs-narmi.s3.amazonaws.com/public/public-main.yml"
+        npm run generate-sdk
+        npm run remove-schema
