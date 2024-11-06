@@ -4,6 +4,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-The rights granted above may only be exercised to develop and distribute applications that integrate or interoperate with Narmi software or services, and in the case of external, stand-alone applications that do not embed directly inside Narmi, the rights granted above may only be exercised to develop and distribute applications that are dissimilar and visually distinct from Narmi products and services (including the internal administration page(s) of Narmi banking products), as determined by Narmi in its sole discretion.
+The rights granted above may only be exercised to develop and distribute applications that integrate or interoperate with Narmi software or services in accordance with the Developer License and Terms available at https://www.narmi.com/policies/developer-terms-conditions.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
