@@ -58,25 +58,29 @@ app.get('/receive-authorization-code/', async (req: express.Request, res: expres
   res.cookie('access_token', responseData.access_token, {
     maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
     httpOnly: true,
-    sameSite: 'lax'
+    sameSite: 'lax',
+    secure: true
   });
 
   res.cookie('refresh_token', responseData.refresh_token, {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
       httpOnly: true,
-      sameSite: 'lax'
+      sameSite: 'lax',
+      secure: true
   });
 
   res.cookie('header_secret', responseData.secret, {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
       httpOnly: true,
-      sameSite: 'lax'
+      sameSite: 'lax',
+      secure: true
   });
 
   res.cookie('id_token', responseData.id_token, {
       maxAge: 60 * 60 * 1000, // 1 hour
       httpOnly: true,
-      sameSite: 'lax'
+      sameSite: 'lax',
+      secure: true
   });
   res.render("index", {"msg": "You are logged in!", "accessToken": responseData.access_token, "secret": responseData.secret})
 })
