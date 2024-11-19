@@ -45,7 +45,7 @@ jobs:
         git push origin ${{ github.event.client_payload.api_version }}
     - name: Create Release
       id: create_release
-      uses: actions/create-release@v1
+      uses: comnoco/create-release-action@7dea6dc82ac9d97ced7a764aa82811451bba80e0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
