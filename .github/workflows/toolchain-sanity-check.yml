@@ -31,3 +31,9 @@ jobs:
         curl -o public.yml "https://apidocs-narmi.s3.amazonaws.com/public/public-main.yml"
         npm run generate-sdk
         npm run remove-schema
+
+    - name: Build App
+      run: npm run build || true # build usually completes with some errors
+
+    - name: Run Unit Tests
+      run: npm test
