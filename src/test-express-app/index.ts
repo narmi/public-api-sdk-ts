@@ -22,6 +22,10 @@ app.get('/', async (req: express.Request, res: express.Response) => {
   }
 })
 
+app.get('/ping/', async (req: express.Request, res: express.Response) => {
+  res.status(200).json({ message: 'ping!' });
+});
+
 app.get('/login/', async (req: express.Request, res: express.Response) => {
   res.redirect(
     302,
@@ -118,6 +122,4 @@ app.get('/accounts/', async (req: express.Request, res: express.Response) => {
   }
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running at http://localhost:${process.env.PORT}`);
-});
+export default app;
