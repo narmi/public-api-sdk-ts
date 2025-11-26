@@ -62,7 +62,7 @@ let apiClass = publicApiSDK.AccountsApi
 Each API must be provided with a configuration object when instantiated for authentication purposes. A utility has been defined at `public-api-sdk/src/utils.ts` to make this easier:
 
 ```typescript
-let api = new publicApiSDK.AccountsApi(publicApiSDK.getConfiguration(access_token, header_secret))
+let api = new publicApiSDK.AccountsApi(publicApiSDK.getConfiguration(access_token))
 ```
 
 Each API method is defined to represent an operation id from the documentation, so https://online.sandbox.narmi.dev/v1/docs#tag/accounts/operation/accounts_list becomes `accountsList`:
