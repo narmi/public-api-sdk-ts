@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 app.get('/', async (req: express.Request, res: express.Response) => {
   const cookies = publicApiSDK.parseCookies(req.headers.cookie);
-  if (!cookies.access_token || !cookies.header_secret) {
+  if (!cookies.access_token) {
     res.redirect("/login/")
   } else {
     res.render("index", {"msg": null})
@@ -73,12 +73,7 @@ app.get('/receive-authorization-code/', async (req: express.Request, res: expres
       secure: true
   });
 
-  res.cookie('header_secret', responseData.secret, {
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: true
-  });
+
 
   res.cookie('id_token', responseData.id_token, {
       maxAge: 60 * 60 * 1000, // 1 hour
@@ -91,7 +86,7 @@ app.get('/receive-authorization-code/', async (req: express.Request, res: expres
 
 app.get('/balances/', async (req: express.Request, res: express.Response) => {
   const cookies = publicApiSDK.parseCookies(req.headers.cookie);
-  let api = new publicApiSDK.AccountBalancesApi(publicApiSDK.getConfiguration(cookies.access_token, cookies.header_secret))
+  let api = new publicApiSDK.AccountBalancesApi(publicApiSDK.getConfiguration(cookies.access_token))
   try {
     let response = await api.accountBalancesList()
     res.render("account-balances", response)
@@ -102,7 +97,7 @@ app.get('/balances/', async (req: express.Request, res: express.Response) => {
 
 app.get('/accounts/:accountId/', async (req: express.Request, res: express.Response) => {
   const cookies = publicApiSDK.parseCookies(req.headers.cookie);
-  let api = new publicApiSDK.AccountsApi(publicApiSDK.getConfiguration(cookies.access_token, cookies.header_secret))
+  let api = new publicApiSDK.AccountsApi(publicApiSDK.getConfiguration(cookies.access_token))
   try {
     let response = await api.accountsRetrieve({"uuid": req.params.accountId})
     res.render("account", response)
@@ -113,7 +108,7 @@ app.get('/accounts/:accountId/', async (req: express.Request, res: express.Respo
 
 app.get('/accounts/', async (req: express.Request, res: express.Response) => {
   const cookies = publicApiSDK.parseCookies(req.headers.cookie);
-  let api = new publicApiSDK.AccountsApi(publicApiSDK.getConfiguration(cookies.access_token, cookies.header_secret))
+  let api = new publicApiSDK.AccountsApi(publicApiSDK.getConfiguration(cookies.access_token))
   try {
     let response = await api.accountsList()
     res.render("accounts", response);
