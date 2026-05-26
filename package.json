@@ -19,11 +19,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "body-parser": "^1.20.4",
+    "body-parser": "^1.20.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
-    "express": "^4.22.1"
+    "express": "^4.22.2"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.31.1",
